@@ -15,7 +15,7 @@ function draw() {
         elements["income"].textContent = Math.round(income * 10) / 10
     }
 
-    elements["heroes"].textContent = heroes.length
+    elements["heroes"].textContent = heroes.length + "/" + heroesMax
 
 
 }
