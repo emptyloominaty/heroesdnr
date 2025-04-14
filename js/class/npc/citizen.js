@@ -1,0 +1,3 @@
+class Traveler extends Character {
+
+}

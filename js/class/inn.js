@@ -2,8 +2,10 @@ class Inn extends Building {
     heroesMax = 0
     heroes = 0
     heroesList = []
-    constructor(level = 1) {
+    upgradeCost = [0, 500, 1000, 2000, 3000]
+    constructor(location, level = 1) {
         super()
+        this.location = location
         this.type = "inn"
         this.level = level
         this.levelUpdate()
@@ -23,7 +25,7 @@ class Inn extends Building {
         }
     }
 
-    run() {
+    update() {
 
     }
 

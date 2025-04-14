@@ -8,36 +8,47 @@ let income = 0
 let income2 = 0
 let incomeI = 0
 
-
+let characters = []
 let heroes = []
 let buildings = []
 
 let heroesMax = 0
 
-buildings.push(new Inn(1))
+
+buildings.push(new Inn({ x: 50, y: 45 },1))
+//TEST
+heroes.push(new Hero("test1",30, 0, 1, 100, "warrior", { x: 0, y: 5 }))
+heroes.push(new Hero("test2",25, 0, 1, 100, "warrior", { x: 12, y: 10 }))
+heroes.push(new Hero("test3",35, 0, 1, 100, "warrior", { x: 10, y: 7 }))
+heroes.push(new Hero("test4",20, 0, 1, 100, "warrior", { x: 10, y: 5 }))
+
 
 function update() {
-    income2 += (goldE-goldS)/progress
-    goldS = gold
-    gold -= ((Math.random()*40)-20) * progress
+
+    gold -= ((Math.random()*40)-20) * progress //TEST
 
 
     heroesMax = 0
     for (let i = 0; i < buildings.length; i++) {
-        buildings[i].run()
+        buildings[i].update()
         if (buildings[i].type === "inn") {
             heroesMax += buildings[i].heroesMax
         }
     }
 
+    for (let i = 0; i < characters.length; i++) {
+        characters[i].update()
+    }
 
 
-    goldE = gold
+
+    
     incomeI++
     if (incomeI > 60) { //TODO DAY
-        income = income2 / incomeI
-        income2 = 0
-        incomeI = 0
+        goldE = gold
+        income = (goldE - goldS)
+        goldS = gold
         gold2 = gold
+        incomeI = 0
     }
 }

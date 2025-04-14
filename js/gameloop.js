@@ -1,13 +1,16 @@
 let lastRender = 0
 let progress = 16.666666666666666666666666666667
+let gameSpeed = 1
+let fps = 60
 
 
 function loop(timestamp) {
     progress = timestamp - lastRender
-    if (progress > 250) { //ms
-        progress = 250
-    }
-    progress = progress / 1000
+    if (progress > 100) { //ms
+        progress = 100
+    } 
+    fps = Math.round(1000 / progress * 10)/10
+    progress = progress / 1000 * gameSpeed
     time += progress
 
     update(progress)
