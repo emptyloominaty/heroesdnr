@@ -33,3 +33,21 @@ canvas, body, html {
     padding: 2px;
     margin: 0 10px 0 10px;
 }
+
+#debug {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.characterUi {
+    position: fixed;
+    color: white;
+    font-size: 9px;
+    pointer-events: none;
+    user-select: none;
+    transform: translate(-50%, -100%);
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}

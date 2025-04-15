@@ -15,9 +15,15 @@ function loop(timestamp) {
 
     day = Math.floor(time / 720)
 
-
+    let startTime = performance.now()
     update(progress)
+    let endTime = performance.now()
     draw(progress)
+    let endTime2 = performance.now()
+    document.getElementById("debugUpdate").textContent = Math.round((endTime - startTime)*10)/10+" ms"
+    document.getElementById("debugDraw").textContent = Math.round((endTime2 - endTime) * 10) / 10 + " ms"
+
+
 
     lastRender = timestamp
     window.requestAnimationFrame(loop)
