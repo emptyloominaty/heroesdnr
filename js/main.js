@@ -1,4 +1,5 @@
 let time = 0
+let day = 0
 
 let gold = 1000
 let gold2 = 1000
@@ -44,7 +45,7 @@ function update() {
 
     
     incomeI++
-    if (incomeI > 60) { //TODO DAY
+    if (incomeI > 720) {
         goldE = gold
         income = (goldE - goldS)
         goldS = gold

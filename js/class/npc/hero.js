@@ -5,7 +5,7 @@ class Hero extends Character {
     armor = 1
     statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 }
     constructor(name, age, id, level, health, characterClass, location) {
-        super()
+        super(name, age, id, level, health, characterClass, location)
         this.name = name;
         this.age = age
         this.id = id
@@ -15,6 +15,7 @@ class Hero extends Character {
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
         this.hungerRate = 0.95 + (Math.random() * 0.1) 
+        this.destination = { x: location.x, y: location.y };
         characters.push(this)
     }
 

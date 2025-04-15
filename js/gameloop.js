@@ -13,6 +13,9 @@ function loop(timestamp) {
     progress = progress / 1000 * gameSpeed
     time += progress
 
+    day = Math.floor(time / 720)
+
+
     update(progress)
     draw(progress)
 

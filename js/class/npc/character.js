@@ -1,5 +1,3 @@
-
-
 class Character {
     id = 0
     name = ""
@@ -8,7 +6,7 @@ class Character {
     atDestination = true
     status = ""
 
-    sleepBuildingId = 99999 //99999 = none
+    sleepBuildingId = -1
 
     inventory = {
         food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: []
@@ -37,20 +35,28 @@ class Character {
         this.characterClass = characterClass
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
-        this.hungerRate = 0.95 + (Math.random() * 0.1) 
+        this.hungerRate = 0.95 + (Math.random() * 0.1)
+        this.destination = { x: location.x, y: location.y };
     }
 
     update() {
-        this.hunger -= progress * 0.01 * this.hungerRate;
-        this.fatigue -= progress * 0.005 * this.fatigueRate;
+        this.hunger -= progress * 0.25 * this.hungerRate;
+        this.fatigue -= progress * 0.1 * this.fatigueRate;
 
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             this.atDestination = true
-            if (this.fatigue < 15) {
-                this.findInn(true)
+            if (this.needsSleep() || this.isHungry()) {
+                this.findInn()
             }
-            if (this.hunger < 30) {
-                this.findInn(false)
+            switch (this.status) {
+                case "Eating":
+                    eatingSleepingInn(false)
+                    break
+                case "Sleeping":
+                    eatingSleepingInn(true)
+                    break
+                default: 
+                    break
             }
         } else {
             this.atDestination = false
@@ -58,8 +64,8 @@ class Character {
         }
     }
 
-    findInn(sleep) {
-        if (this.sleepBuildingId === 99999) {
+    findInn() {
+        if (this.sleepBuildingId === -1) {
             for (let i = 0; i < buildings.length; i++) {
                 if (buildings[i].type === "inn") {
                     if (buildings[i].heroes < buildings[i].heroesMax) {
@@ -71,19 +77,24 @@ class Character {
                 }
             }
         }
-        if (this.sleepBuildingId !== 99999) {
+        if (this.sleepBuildingId !== -1) {
             this.destination = buildings[this.sleepBuildingId].location
         }
+
+    }
+
+    eatingSleepingInn(sleep) {
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             if (sleep) {
-                this.fatigue += sleepSpeed * progress
+                this.fatigue += this.sleepSpeed * progress
+                console.log(this.sleepSpeed * progress + " - - - " + this.fatigue)
                 this.status = "Sleeping"
                 if (this.fatigue > 100) {
                     this.fatigue = 100
                     this.status = ""
                 }
             } else {
-                this.hunger += eatSpeed * progress
+                this.hunger += this.eatSpeed * progress
                 this.status = "Eating"
                 if (this.hunger > 100) {
                     this.hunger = 100
@@ -113,6 +124,14 @@ class Character {
 
         if (dx * newDx < 0) this.location.x = this.destination.x;
         if (dy * newDy < 0) this.location.y = this.destination.y;
+    }
+
+    needsSleep() {
+        return this.fatigue < 15;
+    }
+
+    isHungry() {
+        return this.hunger < 30;
     }
 
 }
