@@ -1,0 +1,74 @@
+#window {
+    position: fixed;
+    z-index: 100;
+    top: 4.62vh;
+    left: 2.6vw;
+    background-color: #342b1b;
+    color: #FFF;
+    overflow: auto;
+    border-radius: 3px;
+}
+
+.windowHeader {
+    font-size: 1.3vw;
+    padding: 0.2vw;
+    border-bottom: 1px solid #6f5b38;
+    display: flex;
+    justify-content: space-between;
+}
+
+.windowBody {
+    font-size: 0.72vw;
+    padding: 0.5vw;
+}
+
+.windowSettings_button {
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 0.72vw;
+    padding: 2px 5px 2px 5px;
+    margin: 0 3px 0 3px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    color: #FFF;
+}
+
+.windowSettings_button_true {
+    border: 1px solid rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.windowSettings_button:hover {
+    background-color: #444144;
+}
+
+.windowSettings_flex {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.2vw;
+    padding-bottom: 0.2vw;
+}
+
+.windowSettings_category {
+    padding-top: 1vw;
+    padding-bottom: 0.2vw;
+    font-size: 1vw;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.8vh 0.8vw 0.8vh 0.8vw;
+    text-align: center;
+    white-space: nowrap;
+}
+
+tr:nth-child(even) {
+    background-color: #342b1b;
+}
+
+tr:nth-child(odd) {
+    background-color: #54452b
+}

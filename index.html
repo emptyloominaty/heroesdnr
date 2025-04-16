@@ -5,6 +5,7 @@
     <title>Heroes: Dungeons & Raids</title>
     <!------------------------------------------------>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/window.css">
     <!------------------------------------------------>
     <!--Start-->
     <script src="js/class/building.js" defer></script>
@@ -17,10 +18,15 @@
     <script src="js/class/npc/citizen.js" defer></script>
 
     <!--Main-->
+    <script src="js/windows/windows.js" defer></script>
+    <script src="js/windows/herolist.js" defer></script>
+
+
     <script src="js/colors.js" defer></script>
     <script src="js/uiFunctions.js" defer></script>
     <script src="js/canvas.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/drawUi.js" defer></script>
     <script src="js/draw.js" defer></script>
 
     <!--End-->
@@ -30,6 +36,16 @@
 <body>
     <div id="app">
         <div id="ui">
+            <div id="debug">
+                <span id="debugUpdate"></span>
+                <span id="debugDrawUi"></span>
+                <span id="debugDraw"></span>
+                <span id="debug1"></span>
+                <span id="debug2"></span>
+                <span id="debug3"></span>
+                <span id="debug4"></span>
+                <span id="debug5"></span>
+            </div>
             <div id="header">
                 <div>
                     <span>Gold: </span>
@@ -59,19 +75,14 @@
                     <button onclick="setGameSpeed(8)">8x</button>
                     <button onclick="setGameSpeed(16)">16x</button>
                 </div>
-
+                <div>
+                    <button onclick="open_heroeslist()">List</button>
+                </div>
             </div>
             <div id="charactersUi">
             </div>
-		</div>
-        <div id="debug">
-            <span id="debugUpdate"></span>
-            <span id="debugDraw"></span>
-            <span id="debug1"></span>
-            <span id="debug2"></span>
-            <span id="debug3"></span>
-            <span id="debug4"></span>
-            <span id="debug5"></span>
+            <div id="window">
+            </div>
         </div>
         <canvas width="1500" height="700" id="canvas">
 

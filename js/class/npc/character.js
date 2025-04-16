@@ -10,7 +10,7 @@ class Character {
     sleepBuildingId = -1
 
     inventory = {
-        food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: []
+        food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: [], gold: 100
     }
 
     fatigue = 100 
