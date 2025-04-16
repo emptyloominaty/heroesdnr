@@ -18,7 +18,17 @@ class Hero extends Character {
             tank: 1.2,
             healer: 0.6,
         }
-         //TODO: specMultiplier
+        let classDpsMultipliers = {
+            Warrior: 1
+        }
+        let classHealerMultipliers = {
+             
+        }
+        let classTankMultipliers = {
+            Warrior: 1,
+            Druid: 1.2,
+            Paladin: 1.1
+        }
         let base = 10 + (this.level * 2)
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
         let roleMultiplier = roleMultipliers[this.role] || 1
