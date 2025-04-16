@@ -1,3 +1,3 @@
-class Traveler extends Character {
+class Citizen extends Character {
 
 }

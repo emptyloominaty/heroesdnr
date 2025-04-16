@@ -47,13 +47,7 @@ class Character {
         this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
     }
 
-    gainXp(val) {
-        this.xp += val
-        if (xp>=this.xpNeed) {
-            this.level++
-            this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
-        } 
-    }
+
 
     update() {
         this.hunger -= progress * 0.12 * this.hungerRate
@@ -80,7 +74,6 @@ class Character {
         }
     }
 
-
     findInn() {
         if (this.sleepBuildingId === -1) {
             for (let i = 0; i < buildings.length; i++) {
@@ -97,13 +90,17 @@ class Character {
         if (this.sleepBuildingId !== -1) {
             this.destination = buildings[this.sleepBuildingId].location
         }
-        if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
+        if (this.location.x === this.destination.x && this.location.y === this.destination.y && this.status!=="Eating" && this.status!=="Sleeping") {
             if (this.isHungry()) {
+                this.inventory.gold -= buildings[this.sleepBuildingId].prices.eat
+                gold += buildings[this.sleepBuildingId].prices.eat
                 this.status = "Eating"
                 return true
             }
             
             if (this.needsSleep()) {
+                this.inventory.gold -= buildings[this.sleepBuildingId].prices.sleep
+                gold += buildings[this.sleepBuildingId].prices.sleep
                 this.status = "Sleeping"
                 return true
             }

@@ -25,9 +25,7 @@ let colors = {
         "holy":"#efe492",
         "astral":"#be8fd0",
         "chaos":"#6c55a5",
-        "divine":"#888833",
-        "plague":"#888833",
-        "radiant":"#888833",
+        "plague":"#5a0b79",
     },
 
     "barHealth":"rgba(85,187,63,0.5)",
