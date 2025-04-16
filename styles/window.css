@@ -60,7 +60,7 @@ table {
 }
 
 th, td {
-    padding: 0.8vh 0.8vw 0.8vh 0.8vw;
+    padding: 0.4vh 0.8vw 0.4vh 0.8vw;
     text-align: center;
     white-space: nowrap;
 }

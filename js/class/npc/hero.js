@@ -4,19 +4,38 @@ class Hero extends Character {
     hps = 0
     armor = 1
     statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 }
-    constructor(name, age, id, level, health, characterClass, location) {
-        super(name, age, id, level, health, characterClass, location)
-        this.name = name
-        this.age = age
-        this.id = id
-        this.level = level
-        this.health = health
-        this.characterClass = characterClass
-        this.location = location
-        this.fatigueRate = 0.7 + (Math.random() * 0.6)
-        this.hungerRate = 0.95 + (Math.random() * 0.1) 
-        this.destination = { x: location.x, y: location.y }
+    constructor(name, age, id, level, health, characterClass, role, location) {
+        super(name, age, id, level, health, characterClass, role, location)
         characters.push(this)
+        this.stDps = this.getSTDps()
+        this.aoeDps = this.getAOEDps()
+        this.dps = (this.stDps+this.aoeDps)/2
     }
 
+    getSTDps() {
+        let roleMultipliers = {
+            dps: 2,
+            tank: 1.2,
+            healer: 0.6,
+        }
+         //TODO: specMultiplier
+        let base = 10 + (this.level * 2)
+        let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
+        let roleMultiplier = roleMultipliers[this.role] || 1
+        return Math.floor((base * weaponBonus) * roleMultiplier)
+    }
+    getAOEDps() {
+        let roleMultipliers = { 
+            dps: 1,
+            tank: 0.5,
+            healer: 0.3,
+        }
+        //TODO: specMultiplier
+        let base = 10 + (this.level * 2)
+        let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
+        let roleMultiplier = roleMultipliers[this.role] || 1
+        return Math.floor((base * weaponBonus) * roleMultiplier)
+    }
+
+    //TODO get hps + dtps?
 }

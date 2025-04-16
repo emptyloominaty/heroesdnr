@@ -22,6 +22,8 @@ function loop(timestamp) {
     let endTime = performance.now()
     draw(progress)
     let endTime2 = performance.now()
+
+
     document.getElementById("debugUpdate").textContent = "main: " + Math.round((endTime0 - startTime) * 10) / 10 + " ms"
     document.getElementById("debugDrawUi").textContent = "ui: " + Math.round((endTime - endTime0) * 10) / 10 + " ms"
     document.getElementById("debugDraw").textContent = "2d: " +Math.round((endTime2 - endTime) * 10) / 10 + " ms"

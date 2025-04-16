@@ -18,14 +18,17 @@ let heroesMax = 0
 
 buildings.push(new Inn({ x: 50, y: 45 },1))
 //TEST
-heroes.push(new Hero("test1",30, 0, 1, 100, "Warrior", { x: 0, y: 5 }))
-heroes.push(new Hero("test2",25, 0, 1, 100, "Mage", { x: 12, y: 10 }))
-heroes.push(new Hero("test3",35, 0, 1, 100, "Archer", { x: 10, y: 7 }))
-heroes.push(new Hero("test4",20, 0, 1, 100, "Priest", { x: 10, y: 5 }))
+heroes.push(new Hero("test1",30, 0, 1, 100, "Warrior", "tank", { x: 0, y: 5 }))
+heroes.push(new Hero("test2", 25, 0, 1, 100, "Mage", "dps", { x: 12, y: 10 }))
+heroes.push(new Hero("test3", 35, 0, 1, 100, "Archer", "dps", { x: 10, y: 7 }))
+heroes.push(new Hero("test4", 20, 0, 1, 100, "Priest", "healer", { x: 10, y: 5 }))
 
 
 function update() {
+    //input
+    updateCamera()
 
+    //
     gold -= ((Math.random()*40)-20) * progress //TEST
 
 

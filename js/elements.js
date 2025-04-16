@@ -1,0 +1,16 @@
+let elements = {
+    "gold": document.getElementById("gold"),
+    "income": document.getElementById("income"),
+    "heroes": document.getElementById("heroes"),
+    "travelers": document.getElementById("travelers"),
+    "time": document.getElementById("time"),
+    "charactersUi": document.getElementById("charactersUi"),
+    "debug1": document.getElementById("debug1"),
+    "debug2": document.getElementById("debug2"),
+    "debug3": document.getElementById("debug3"),
+    "debug4": document.getElementById("debug4"),
+    "debug5": document.getElementById("debug5"),
+    "window": document.getElementById("window"),
+    "windowHeader": document.getElementById("windowHeader"),
+    "windowBody": document.getElementById("windowBody"),
+}

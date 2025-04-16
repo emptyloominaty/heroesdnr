@@ -26,19 +26,33 @@ class Character {
     entertainment = 100
 
     speed = 4
+    role = "dps"
+    xp = 0
+    xpNeed = 0
 
-    constructor(name, age, id, level, health, characterClass, location) {
+    constructor(name, age, id, level, health, characterClass, role, location) {
         this.name = name
         this.age = age
         this.id = id
         this.level = level
         this.health = health
         this.characterClass = characterClass
+        this.role = role
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
         this.hungerRate = 0.95 + (Math.random() * 0.1)
         this.destination = { x: location.x, y: location.y }
         this.createUI()
+        this.xp = Math.floor(100 * (this.level - 1) * Math.pow(this.level - 1, 1.2))
+        this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
+    }
+
+    gainXp(val) {
+        this.xp += val
+        if (xp>=this.xpNeed) {
+            this.level++
+            this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
+        } 
     }
 
     update() {
