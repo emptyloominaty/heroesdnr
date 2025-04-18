@@ -1,14 +1,14 @@
 let open_heroeslist = function (reload = false) {
     if (!reload) {
-        drawHeader("List of Heroes")
+        drawHeader("List of Heroes",0)
     }
-    if (currentWindow === "heroeslist" && !reload) {
-        close_window()
+    if (currentWindow[0] === "heroeslist" && !reload) {
+        close_window(0)
         return
     } else {
-        elements.windowBody.innerHTML = ""
+        elements.windowBody0.innerHTML = ""
     }
-    currentWindow = "heroeslist"
+    currentWindow[0] = "heroeslist"
     let html = ""
     html += "<div style='display:flex;justify-content: space-between;width:70vw;'>"
     html += "<div style='overflow:auto;width:100%;'><table> <tr><th>Role</th><th>Class</th><th>Name</th><th style='min-width: 150px' >Status</th><th>Level</th><th>Dps</th><th>Hps</th><th>Dtps</th><th>Gold</th><th>Fatigue</th><th>Hunger</th><th>Health</th><th>Location</th><th>Destination</th></tr> "
@@ -19,6 +19,6 @@ let open_heroeslist = function (reload = false) {
     html += "</table></div>"
     html += "</div>"
     html += "</div>"
-    elements.windowBody.innerHTML = html
+    elements.windowBody0.innerHTML = html
 }
 

@@ -1,42 +1,48 @@
-let close_window = function () {
-    elements.windowHeader.innerHTML = ""
-    elements.windowBody.innerHTML = ""
-    currentWindow = ""
+let close_window = function (w = 0) {
+    elements["windowHeader"+w].innerHTML = ""
+    elements["windowBody"+w].innerHTML = ""
+    currentWindow[w] = ""
 }
 
-let currentWindow = ""
+let currentWindow = ["","",""]
 
-let drawHeader = function(name) {
-    elements.windowHeader.innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window()'>x</div></div>"
+let drawHeader = function(name, w = 0) {
+    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window(w)'>x</div></div>"
 }
 
 
 let windowsUpdate = function () {
-    if (currentWindow === "") {
-        return
-    } else if (currentWindow === "heroeslist") {
-        //TODO:
-        open_heroeslist(true) 
+    for (let i = 0; i<currentWindow.length; i++) {
+        if (currentWindow[i] === "") {
+            continue
+        } else if (currentWindow[i] === "heroeslist") {
+            //TODO:
+            open_heroeslist(true)
+        } else if (currentWindow[i] === "heroinfo") {
+            open_heroinfo(true,true)
+        }
     }
+
 }
 
-let offsetX = 0
-let offsetY = 0
-let isDragging = false
+let offsetX = [0,0,0]
+let offsetY = [0,0,0]
+let isDragging = [false,false,false]
+for (let i = 0; i<currentWindow.length; i++) {
+    elements["window"+i].addEventListener("mousedown", (e) => {
+        isDragging[i] = true
+        offsetX[i] = e.clientX - elements["window"+i].offsetLeft
+        offsetY[i] = e.clientY - elements["window"+i].offsetTop
+    })
 
-elements.window.addEventListener("mousedown", (e) => {
-    isDragging = true
-    offsetX = e.clientX - elements.window.offsetLeft
-    offsetY = e.clientY - elements.window.offsetTop
-})
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging[i]) {
+            elements["window"+i].style.left = `${e.clientX - offsetX[i]}px`
+            elements["window"+i].style.top = `${e.clientY - offsetY[i]}px`
+        }
+    })
 
-document.addEventListener("mousemove", (e) => {
-    if (isDragging) {
-        elements.window.style.left = `${e.clientX - offsetX}px`
-        elements.window.style.top = `${e.clientY - offsetY}px`
-    }
-})
-
-document.addEventListener("mouseup", () => {
-    isDragging = false
-})
+    document.addEventListener("mouseup", () => {
+        isDragging[i] = false
+    })
+}
