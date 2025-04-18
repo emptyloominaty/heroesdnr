@@ -9,7 +9,14 @@ html {
     border:1px solid #fff !important;
 }*/
 
-canvas, body, html {
+body, html {
+    padding: 0;
+    margin: 0;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
     padding: 0;
     margin: 0;
 }

@@ -51,14 +51,13 @@ class Hero extends Character {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
             for (let i = 0; i<this.skill.length; i++) {
-                if (Math.random()>0.05) {
+                if (Math.random()<0.05*(0.65/this.skill[i])) {
                     this.skill[i] += Math.random()*0.05
-                } else if (Math.random()>0.04) {
+                } else if (Math.random()<0.04*(this.skill[i]/0.65)) {
                     this.skill[i] -= Math.random()*0.05
                 }
+                this.skill[i] = Math.max(0.1, Math.min(1, this.skill[i]))
             }
-
-
             this.updateStats()
         }
     }

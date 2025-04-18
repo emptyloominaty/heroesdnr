@@ -18,9 +18,9 @@ let open_heroinfo = function (reload = false, update = false) {
 
     html += `  
     <tr>
-      <td contenteditable="true">${hero.dps}</td>
-      <td contenteditable="true">${hero.stDps}</td>
-      <td contenteditable="true">${hero.aoeDps}</td>
+      <td contenteditable="true">${getNumberString(hero.dps)}</td>
+      <td contenteditable="true">${getNumberString(hero.stDps)}</td>
+      <td contenteditable="true">${getNumberString(hero.aoeDps)}</td>
     </tr>
 `
 

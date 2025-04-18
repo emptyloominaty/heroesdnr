@@ -15,3 +15,26 @@ let getSkillRandom = function() {
         return 0.1 + Math.random() * 0.9;
     }
 }
+
+
+let getNumberString = function(number) {
+    if (number>999999) {
+        return Math.round((number/1000000)*10)/10+"M"
+        //return (number/1000000).toFixed(1)+"M"
+    } else if (number>999) {
+        return Math.round((number/1000)*10)/10+"K"
+        //return (number/1000).toFixed(1)+"K"
+    } else {
+        return Math.round(number)
+    }
+}
+
+let getTime = function(number) {
+    if (number>3600) {
+        return (number/3600).toFixed(0)+"h"
+    } else if (number>60) {
+        return (number/60).toFixed(0)+"m"
+    } else {
+        return (number).toFixed(0)+"s"
+    }
+}
