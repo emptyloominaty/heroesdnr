@@ -23,7 +23,7 @@ class Hero extends Character {
         this.hps = (this.stHps+this.aoeHps)/2
         this.dtpsP = this.getDtpsP(this.skill[4])
         this.dtpsM = this.getDtpsM(this.skill[5])
-        this.dtps = this.dtpsP + this.dtpsM
+        this.dtps = (this.dtpsP + this.dtpsM)/2
     }
 
     updateStats() {
@@ -35,7 +35,7 @@ class Hero extends Character {
         this.hps = (this.stHps+this.aoeHps)/2
         this.dtpsP = this.getDtpsP(this.skill[4])
         this.dtpsM = this.getDtpsM(this.skill[5])
-        this.dtps = this.dtpsP + this.dtpsM
+        this.dtps = (this.dtpsP + this.dtpsM)/2
         this.speed = (4+this.skill[8])/4.65
     }
 
@@ -123,8 +123,8 @@ class Hero extends Character {
 
 
     getDtpsP(skill) {
-        let base = 5 + (this.level * 0.1)
-        let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.2)
+        let base = 5 + (this.level * 0.2)
+        let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.5)
         let roleMultiplier = roleMultipliersDtpsP[this.role]
         let specMultiplier = 1
         if (this.role === "dps") {
@@ -137,7 +137,7 @@ class Hero extends Character {
         return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
     }
     getDtpsM(skill) {
-        let base = 5 + (this.level * 0.1)
+        let base = 5 + (this.level * 0.2)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.1)
         let roleMultiplier = roleMultipliersDtpsM[this.role]
         let specMultiplier = 1

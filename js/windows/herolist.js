@@ -1,4 +1,4 @@
-let open_heroeslist = function (reload = false) {
+let open_heroeslist = function (reload = false, update = false) {
     if (!reload) {
         drawHeader("List of Heroes",0)
     }

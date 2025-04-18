@@ -3,6 +3,7 @@ let y = 0
 let zoom = 1
 
 function draw() {
+    const dpr = window.devicePixelRatio || 1
     game2d.reset()
 
     for (let i = 0; i < characters.length; i++) {
@@ -16,8 +17,8 @@ function draw() {
         if (characters[i].uiElements) {
             let baseFontSize = 9
             characters[i].uiElements.style.fontSize = `${baseFontSize * zoom}px`
-            characters[i].uiElements.style.left = `${x2d}px`
-            characters[i].uiElements.style.top = `${y2d - 5 * zoom}px`
+            characters[i].uiElements.style.left = `${x2d/dpr}px`
+            characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`
         }
     }
     for (let i = 0; i < buildings.length; i++) {

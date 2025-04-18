@@ -7,7 +7,7 @@ class Canvas {
     }
 
     reset() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = window.devicePixelRatio || 1
         this.canvasW = window.innerWidth * dpr
         this.canvasH = window.innerHeight * dpr
         this.canvasElement.width  = this.canvasW

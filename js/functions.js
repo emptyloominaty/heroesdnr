@@ -28,6 +28,18 @@ let getNumberString = function(number) {
         return Math.round(number)
     }
 }
+let getNumberString2 = function(number) {
+    if (number>999999) {
+        return Math.round((number/1000000)*1000)/1000+"M"
+        //return (number/1000000).toFixed(1)+"M"
+    } else if (number>999) {
+        return Math.round((number/1000)*1000)/1000+"K"
+        //return (number/1000).toFixed(1)+"K"
+    } else {
+        return Math.round(number)
+    }
+}
+
 
 let getTime = function(number) {
     if (number>3600) {

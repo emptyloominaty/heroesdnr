@@ -4,10 +4,11 @@ let close_window = function (w = 0) {
     currentWindow[w] = ""
 }
 
+let elementsWindow = {}
 let currentWindow = ["","",""]
 
 let drawHeader = function(name, w = 0) {
-    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window(w)'>x</div></div>"
+    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window("+w+")'>x</div></div>"
 }
 
 
@@ -29,7 +30,7 @@ let offsetX = [0,0,0]
 let offsetY = [0,0,0]
 let isDragging = [false,false,false]
 for (let i = 0; i<currentWindow.length; i++) {
-    elements["window"+i].addEventListener("mousedown", (e) => {
+    elements["windowHeader"+i].addEventListener("mousedown", (e) => {
         isDragging[i] = true
         offsetX[i] = e.clientX - elements["window"+i].offsetLeft
         offsetY[i] = e.clientY - elements["window"+i].offsetTop
