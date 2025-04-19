@@ -129,6 +129,7 @@ class Character {
     }
 
     move() { //TODO: PATH
+        let speed = this.speed *4
         this.status = "Moving"
         let dx = this.destination.x - this.location.x
         let dy = this.destination.y - this.location.y
@@ -140,8 +141,8 @@ class Character {
         let dirX = dx / distance
         let dirY = dy / distance
 
-        this.location.x += dirX * this.speed * progress
-        this.location.y += dirY * this.speed * progress
+        this.location.x += dirX * speed * progress
+        this.location.y += dirY * speed * progress
 
         let newDx = this.destination.x - this.location.x
         let newDy = this.destination.y - this.location.y

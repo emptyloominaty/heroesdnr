@@ -25,19 +25,19 @@ let worldTop = -viewHeight
 let worldBottom = viewHeight
 
 function updateCamera() {
-    let moveSpeed = 5
+    let moveSpeed = 600 / gameSpeed
 
     if (keys['w']) {
-        y -= moveSpeed / zoom
+        y -= moveSpeed / zoom * progress
     }
     if (keys['s']) {
-        y += moveSpeed / zoom
+        y += moveSpeed / zoom * progress
     }
     if (keys['a']) {
-        x -= moveSpeed / zoom
+        x -= moveSpeed / zoom * progress
     }
     if (keys['d']) {
-        x += moveSpeed / zoom
+        x += moveSpeed / zoom * progress
     }
 
 

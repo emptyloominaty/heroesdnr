@@ -1,10 +1,44 @@
-const lightCanvas = lights2d.canvasElement
-const lightCtx = lights2d.canvas
+let lights = []
+
+let addLight = function(x,y,radius,color = "rgba(255, 160, 80, 0.9)",life = -1) {
+    for (let i = 0; i < lights.length; i++) {
+        if (lights[i] === undefined) {
+            lights[i] = new Light(i,x,y,radius,color,life)
+            return true
+        }
+    }
+    lights.push(new Light(lights.length,x,y,radius,color,life))
+}
+
+class Light {
+    life = -1
+    constructor(id,x,y,radius,color,life ) {
+        this.x = x
+        this.y = y
+        this.radius = radius
+        this.color = color
+        this.id = id
+        this.life = life
+    }
+    update() {
+        if (this.life>0) {
+                this.life -= progress
+            if (this.life<=0) {
+                lights[this.id] = undefined
+            }
+        }
+    }
+}
+
+//add test light
+addLight(50,45,100,'rgba(255, 160, 80, 1)',-1)
+addLight(200,200,100,'rgba(255,191,109,1)',-1)
+addLight(50,200,100,'rgb(255,216,164)',-1)
+addLight(200,45,100,'rgb(255,171,62)',-1)
 
 let R = 255, G = 255, B = 255
 let shadowAlpha = 0.1
 let sunDir = 0
-
 
 function updateLighting() {
     let timeSpeed = 10* gameSpeed

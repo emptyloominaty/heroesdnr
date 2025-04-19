@@ -19,6 +19,7 @@ function draw() {
         game2d.drawCircle(x2d, y2d, size, color)
         if (characters[i].uiElements) {
             let baseFontSize = 9
+            characters[i].uiElements.style.color = darkenColor(color,shadowAlpha)
             characters[i].uiElements.style.fontSize = `${baseFontSize * zoom}px`
             characters[i].uiElements.style.left = `${x2d/dpr}px`
             characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`
@@ -37,54 +38,55 @@ function draw() {
     }
 
     drawTerrain()
+    drawParticles()
     drawLights()
+}
+
+function drawParticles() {
+    for (let i = 0; i<spellVisualEffects.length; i++) {
+        if (spellVisualEffects[i]!==undefined) {
+            spellVisualEffects[i].update()
+        }
+    }
+    for (let i = 0; i<spellParticles.length; i++) {
+        if (spellParticles[i]!==undefined) {
+            spellParticles[i].update()
+        }
+    }
+    game2d.canvas.shadowBlur = 0
 }
 
 function drawLights() {
     lights2d.reset()
     updateLighting()
+    lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1})`
+    //lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1-shadowAlpha})`
+    lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
 
-    let lightCtx = lights2d.canvas
-
-
-
-    /*game2d.canvas.globalCompositeOperation = 'screen'
-    game2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${shadowAlpha})`; // Set your color
-    game2d.canvas.fillRect(0, 0, game2d.canvasElement.width, game2d.canvasElement.height)*/
-
-    terrain2d.canvas.globalCompositeOperation = 'multiply'
-    terrain2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1-shadowAlpha})`
-    terrain2d.canvas.fillRect(-terrain2d.canvasElement.width/2-256, -terrain2d.canvasElement.height/2-256, terrain2d.canvasElement.width+512, terrain2d.canvasElement.height+512)
-
-
-    //TODO: LIGHTS ARRAY
-    if (sunDir>280 || sunDir<110) {
-        terrain2d.canvas.globalCompositeOperation = 'screen'
-        drawLightSource(50, 45, 100, 'rgba(255, 160, 80, 0.3)')
-        drawLightSource(50, 45, 100, 'rgba('+Number(255-R)+', '+Number(255-G)+', '+Number(255-B)+', 0.3)')
+    lights2d.canvas.globalCompositeOperation = "screen"
+    for (let i = 0; i<lights.length; i++) {
+        let light = lights[i]
+        drawLightSource(light.x, light.y, light.radius, light.color)
+        light.update()
     }
-
-    game2d.canvas.globalCompositeOperation = 'source-over'
-    terrain2d.canvas.globalCompositeOperation = "source-over"
-    lightCtx.globalCompositeOperation = "source-over"
+    lights2d.canvas.globalCompositeOperation = 'source-over'
 
 }
 
 
 
 function drawLightSource(lightx, lighty, radius, color) {
-    let x2d = (lightx - x) / zoom
-    let y2d = (lighty - y) / zoom
+    let x2d = (lights2d.canvasW / 2) + (lightx - x) * zoom
+    let y2d = (lights2d.canvasH / 2) + (lighty - y) * zoom
 
+    let lightCtx = lights2d.canvas
 
-
-    let lightCtx = terrain2d.canvas
-
-    const gradient = lightCtx.createRadialGradient(x2d, y2d, 0, x2d, y2d, radius)
+    const gradient = lightCtx.createRadialGradient(x2d, y2d, 0, x2d, y2d, radius * zoom)
     gradient.addColorStop(0, color)
+    gradient.addColorStop(0.8, 'rgba(0, 0, 0, 0)'); // gently fade out towards edges
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
     lightCtx.fillStyle = gradient
     lightCtx.beginPath()
-    lightCtx.arc(x2d, y2d, radius, 0, Math.PI * 2)
+    lightCtx.arc(x2d, y2d, radius * zoom, 0, Math.PI * 2)
     lightCtx.fill()
 }

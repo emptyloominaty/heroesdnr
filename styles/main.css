@@ -24,14 +24,15 @@ canvas {
     padding: 0;
     margin: 0;
 }
-#canvas {
+#canvasGame {
     z-index: -50;
 }
-#canvas2 {
+#canvasTerrain {
     z-index: -100;
 }
-#canvas3 {
+#canvasLights {
     z-index: -1;
+    mix-blend-mode: multiply;
 }
 * {
     overflow: hidden;

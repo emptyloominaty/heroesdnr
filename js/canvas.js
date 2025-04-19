@@ -126,7 +126,7 @@ class Canvas {
 
 }
 
-let game2d = new Canvas("canvas")
-let terrain2d = new Canvas("canvas2")
-let lights2d = new Canvas("canvas3")
+let game2d = new Canvas("canvasGame")
+let terrain2d = new Canvas("canvasTerrain")
+let lights2d = new Canvas("canvasLights")
 terrain2d.reset()
