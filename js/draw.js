@@ -2,12 +2,7 @@ let x = 0
 let y = 0
 let zoom = 1
 
-const app = new PIXI.Application({
-    width: 1920,
-    height: 1080,
-    backgroundColor: 0x108800,
-    view: document.getElementById("canvaspx")
-})
+
 
 
 function draw() {

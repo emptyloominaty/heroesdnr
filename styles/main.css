@@ -33,9 +33,6 @@ canvas {
 #canvas3 {
     z-index: -1;
 }
-#canvaspx {
-    z-index: -150;
-}
 * {
     overflow: hidden;
     user-select: none;

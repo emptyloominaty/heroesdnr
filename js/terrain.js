@@ -1,4 +1,4 @@
-//TODO: YIKES
+
 const grassImage = new Image()
 const roadImage = new Image()
 
@@ -17,19 +17,19 @@ function onImageLoad() {
     }
 }
 
-let grassPattern, roadPattern;
+let grassPattern, roadPattern
 function initPatterns() {
-    grassPattern = terrain2d.canvas.createPattern(grassImage, 'repeat');
-    let grassPatternTransform = new DOMMatrix();
-    grassPatternTransform.a = 0.0625;
-    grassPatternTransform.d = 0.0625;
-    grassPattern.setTransform(grassPatternTransform);
+    grassPattern = terrain2d.canvas.createPattern(grassImage, 'repeat')
+    let grassPatternTransform = new DOMMatrix()
+    grassPatternTransform.a = 0.0625
+    grassPatternTransform.d = 0.0625
+    grassPattern.setTransform(grassPatternTransform)
 
-    roadPattern = terrain2d.canvas.createPattern(roadImage, 'repeat');
-    let roadPatternTransform = new DOMMatrix();
-    roadPatternTransform.a = 0.0625;
-    roadPatternTransform.d = 0.0625;
-    roadPattern.setTransform(roadPatternTransform);
+    roadPattern = terrain2d.canvas.createPattern(roadImage, 'repeat')
+    let roadPatternTransform = new DOMMatrix()
+    roadPatternTransform.a = 0.0625
+    roadPatternTransform.d = 0.0625
+    roadPattern.setTransform(roadPatternTransform)
 }
 
 
@@ -49,25 +49,15 @@ function drawTerrain(firstFrame = false) {
         (terrain2d.canvasElement.height / 2) - y * zoom)
 
 
-    let pattern = ctx.createPattern(grassImage, 'repeat')
-    let patternTransform = new DOMMatrix()
-    patternTransform.a = 0.0625
-    patternTransform.d = 0.0625
-    pattern.setTransform(patternTransform)
-    ctx.fillStyle = pattern
+
+    ctx.fillStyle = grassPattern
     ctx.fillRect(-4000, -4000, 8000, 8000)
 
-    pattern = ctx.createPattern(roadImage, 'repeat')
-    patternTransform = new DOMMatrix()
-    patternTransform.a = 0.0625
-    patternTransform.d = 0.0625
-    pattern.setTransform(patternTransform)
-    ctx.fillStyle = pattern
+
+    ctx.fillStyle = roadPattern
     ctx.fillRect(100, 100, 50, 200)
 
-
-
-    ctx.fillStyle = pattern
+    ctx.fillStyle = roadPattern
     ctx.fillRect(0, 0, 50, 50)
 }
 
