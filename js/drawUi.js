@@ -12,7 +12,8 @@ function drawUi() {
     }
     elements["heroes"].textContent = heroes.length + "/" + heroesMax
 
-    elements["time"].textContent = `${String(Math.floor((time % 720) / 30)).padStart(2, '0')}:${String(Math.floor((time % 30) * 2)).padStart(2, '0')} ${Math.floor(time / 720)}d`;
+    let realtime = time +240
+    elements["time"].textContent = `${String(Math.floor((realtime % 720) / 30)).padStart(2, '0')}:${String(Math.floor((realtime % 30) * 2)).padStart(2, '0')} ${Math.floor(realtime / 720)}d`;
 
     windowsUpdate()
 
@@ -29,5 +30,5 @@ function drawUi() {
     elements["debug1"].textContent = "FPS: "+Math.round(fps)
     elements["debug2"].textContent = "Avg: "+Math.round(avgFPS)
     elements["debug3"].textContent = "Min: "+Math.round( Math.min(...avgFPSA))
-    elements["debug4"].textContent = ""
+    elements["debug4"].textContent = "sdir"+Math.round(sunDir)+" r: "+Math.round(R)+" g:"+Math.round(G)+" b:"+Math.round(B)+" a"+shadowAlpha
 }

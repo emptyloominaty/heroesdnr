@@ -1,3 +1,4 @@
+//TODO: YIKES
 const grassImage = new Image()
 const roadImage = new Image()
 
@@ -36,14 +37,17 @@ function drawTerrain(firstFrame = false) {
     if (firstFrame) {
         initPatterns()
     }
+    terrain2d.reset()
 
     const ctx = terrain2d.canvas
     ctx.resetTransform()
     ctx.clearRect(0, 0, terrain2d.canvasElement.width, terrain2d.canvasElement.height)
 
+
     ctx.setTransform(zoom, 0, 0, zoom,
         (terrain2d.canvasElement.width / 2) - x * zoom,
         (terrain2d.canvasElement.height / 2) - y * zoom)
+
 
     let pattern = ctx.createPattern(grassImage, 'repeat')
     let patternTransform = new DOMMatrix()
@@ -51,7 +55,7 @@ function drawTerrain(firstFrame = false) {
     patternTransform.d = 0.0625
     pattern.setTransform(patternTransform)
     ctx.fillStyle = pattern
-    ctx.fillRect(-10000, -10000, 20000, 20000)
+    ctx.fillRect(-4000, -4000, 8000, 8000)
 
     pattern = ctx.createPattern(roadImage, 'repeat')
     patternTransform = new DOMMatrix()

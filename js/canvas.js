@@ -128,4 +128,5 @@ class Canvas {
 
 let game2d = new Canvas("canvas")
 let terrain2d = new Canvas("canvas2")
+let lights2d = new Canvas("canvas3")
 terrain2d.reset()

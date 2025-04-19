@@ -2,6 +2,14 @@ let x = 0
 let y = 0
 let zoom = 1
 
+const app = new PIXI.Application({
+    width: 1920,
+    height: 1080,
+    backgroundColor: 0x108800,
+    view: document.getElementById("canvaspx")
+})
+
+
 function draw() {
     const dpr = window.devicePixelRatio || 1
     game2d.reset()
@@ -34,4 +42,54 @@ function draw() {
     }
 
     drawTerrain()
+    drawLights()
+}
+
+function drawLights() {
+    lights2d.reset()
+    updateLighting()
+
+    let lightCtx = lights2d.canvas
+
+
+
+    /*game2d.canvas.globalCompositeOperation = 'screen'
+    game2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${shadowAlpha})`; // Set your color
+    game2d.canvas.fillRect(0, 0, game2d.canvasElement.width, game2d.canvasElement.height)*/
+
+    terrain2d.canvas.globalCompositeOperation = 'multiply'
+    terrain2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1-shadowAlpha})`
+    terrain2d.canvas.fillRect(-terrain2d.canvasElement.width/2-256, -terrain2d.canvasElement.height/2-256, terrain2d.canvasElement.width+512, terrain2d.canvasElement.height+512)
+
+
+    //TODO: LIGHTS ARRAY
+    if (sunDir>280 || sunDir<110) {
+        terrain2d.canvas.globalCompositeOperation = 'screen'
+        drawLightSource(50, 45, 100, 'rgba(255, 160, 80, 0.3)')
+        drawLightSource(50, 45, 100, 'rgba('+Number(255-R)+', '+Number(255-G)+', '+Number(255-B)+', 0.3)')
+    }
+
+    game2d.canvas.globalCompositeOperation = 'source-over'
+    terrain2d.canvas.globalCompositeOperation = "source-over"
+    lightCtx.globalCompositeOperation = "source-over"
+
+}
+
+
+
+function drawLightSource(lightx, lighty, radius, color) {
+    let x2d = (lightx - x) / zoom
+    let y2d = (lighty - y) / zoom
+
+
+
+    let lightCtx = terrain2d.canvas
+
+    const gradient = lightCtx.createRadialGradient(x2d, y2d, 0, x2d, y2d, radius)
+    gradient.addColorStop(0, color)
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    lightCtx.fillStyle = gradient
+    lightCtx.beginPath()
+    lightCtx.arc(x2d, y2d, radius, 0, Math.PI * 2)
+    lightCtx.fill()
 }
