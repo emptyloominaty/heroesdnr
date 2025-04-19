@@ -127,3 +127,5 @@ class Canvas {
 }
 
 let game2d = new Canvas("canvas")
+let terrain2d = new Canvas("canvas2")
+terrain2d.reset()

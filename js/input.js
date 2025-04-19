@@ -27,10 +27,20 @@ let worldBottom = viewHeight
 function updateCamera() {
     let moveSpeed = 5
 
-    if (keys['w']) y -= moveSpeed / zoom
-    if (keys['s']) y += moveSpeed / zoom
-    if (keys['a']) x -= moveSpeed / zoom
-    if (keys['d']) x += moveSpeed / zoom
+    if (keys['w']) {
+        y -= moveSpeed / zoom
+    }
+    if (keys['s']) {
+        y += moveSpeed / zoom
+    }
+    if (keys['a']) {
+        x -= moveSpeed / zoom
+    }
+    if (keys['d']) {
+        x += moveSpeed / zoom
+    }
+
+
 
  
     let halfW = (viewWidth) / zoom

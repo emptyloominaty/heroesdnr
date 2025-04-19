@@ -1,5 +1,10 @@
 let window_heroId = 0
-let open_heroinfo = function (reload = false, update = false) {
+let open_heroinfo = function (reload = false, update = false, id = false) {
+    let dontClose = false
+    if (id!==false) {
+        window_heroId = id
+        dontClose = true
+    }
     if (!reload) {
         drawHeader(heroes[window_heroId].name+" - "+ heroes[window_heroId].role.charAt(0).toUpperCase() + heroes[window_heroId].role.slice(1)+" "+heroes[window_heroId].characterClass+" Level "+heroes[window_heroId].level,1)
     }
@@ -36,7 +41,7 @@ let open_heroinfo = function (reload = false, update = false) {
 
         return
     }
-    if (currentWindow[1] === "heroinfo" && !reload) {
+    if (currentWindow[1] === "heroinfo" && !reload && !dontClose) {
         close_window(1)
         return
     } else {
@@ -49,7 +54,7 @@ let open_heroinfo = function (reload = false, update = false) {
 
 
     html += "<div class='heroinfoText'></div>"
-    html += "<div><table class='heroinfoTable'> <tr><th>Xp</th><th>Next Level Xp</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Xp</th><th>Next Level</th></tr>"
     html += `  
     <tr>
       <td id="hi_xp">${getNumberString2(hero.xp)}</td>
@@ -59,7 +64,7 @@ let open_heroinfo = function (reload = false, update = false) {
     html += "<span style='width:100%;'></span>" //next row
 
     html += "<div class='heroinfoText'>Throughput</div>"
-    html += "<div><table class='heroinfoTable'> <tr><th>Dps Avg</th><th>Dps ST</th><th>Dps Aoe</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Dps Avg</th><th>Dps ST</th><th>Dps Aoe</th></tr>"
     html += `  
     <tr>
       <td id="hi_dpsAvg">${getNumberString(hero.dps)}</td>
@@ -68,7 +73,7 @@ let open_heroinfo = function (reload = false, update = false) {
     </tr>`
     html += "</table></div>"
 
-    html += "<div><table class='heroinfoTable'> <tr><th>Hps Avg</th><th>Hps ST</th><th>Hps Aoe</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Hps Avg</th><th>Hps ST</th><th>Hps Aoe</th></tr>"
     html += `  
     <tr>
       <td id="hi_hpsAvg">${getNumberString(hero.hps)}</td>
@@ -77,7 +82,7 @@ let open_heroinfo = function (reload = false, update = false) {
     </tr>`
     html += "</table></div>"
 
-    html += "<div><table class='heroinfoTable'> <tr><th>Dtps Avg</th><th>Dtps P</th><th>Dtps M</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Dtps Avg</th><th>Dtps P</th><th>Dtps M</th></tr>"
     html += `  
     <tr>
       <td id="hi_dtpsAvg">${getNumberString(hero.dtps)}</td>
@@ -88,7 +93,7 @@ let open_heroinfo = function (reload = false, update = false) {
     html += "<span style='width:100%;'></span>" //next row
 
     html += "<div class='heroinfoText'>Skills</div>"
-    html += "<div><table class='heroinfoTable'> <tr><th>0 DS</th><th>1 DA</th><th>2 HS</th><th>3 HA</th><th>4 DTP</th><th>5 DTM</th><th>6</th><th>7</th><th>8 MS</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>0 DS</th><th>1 DA</th><th>2 HS</th><th>3 HA</th><th>4 DTP</th><th>5 DTM</th><th>6</th><th>7</th><th>8 MS</th></tr>"
     html += `  
     <tr>
       <td id="hi_sk0">${Math.round(hero.skill[0]*100)/100}</td>

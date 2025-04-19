@@ -17,8 +17,7 @@ let windowsUpdate = function () {
         if (currentWindow[i] === "") {
             continue
         } else if (currentWindow[i] === "heroeslist") {
-            //TODO:
-            open_heroeslist(true)
+            open_heroeslist(true,true)
         } else if (currentWindow[i] === "heroinfo") {
             open_heroinfo(true,true)
         }

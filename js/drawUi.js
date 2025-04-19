@@ -1,10 +1,14 @@
+let avgFPSA = []
+let avgFPS
 function drawUi() {
     //header
     elements["gold"].textContent = Math.round(gold2)
     if (income >= 0) {
         elements["income"].textContent = "+"+Math.round(income * 10) / 10
+        elements["income"].style.color = "#c6f5b0"
     } else {
         elements["income"].textContent = Math.round(income * 10) / 10
+        elements["income"].style.color = "#f5b0b2"
     }
     elements["heroes"].textContent = heroes.length + "/" + heroesMax
 
@@ -13,8 +17,17 @@ function drawUi() {
     windowsUpdate()
 
     //debug
-    elements["debug1"].textContent = characters[0].name + ": " + characters[0].status + " - f:" + Math.round(characters[0].fatigue) + " - h:" + Math.round(characters[0].hunger)
-    elements["debug2"].textContent = characters[1].name + ": " + characters[1].status + " - f:" + Math.round(characters[1].fatigue) + " - h:" + Math.round(characters[1].hunger)
-    elements["debug3"].textContent = characters[2].name + ": " + characters[2].status + " - f:" + Math.round(characters[2].fatigue) + " - h:" + Math.round(characters[2].hunger)
-    elements["debug4"].textContent = characters[3].name + ": " + characters[3].status + " - f:" + Math.round(characters[3].fatigue) + " - h:" + Math.round(characters[3].hunger)
+    avgFPSA.push(fps)
+    if (avgFPSA.length>30) {
+        avgFPSA.shift()
+    }
+    avgFPS = avgFPSA.reduce((accumulator, currentValue) => accumulator + currentValue, 0)/30
+
+
+
+
+    elements["debug1"].textContent = "FPS: "+Math.round(fps)
+    elements["debug2"].textContent = "Avg: "+Math.round(avgFPS)
+    elements["debug3"].textContent = "Min: "+Math.round( Math.min(...avgFPSA))
+    elements["debug4"].textContent = ""
 }

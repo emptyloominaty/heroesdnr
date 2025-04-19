@@ -51,9 +51,9 @@ class Hero extends Character {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
             for (let i = 0; i<this.skill.length; i++) {
-                if (Math.random()<0.05*(0.65/this.skill[i])) {
+                if (Math.random()<0.04*(0.65/this.skill[i])) {
                     this.skill[i] += Math.random()*0.05
-                } else if (Math.random()<0.04*(this.skill[i]/0.65)) {
+                } else if (Math.random()<0.03*(this.skill[i]/0.65)) {
                     this.skill[i] -= Math.random()*0.05
                 }
                 this.skill[i] = Math.max(0.1, Math.min(1, this.skill[i]))
@@ -79,7 +79,7 @@ class Hero extends Character {
     getAOEDps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
-        let roleMultiplier = roleMultipliersDpsAOE[this.role] || 1
+        let roleMultiplier = roleMultipliersDpsAOE[this.role]
         let specMultiplier = 1
         if (this.role === "dps") {
             specMultiplier = classDpsMultipliersDpsAOE[this.characterClass]
@@ -93,7 +93,7 @@ class Hero extends Character {
     getSTHps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1
-        let roleMultiplier = roleMultipliersDpsST[this.role]
+        let roleMultiplier = roleMultipliersHpsST[this.role]
         let specMultiplier = 1
         if (this.role === "dps") {
             specMultiplier = classDpsMultipliersHpsST[this.characterClass]

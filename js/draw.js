@@ -22,15 +22,16 @@ function draw() {
         }
     }
     for (let i = 0; i < buildings.length; i++) {
-        let sizeX = 15 * zoom
-        let sizeY = 15 * zoom
+        let sizeX = buildings[i].size[0] * zoom
+        let sizeY = buildings[i].size[1] * zoom
         let worldX = buildings[i].location.x
         let worldY = buildings[i].location.y
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom - (sizeX / 2)
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom - (sizeY / 2)
         let color = "#997700"
         //TODO size+color
-        game2d.drawRectStroke(x2d, y2d, sizeX, sizeY, color)
+        game2d.drawRectStroke(x2d, y2d, sizeX, sizeY, color,2*zoom)
     }
 
+    drawTerrain()
 }
