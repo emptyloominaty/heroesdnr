@@ -77,10 +77,10 @@ class Canvas {
         this.canvas.closePath()
     }
 
-    setSpellGlow(blurSize,blurColor) {
-        if (settings.spellGlow) {
+    setParticleGlow(blurSize,blurColor) {
+        if (settings.particleGlow) {
             this.canvas.shadowColor = blurColor
-            this.canvas.shadowBlur = blurSize*gameScaling
+            this.canvas.shadowBlur = blurSize*zoom
         }
     }
 
@@ -129,4 +129,5 @@ class Canvas {
 let game2d = new Canvas("canvasGame")
 let terrain2d = new Canvas("canvasTerrain")
 let lights2d = new Canvas("canvasLights")
+let particles2d = new Canvas("canvasParticles")
 terrain2d.reset()

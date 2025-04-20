@@ -42,6 +42,7 @@
     <script src="js/draw.js" defer></script>
 
     <!--End-->
+    <script src="js/load.js" defer></script>
     <script src="js/gameloop.js" defer></script>
     <!------------------------------------------------>
 </head>
@@ -112,12 +113,16 @@
                 </div>
             </div>
         </div>
-        <canvas width="100%" height="100%" id="canvasLights">
+        <canvas width="100%" height="100%" id="canvasParticles">
         </canvas>
-        <canvas width="100%" height="100%" id="canvasTerrain">
-        </canvas>
-        <canvas width="100%" height="100%" id="canvasGame">
-        </canvas>
+        <div>
+            <canvas width="100%" height="100%" id="canvasLights">
+            </canvas>
+        </div>
+            <canvas width="100%" height="100%" id="canvasTerrain">
+            </canvas>
+            <canvas width="100%" height="100%" id="canvasGame">
+            </canvas>
     </div>
 
 </body>

@@ -1,5 +1,6 @@
 let lastRender = 0
 let progress = 16.666666666666666666666666666667
+let progressReal = 16
 let gameSpeed = 1
 let fps = 60
 
@@ -10,7 +11,8 @@ function loop(timestamp) {
         progress = 100
     } 
     fps = Math.round(1000 / progress * 10)/10
-    progress = progress / 1000 * gameSpeed
+    progressReal = progress /1000
+    progress = progressReal * gameSpeed
     time += progress
 
     day = Math.floor(time / 720)
@@ -34,4 +36,11 @@ function loop(timestamp) {
     window.requestAnimationFrame(loop)
 }
 
-window.requestAnimationFrame(loop)
+loadFiles()
+    .then(images => {
+        console.log("All files loaded:", images)
+        window.requestAnimationFrame(loop)
+    })
+    .catch(error => {
+        console.error("Error loading files:", error)
+    });

@@ -10,16 +10,19 @@ class SpellVisualEffect {
         if (data.duration) {
             this.duration = data.duration
         }
-        this.timer =0
+        this.timer = 0
     }
-//(caster.x,caster.y,getDirection(caster,caster.castTarget),"projectile",{size:10,speed:50,target:caster.castTarget,color:"#FF0000",onEnd:{name:"explode",size:1},onRun:{name:"fire",size:0.8}})
     update() {
-        if (settings.spellVisuals!==0) {
+        if (settings.particleVisuals!==0) {
             this.timer += progress
             if (this.type==="projectile") { //--------------------------------------Projectile
-                let size = this.data.size * (zoom/1.8)
+                let size = this.data.size * zoom
                 this.direction = getDirection(this,this.data.target)
-                this.move()
+
+                if (this.data.speed>0) {
+                    this.move()
+                }
+
 
                 let xx = (this.x - x)*zoom
                 let yy = (this.y - y)*zoom
@@ -28,17 +31,18 @@ class SpellVisualEffect {
 
                 if (this.data.quadrilateral) {
                     let d = this.data.polygonData
-                    let g = (zoom/1.8)
+                    let g = zoom
                     game2d.drawQuadrilateral(x2d,y2d,d.x1*g,d.y1*g,d.x2*g,d.y2*g,d.x3*g,d.y3*g,d.x4*g,d.y4*g,this.data.color,this.direction)
                 } else {
                     game2d.drawCircle(x2d,y2d,size,this.data.color)
                 }
 
-                if (settings.spellVisuals>1) {
+                if (settings.particleVisuals>1) {
                     if (this.data.onRun.name==="fire") {
                         let life = this.data.onRun.life
-                        for (let i = 0; i<settings.spellVisuals-1; i++) {
-                            addSpellParticle(this.x-(this.data.size/4)+(Math.random()*(this.data.size/2)), this.y-(this.data.size/2)+(Math.random()*(this.data.size)), (this.direction-(182-(Math.random()*4))),
+                        let zSize = this.data.size * zoom
+                        for (let i = 0; i<(settings.particleVisuals-1)*gameSpeed; i++) {
+                            addSpellParticle(this.x-(zSize/4)+(Math.random()*(zSize/2)), this.y-(zSize/2)+(Math.random()*(zSize)), (this.direction-(182-(Math.random()*4))),
                                 "fire", {size:this.data.size/4,speed:-this.data.speed,life:life,color:Math.random(),color1:this.data.onRun.color1, color2:this.data.onRun.color2})
                         }
                     }
@@ -49,23 +53,52 @@ class SpellVisualEffect {
                     spellVisualEffects[this.id] = undefined
                 }
             } else if (this.type==="rain") {//--------------------------------------Rain
-                for (let i = 0; i<settings.spellVisuals*3; i++) {
-                    let radius = this.data.size*1.2
+                let tt = performance.now()
+                this.x = x
+                this.y = y
+                for (let i = 0; i<settings.particleVisuals*3*gameSpeed*(this.data.size/80); i++) {
+                    let radius = this.data.size
                     let pt_angle = Math.random() * 2 * Math.PI
                     let pt_radius_sq = Math.random() * radius * radius
+                    while (pt_radius_sq < 500) {
+                        pt_radius_sq = Math.random() * radius * radius;
+                    }
                     let xx = this.x-Math.sqrt(pt_radius_sq) * Math.cos(pt_angle)
                     let yy = this.y-Math.sqrt(pt_radius_sq) * Math.sin(pt_angle)
 
-                    let x2 = this.x //((x-this.x)/2)+this.x
-                    let y2 = this.y //((y-this.y)/2)+this.y
 
                     addSpellParticle(xx, yy, 0,
-                        "rain", {size: 3, speed: this.data.speed/11, life: 0.3,maxLife:0.3, color: this.data.color,centre:{x:x2 ,y:y2 }})
+                        "rain", {size: 1.5, speed: this.data.speed/3, life: 0.3,maxLife:0.3, color: this.data.color,centre:{x:x ,y:y},timeCreated:tt})
                 }
                 this.duration -= progress
                 if (this.duration<=0) {
                     spellVisualEffects[this.id] = undefined
                 }
+            } else if (this.type==="fire") {
+                let size = this.data.size * zoom
+                this.direction = getDirection(this,this.data.target)
+                let xx = (this.x - x)*zoom
+                let yy = (this.y - y)*zoom
+                let x2d = (game2d.canvasW/2)+xx
+                let y2d = (game2d.canvasH/2)+yy
+
+
+                game2d.drawCircle(x2d,y2d,size,this.data.color)
+
+
+                if (settings.particleVisuals>1) {
+                    if (this.data.onRun.name==="fire") {
+                        let life = this.data.onRun.life
+                        let dir = (Math.random()*360)
+                        let tt = performance.now()
+                        let area = this.data.onRun.area
+                        for (let i = 0; i<(settings.particleVisuals-1)*gameSpeed; i++) {
+                            addSpellParticle(this.x-(area/2)+(Math.random()*(area)), this.y-(area/2)+(Math.random()*(area)), dir,
+                                "fire", {size:this.data.onRun.size,speed:this.data.onRun.speed,life:life,color:Math.random(),color1:this.data.onRun.color1, color2:this.data.onRun.color2, color3:this.data.onRun.color3, timeCreated:tt})
+                        }
+                    }
+                }
+
             }
             //-----------------------------------------------------------End
         } else {
@@ -107,3 +140,11 @@ let addSpellVisualEffects = function(x,y,direction,type,data) {
     }
     spellVisualEffects.push(new SpellVisualEffect(spellVisualEffects.length,x,y,direction,type,data))
 }
+
+//rain test
+//addSpellVisualEffects(0,0,0,"rain",{size:1000,speed:100,target:{x:0, y:0},color:"rgba(144,158,161,0.52)",onEnd:{name:"",size:1},onRun:{name:"",size:1}})
+
+
+addSpellVisualEffects(50,45,90,"fire",{size:0,speed:0,target: {x:50,y:-85},color:"#ffd876",onEnd:{name:"explode",size:1},onRun:{name:"fire",size:0.4, life:1,speed:10, area:1.5,color1:"#ffe784",color2:"#ffce5a",color3:"rgba(255, 139, 118, 0.1)"}})
+//addSpellVisualEffects(50,45,90,"fire",{size:0,speed:0,target: {x:50,y:-85},color:"#ffd876",onEnd:{name:"explode",size:1},onRun:{name:"fire",size:0.8, life:1.4,speed:10, area:6,color1:"rgba(0,0,0,0.2)",color2:"rgba(0,0,0,0.3)"}})
+

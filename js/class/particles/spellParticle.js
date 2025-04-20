@@ -1,7 +1,7 @@
 class SpellParticle {
-    constructor(id,x,y,direction,type,data) {
-        this.x = x
-        this.y = y
+    constructor(id,xx,yy,direction,type,data) {
+        this.x = xx
+        this.y = yy
 
         this.direction = direction
         this.type = type
@@ -11,11 +11,12 @@ class SpellParticle {
             this.maxLife = this.data.life
         }
         this.wait = true
+        this.fireSize = 0
     }
 
 
     update() {
-        let size = this.data.size * (zoom/1.8)
+        let size = this.data.size * zoom
         let color
         if (this.type==="fire") {
             color = this.data.color1
@@ -25,30 +26,37 @@ class SpellParticle {
         } else if (this.type === "rain") {
             color = this.data.color
             this.direction = getDirection(this,this.data.centre)
-            size = (this.data.life*10)*(zoom/1.8)
+            size = (this.data.life*10)*zoom
         }
 
-        if (!this.wait) {
+        if (!this.wait && this.data.speed>0) {
             this.move()
         }
 
-        let x = (this.x - x) * zoom
-        let y = (this.y - y) * zoom
-        let x2d = (game2d.canvasW / 2) + x
-        let y2d = (game2d.canvasH / 2) + y
+        let xx = (this.x - x) * zoom
+        let yy = (this.y - y) * zoom
+        let x2d = (game2d.canvasW / 2) + xx
+        let y2d = (game2d.canvasH / 2) + yy
+
         if (this.type!=="rain") {
+
+            size += (this.data.size*0.25 * zoom)
             //opacity
-            if (this.data.life<0.2) {
-                color = pSBC( 1-(this.data.life*2.8), color, "rgba(100,100,100,0)", true )
+            if (this.data.life<0.4) {
+                color = pSBC( 1-(this.data.life*2.5), color, this.data.color3, true )
+                //color = pSBC( 1-(this.data.life*2.5), "rgba(0,0,0,1)", "rgba(0,0,0,0)", true )
+                size = size * (this.data.life*2.5)
+            } else {
+                this.fireSize += 8 * progressReal
             }
             if (!this.wait) {
-                game2d.setSpellGlow(2,color) //TODO:SIZE
-                game2d.drawCircle(x2d, y2d, size, color)
-                this.data.speed -= this.data.speed / 10
+                particles2d.setParticleGlow(2,color) //TODO:SIZE
+                particles2d.drawCircle(x2d, y2d, size, color)
+                this.data.speed -= (this.data.speed*6) * progressReal
             }
         } else {
-            game2d.setSpellGlow(1.7,color)
-            game2d.drawLineRotate(x2d,y2d,size/3,size,180-this.direction, color)
+            game2d.setParticleGlow(2,color)
+            game2d.drawLineRotate(x2d,y2d,size/3,size,180-this.direction+10, color)
         }
 
         this.wait = false
@@ -60,7 +68,7 @@ class SpellParticle {
     }
 
     move() {
-        let speed = (this.data.speed) * progress
+        let speed = this.data.speed * progressReal
         let angleInRadian = (this.direction-180) / 180 * Math.PI
 
 

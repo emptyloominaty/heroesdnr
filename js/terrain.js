@@ -34,6 +34,9 @@ function initPatterns() {
 
 
 function drawTerrain(firstFrame = false) {
+    if (settings.terrain===0) {
+        return
+    }
     if (firstFrame) {
         initPatterns()
     }
@@ -51,7 +54,7 @@ function drawTerrain(firstFrame = false) {
 
 
     ctx.fillStyle = grassPattern
-    ctx.fillRect(-4000, -4000, 8000, 8000)
+    ctx.fillRect(-2000, -2000, 4000, 4000)
 
 
     ctx.fillStyle = roadPattern

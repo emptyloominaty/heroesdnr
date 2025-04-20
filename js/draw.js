@@ -15,7 +15,7 @@ function draw() {
         let worldY = characters[i].location.y
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom
-        color = colors[characters[i].characterClass]
+        let color = colors[characters[i].characterClass]
         game2d.drawCircle(x2d, y2d, size, color)
         if (characters[i].uiElements) {
             let baseFontSize = 9
@@ -33,34 +33,43 @@ function draw() {
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom - (sizeX / 2)
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom - (sizeY / 2)
         let color = "#997700"
-        //TODO size+color
         game2d.drawRectStroke(x2d, y2d, sizeX, sizeY, color,2*zoom)
     }
 
-    drawTerrain()
     drawParticles()
+    drawTerrain()
     drawLights()
+
 }
 
 function drawParticles() {
+    particles2d.reset()
     for (let i = 0; i<spellVisualEffects.length; i++) {
         if (spellVisualEffects[i]!==undefined) {
             spellVisualEffects[i].update()
         }
     }
-    for (let i = 0; i<spellParticles.length; i++) {
-        if (spellParticles[i]!==undefined) {
-            spellParticles[i].update()
+
+
+    let spellParticlestoRender = spellParticles.filter(p => p !== undefined)
+    spellParticlestoRender.sort((a, b) => b.data.timeCreated - a.data.timeCreated)
+
+    for (let i = 0; i<spellParticlestoRender.length; i++) {
+        if (spellParticlestoRender[i]!==undefined) {
+            spellParticlestoRender[i].update()
         }
     }
     game2d.canvas.shadowBlur = 0
+    particles2d.canvas.shadowBlur = 0
 }
 
 function drawLights() {
     lights2d.reset()
+    if (!settings.lights) {
+        return
+    }
     updateLighting()
     lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1})`
-    //lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1-shadowAlpha})`
     lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
 
     lights2d.canvas.globalCompositeOperation = "screen"
@@ -83,7 +92,6 @@ function drawLightSource(lightx, lighty, radius, color) {
 
     const gradient = lightCtx.createRadialGradient(x2d, y2d, 0, x2d, y2d, radius * zoom)
     gradient.addColorStop(0, color)
-    gradient.addColorStop(0.8, 'rgba(0, 0, 0, 0)'); // gently fade out towards edges
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
     lightCtx.fillStyle = gradient
     lightCtx.beginPath()
