@@ -6,6 +6,9 @@ class Character {
     destination = { x: 0, y: 0 }
     atDestination = true
     status = ""
+    sex = "male"
+
+    size = [10,10]
 
     sleepBuildingId = -1
 
@@ -29,6 +32,11 @@ class Character {
     role = "dps"
     xp = 0
     xpNeed = 0
+
+    idleTimer = 2+Math.random()*15
+    waitTimer = 0
+    wandering = false
+    goingToInn = false
 
     constructor(name, age, id, level, health, characterClass, role, location) {
         this.name = name
@@ -56,7 +64,15 @@ class Character {
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             this.atDestination = true
             if (this.needsSleep() || this.isHungry()) {
+                this.wandering = false
                 this.findInn()
+            }
+            if (this.wandering) {
+                this.status = "Waiting"
+                if (this.waitTimer<=0) {
+                    this.status = ""
+                    this.wandering = false
+                }
             }
             switch (this.status) {
                 case "Eating":
@@ -64,6 +80,27 @@ class Character {
                     break
                 case "Sleeping":
                     this.eatingSleepingInn(true)
+                    break
+                case "":
+                    this.idleTimer -= progress
+                    if (this.idleTimer<=0) {
+                        this.wandering = true
+                        this.idleTimer = 5+Math.random()*5
+                        let dx = this.location.x-15+Math.random()*30
+                        let dy = this.location.y-15+Math.random()*30
+                        if (dx>1000 && dx<-1000) {
+                            dx = Math.random()*30
+                        }
+                        if (dy>600 && dy<-600) {
+                            dy = Math.random()*30
+                        }
+                        this.destination = {x:dx,y:dy}
+                        this.waitTimer = 2+Math.random()*10
+                    }
+                    break
+                case "Waiting":
+                    this.waitTimer -= progress
+
                     break
                 default: 
                     break
@@ -87,8 +124,20 @@ class Character {
                 }
             }
         }
-        if (this.sleepBuildingId !== -1) {
-            this.destination = buildings[this.sleepBuildingId].location
+        if (!this.goingToInn) {
+            if (this.sleepBuildingId !== -1) {
+                console.log(this.name+"YIKES"+this.goingToInn)
+                let building = buildings[this.sleepBuildingId]
+                let bsize =  [building.size[0]-1,building.size[1]-1]
+                let xx = building.location.x-(bsize[0]/2)+(Math.random()*bsize[0])
+                let yy = building.location.y-(bsize[1]/2)+(Math.random()*bsize[1])-1
+                this.destination = {x:xx,y:yy}
+                this.goingToInn = true
+
+                return true
+            } else {
+                return false
+            }
         }
         if (this.location.x === this.destination.x && this.location.y === this.destination.y && this.status!=="Eating" && this.status!=="Sleeping") {
             if (this.isHungry()) {
@@ -115,6 +164,7 @@ class Character {
                 this.status = "Sleeping"
                 if (this.fatigue > 100) {
                     this.fatigue = 100
+                    this.goingToInn = false
                     this.status = ""
                 }
             } else {
@@ -122,6 +172,7 @@ class Character {
                 this.status = "Eating"
                 if (this.hunger > 100) {
                     this.hunger = 100
+                    this.goingToInn = false
                     this.status = ""
                 }
             }
@@ -157,6 +208,13 @@ class Character {
 
     isHungry() {
         return this.hunger < 30
+    }
+
+    getStatus() {
+        if (this.status === "") {
+            return "Idle"
+        }
+        return this.status
     }
 
     createUI() {

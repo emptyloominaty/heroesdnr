@@ -2,9 +2,6 @@ let x = 0
 let y = 0
 let zoom = 1
 
-
-
-
 function draw() {
     const dpr = window.devicePixelRatio || 1
     game2d.reset()

@@ -16,17 +16,30 @@ function CharactergetFatigueRate(characterClass) {
     }
 }
 
+let femaleMaleClassRatio = {
+    Warrior: [50,1],
+    Rogue: [5,1],
+    Archer: [4,1],
+    Mage: [2,1],
+    Priest: [1,1.5],
+    Druid: [1,1],
+    Monk: [100,1],
+    Paladin: [40,1],
+    Warlock: [1,1],
+    Shaman: [1,1]
+}
+
 let spawnChances = {
-    Warrior: 40,
-    Rogue: 17,
-    Archer: 35,
-    Mage: 0.1,
-    Priest: 3,
-    Druid: 0.599,
-    Monk: 1.4,
-    Paladin: 2,
-    Warlock: 0.01,
-    Shaman: 0.9
+    Warrior: { tank: 14.65, dps: 14.76 },
+    Rogue: { dps: 14.71 },
+    Archer: { dps: 14.71 },
+    Mage: { dps: 1.47 },
+    Priest: { heal: 6.88, dps: 2.94 },
+    Druid: { heal: 2.53, dps: 1.94, tank: 1.35 },
+    Monk: { dps: 5.88, heal: 2.41 },
+    Paladin: { heal: 3.94, dps: 4.94, tank: 3.94 },
+    Warlock: { dps: 0.48 },
+    Shaman: { dps: 1.18, heal: 1.28 }
 }
 
 //ST DPS
@@ -43,8 +56,8 @@ let classDpsMultipliersDpsST = {
     Druid: 1.2,
     Monk: 1.4,
     Paladin: 1,
-    Warlock: 1.2,
-    Shaman: 1.1,
+    Warlock: 1.7,
+    Shaman: 1.2,
 }
 let classHealerMultipliersDpsST = {
     Priest: 0.6,
@@ -74,7 +87,7 @@ let classDpsMultipliersDpsAOE = {
     Monk: 1.2,
     Paladin: 1.2,
     Warlock: 1.8,
-    Shaman: 1.6,
+    Shaman: 1.7,
 }
 let classHealerMultipliersDpsAOE = {
     Priest: 0.6,

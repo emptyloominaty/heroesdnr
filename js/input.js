@@ -55,3 +55,37 @@ function updateCamera() {
     x = Math.max(minX, Math.min(maxX, x))
     y = Math.max(minY, Math.min(maxY, y))
 }
+
+
+let mousePosition = {x:0,y:0}
+let mousePosition2d = {x:0,y:0}
+let onMouseUpdate = function(e) {
+    mousePosition.x = e.pageX
+    mousePosition.y = e.pageY
+
+    mousePosition2d.x = ((x+((e.pageX)-(game2d.canvasW/2))/zoom))
+    mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
+}
+
+setTimeout( ()=> {
+    document.addEventListener('mousemove', onMouseUpdate)
+    document.addEventListener("mousedown", function(e) {
+        for (let i = 0; i < buildings.length; i++) {
+            if (isMouseOverObject(buildings[i])) {
+                console.log(i)
+                //TODO: open_buildinginfo ->updgrades
+
+                return
+            }
+        }
+        for (let i = 0; i < characters.length; i++) {
+            if (isMouseOverObject(characters[i])) {
+                open_heroinfo(false,false,i)
+                return
+            }
+        }
+    })
+
+},1000 )
+
+

@@ -1,21 +1,3 @@
-let getSkillRandom = function() {
-    const rand = Math.random();
-    if (rand < 0.85) {
-        let value;
-        do {
-            const mean = 0.65;
-            const stdDev = 0.07;
-            const u1 = Math.random();
-            const u2 = Math.random();
-            const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-            value = mean + z * stdDev;
-        } while (value < 0.1 || value > 1.0);
-        return value;
-    } else {
-        return 0.1 + Math.random() * 0.9;
-    }
-}
-
 let getDistance = function(target1,target2) {
     let a = target1.x - target2.x
     let b = target1.y - target2.y
@@ -65,6 +47,18 @@ let getTime = function(number) {
         return (number).toFixed(0)+"s"
     }
 }
+
+function isMouseOverObject(obj) {
+    let xx = obj.location.x - obj.size[0]/2
+    let yy = obj.location.y - obj.size[1]/2
+    return (
+        mousePosition2d.x >= xx &&
+        mousePosition2d.x <= xx + obj.size[0] &&
+        mousePosition2d.y >= yy &&
+        mousePosition2d.y <= yy + obj.size[1]
+    )
+}
+
 //https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
 const pSBC=(p,c0,c1,l)=>{
     let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";
