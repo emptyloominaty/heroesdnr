@@ -1,4 +1,4 @@
-function CharactergetHungerRate(characterClass) {
+function charactergetHungerRate(characterClass) {
     switch (characterClass) {
         case "warrior":
             return 1.3
@@ -7,13 +7,25 @@ function CharactergetHungerRate(characterClass) {
     }
 }
 
-function CharactergetFatigueRate(characterClass) {
+function charactergetFatigueRate(characterClass) {
     switch (characterClass) {
         case "mage":
             return 1.3
         default:
             return 1.0
     }
+}
+
+let raceChances = {
+    human: 100,
+    elf: 1,
+    dwarf: 10
+}
+
+let raceMaxAge = {
+    human: 100,
+    elf: 10000,
+    dwarf: 200
 }
 
 let femaleMaleClassRatio = {

@@ -14,4 +14,7 @@ class Building {
     update() {
 
     }
+    updateDay() {
+
+    }
 }

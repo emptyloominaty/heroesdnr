@@ -6,8 +6,8 @@ class Hero extends Character {
     hps = 0
     dtps = 0
     statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 }
-    constructor(name, age, id, level, health, characterClass, role, location) {
-        super(name, age, id, level, health, characterClass, role, location)
+    constructor(name, age, level, health, characterClass, role, location) {
+        super(name, age, level, health, characterClass, role, location)
         characters.push(this)
 
         for (let i = 0; i<this.skill.length; i++) {

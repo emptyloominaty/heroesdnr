@@ -7,7 +7,8 @@ class Character {
     atDestination = true
     status = ""
     sex = "male"
-
+    race = "human"
+    maxAge = 100
     size = [10,10]
 
     sleepBuildingId = -1
@@ -38,10 +39,11 @@ class Character {
     wandering = false
     goingToInn = false
 
-    constructor(name, age, id, level, health, characterClass, role, location) {
+    constructor(name, age, level, health, characterClass, role, location) {
         this.name = name
         this.age = age
-        this.id = id
+        this.id = globalCharId
+        globalCharId++
         this.level = level
         this.health = health
         this.characterClass = characterClass
@@ -53,6 +55,9 @@ class Character {
         this.createUI()
         this.xp = Math.floor(100 * (this.level - 1) * Math.pow(this.level - 1, 1.2))
         this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
+
+        let ma = raceMaxAge[this.race]
+        this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
     }
 
 
@@ -215,6 +220,14 @@ class Character {
             return "Idle"
         }
         return this.status
+    }
+
+    updateDay() {
+        if (this.age>this.maxAge) {
+            if (Math.random()<0.01) {
+                //TODO:DIE
+            }
+        }
     }
 
     createUI() {

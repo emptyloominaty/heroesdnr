@@ -1,102 +1,7 @@
-let getHeroRandom = function(level = 1) {
-    const moidFirstNames = [
-        "Aden", "Alric", "Ansel", "Benn", "Bran", "Cade", "Calen", "Dain", "Derek", "Edric",
-        "Elric", "Fenn", "Finn", "Garen", "Hal", "Harl", "Hob", "Ivor", "Jarl", "Joren",
-        "Jude", "Kael", "Kellen", "Leif", "Liam", "Milo", "Ned", "Orren", "Perrin", "Quin",
-        "Reed", "Rurik", "Sam", "Seth", "Silas", "Soren", "Tobyn", "Torin", "Ulric", "Varn",
-        "Yann", "Yorik", "Zane", "Tharion",
-        "Kaelen",
-        "Darric",
-        "Baldric",
-        "Fenric",
-        "Elandor",
-        "Garrik",
-        "Orim",
-        "Valrik",
-        "Draven",
-        "Lucan",
-        "Torren",
-        "Maelor",
-        "Rhydar",
-        "Korran",
-        "Jorund",
-        "Theric",
-        "Aerendel",
-        "Cairos",
-        "Vaelin","Aerendil",
-        "Thalion",
-        "Elaran",
-        "Faelar",
-        "Lorion",
-        "Ithilorn",
-        "Saelar",
-        "Velion",
-        "Kaerith",
-        "Althir"
-    ]
-    const foidFirstNames = [
-        "Bara", "Bryn", "Cora", "Dara", "Eda", "Elsa", "Ember", "Eryn", "Fara", "Gilda",
-        "Gwen", "Hilda", "Ina", "Jana", "Kara", "Lana", "Lark", "Lina", "Lysa", "Mara",
-        "Mira", "Nia", "Nora", "Olga", "Rin", "Rosa", "Sari", "Tamsin", "Tilda", "Ula",
-        "Vera", "Willa", "Wyn", "Yara", "Zora","Elira",
-        "Kaelith",
-        "Seren",
-        "Lyra",
-        "Thessia",
-        "Mirael",
-        "Virelle",
-        "Nysera",
-        "Anwyn",
-        "Rowena",
-        "Selene",
-        "Isolde",
-        "Ysolde",
-        "Calistra",
-        "Rhiannon",
-        "Faelara",
-        "Liora",
-        "Shaelis",
-        "Elaria",
-        "Myrren","Sylwen",
-        "Lirael",
-        "Aerinia",
-        "Nymeris",
-        "Thalindra",
-        "Elyra",
-        "Velessa",
-        "Ylleria",
-        "Serelis",
-        "Mythria"
+let globalCharId = 0
 
-    ]
-    const surnames = [
-        "Ashfoot", "Barrow", "Barrelborn", "Birch", "Blackwell", "Bramble", "Brasshook", "Brook", "Brown", "Buckthorn",
-        "Clay", "Cobbler", "Copper", "Crowley", "Dale", "Dewdrop", "Dustwhistle", "Farthing", "Fennel", "Fern",
-        "Fletcher", "Flint", "Goodbarrel", "Gray", "Greenhand", "Hearth", "Hillborn", "Hollow", "Honeytrot", "Ironpot",
-        "Kettle", "Kindle", "Lambkin", "Lantern", "Leaf", "Lightfoot", "Marble", "Mead", "Meadow", "Mill",
-        "Moss", "Mudlock", "Nettle", "Oakridge", "Oats", "Pebble", "Pickle", "Pond", "Quickbranch", "Redfern",
-        "Ridge", "Rumble", "Salt", "Scruff", "Shale", "Silverpot", "Smith", "Snailstep", "Softwhistle", "Stone",
-        "Tarn", "Tatter", "Tiller", "Thatch", "Thistle", "Thorn", "Tuck", "Turnip", "Underbough", "Waggle",
-        "Weatherby", "Wick", "Willow", "Wimble", "Windle", "Winters", "Woodrow", "Woolsey", "Wren", "Yew","Stormblade",
-        "Shadowbinder",
-        "Ironhart",
-        "Windrider",
-        "Duskwhisper",
-        "Frostbane",
-        "Flamewarden",
-        "Nightbloom",
-        "Dawnsworn",
-        "Silverseer",
-        "Wolfsong",
-        "Starfire",
-        "Blackthorn",
-        "Emberfall",
-        "Moonveil",
-        "Ravenshade",
-        "Ashwalker",
-        "Brightforge",
-        "Mistborn"
-    ]
+let getHeroRandom = function(level = 1) {
+
     let roll = rollClassRole()
     let characterClass = roll.class
     let role = roll.role
@@ -105,18 +10,26 @@ let getHeroRandom = function(level = 1) {
 
     let first
     if (sex==="male") {
-        first = moidFirstNames[Math.floor(Math.random() * moidFirstNames.length)]
+        if (moidFirstNames.length !==0) {
+            let rng = Math.floor(Math.random() * moidFirstNames.length)
+            first = moidFirstNames.splice(rng,1)[0]
+        } else {
+            first = "YIKES"
+        }
     } else {
-        first = foidFirstNames[Math.floor(Math.random() * foidFirstNames.length)]
+        if (foidFirstNames.length !==0) {
+        let rng = Math.floor(Math.random() * foidFirstNames.length)
+        first = foidFirstNames.splice(rng,1)[0]
+        } else {
+            first = "YIKES"
+        }
     }
 
-    let last = surnames[Math.floor(Math.random() * surnames.length)]
-
-    let name = `${first} ${last}`
+    let name = first //`${first} ${last}`
     let age = 15+(Math.random()*45)
 
     //location edge
-    let hero = new Hero(name,age, heroes.length, level, 100, characterClass, "tank", { x: 0, y: 5 })
+    let hero = new Hero(name,age, level, 100, characterClass, "tank", { x: 0, y: 5 })
     hero.role = role
     hero.sex = sex
     for (let i = 0; i<hero.skill.length; i++) {
@@ -128,6 +41,7 @@ let getHeroRandom = function(level = 1) {
         }
     }
     hero.updateStats()
+    heroes.push(hero)
     return hero
 }
 
