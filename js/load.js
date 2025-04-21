@@ -12,6 +12,8 @@ function loadFiles() {
         terrain_grass: 'textures/terrain/test.png',
         terrain_road: 'textures/terrain/test3.png',
         particle_fire: 'textures/particles/fire.png',
+        particle_fire2: 'textures/particles/fire2.png',
+        particle_fire3: 'textures/particles/fire3.png',
     }
 
     const promises = Object.entries(imageMap).map(([key, path]) =>

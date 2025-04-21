@@ -77,11 +77,11 @@ class Canvas {
         this.canvas.closePath()
     }
 
-    drawImage(x,y,size,color,image) {
+    drawImage(x,y,size,color,image, gco = "lighter") {
         size = size*10
-        this.canvas.globalCompositeOperation = "lighter"
         let xx = size/2
         let yy = size/2
+        this.canvas.globalCompositeOperation = gco
         this.canvas.drawImage(image, x-xx, y-yy, size, size)
         this.canvas.globalCompositeOperation = "source-over"
     }

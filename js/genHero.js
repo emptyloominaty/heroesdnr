@@ -2,6 +2,7 @@ let globalCharId = 0
 
 let getHeroRandom = function(level = 1) {
 
+
     let roll = rollClassRole()
     let characterClass = roll.class
     let role = roll.role
@@ -32,6 +33,7 @@ let getHeroRandom = function(level = 1) {
 
     //location edge
     let hero = new Hero(name,age, level, 100, characterClass, "tank", { x: 0, y: 5 })
+    console.log("r: "+role+" c:"+characterClass+" - ("+tanks+" - "+healers+" - "+damagedealers+")")
     hero.role = role
     hero.sex = sex
     for (let i = 0; i<hero.skill.length; i++) {
@@ -42,15 +44,23 @@ let getHeroRandom = function(level = 1) {
             hero.skill[i] = 0.9
         }
     }
+    if (role === "tank") {
+        tanks++
+    } else if (role === "healer") {
+        healers++
+    } else if (role === "dps") {
+        damagedealers++
+    }
     hero.updateStats()
     heroes.push(hero)
     return hero
 }
 
 function rollClassRole() {
+    let spawnChances2 = adjustSpawnChances(spawnChances)
     const flatChances = []
-    for (const className in spawnChances) {
-        const roles = spawnChances[className]
+    for (const className in spawnChances2) {
+        const roles = spawnChances2[className]
         for (const role in roles) {
             const weight = roles[role]
             if (weight > 0) {
@@ -62,7 +72,6 @@ function rollClassRole() {
     const totalWeight = flatChances.reduce((sum, entry) => sum + entry.weight, 0)
     const roll = Math.random() * totalWeight
 
-    // Pick one based on the roll
     let cumulative = 0
     for (const entry of flatChances) {
         cumulative += entry.weight
@@ -97,4 +106,35 @@ function rollSex(className, ) {
     let total = maleRatio + femaleRatio
     let roll = Math.random() * total
     return roll < maleRatio ? "male" : "female"
+}
+
+function adjustSpawnChances(spawnChances) {
+    const totalCurrent = tanks + healers + damagedealers
+    const target = { tank: 1, healer: 1, dps: 3 }
+    const totalTarget = target.tank + target.healer + target.dps
+
+    const expected = {
+        tank: (target.tank / totalTarget) * totalCurrent,
+        healer: (target.healer / totalTarget) * totalCurrent,
+        dps: (target.dps / totalTarget) * totalCurrent
+    }
+
+    // Compute role multipliers based on how underrepresented they are
+    const bias = {
+        tank: Math.max(0.1, expected.tank / Math.max(1, tanks)),
+        healer: Math.max(0.1, expected.healer / Math.max(1, healers)),
+        dps: Math.max(0.1, expected.dps / Math.max(1, damagedealers))
+    }
+
+    // Adjust the spawnChances using the role bias, keeping class distributions intact
+    const adjusted = {}
+    for (const className in spawnChances) {
+        adjusted[className] = {}
+        for (const role in spawnChances[className]) {
+            const baseWeight = spawnChances[className][role]
+            adjusted[className][role] = baseWeight * bias[role]
+        }
+    }
+
+    return adjusted
 }

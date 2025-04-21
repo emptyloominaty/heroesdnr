@@ -15,6 +15,10 @@ let buildings = []
 let deadHeroes = []
 let inactiveHeroes = []
 
+let healers = 0
+let damagedealers = 0
+let tanks = 0
+
 let heroesMax = 0
 
 

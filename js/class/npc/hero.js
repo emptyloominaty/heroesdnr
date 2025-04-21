@@ -13,17 +13,8 @@ class Hero extends Character {
         for (let i = 0; i<this.skill.length; i++) {
             this.skill[i] = getSkillRandom()
         }
-        this.speed = (4+this.skill[8])/4.65
 
-        this.stDps = this.getSTDps(this.skill[0])
-        this.aoeDps = this.getAOEDps(this.skill[1])
-        this.stHps = this.getSTHps(this.skill[2])
-        this.aoeHps = this.getAOEHps(this.skill[3])
-        this.dps = (this.stDps+this.aoeDps)/2
-        this.hps = (this.stHps+this.aoeHps)/2
-        this.dtpsP = this.getDtpsP(this.skill[4])
-        this.dtpsM = this.getDtpsM(this.skill[5])
-        this.dtps = (this.dtpsP + this.dtpsM)/2
+        this.updateStats()
     }
 
     updateStats() {
@@ -36,7 +27,7 @@ class Hero extends Character {
         this.dtpsP = this.getDtpsP(this.skill[4])
         this.dtpsM = this.getDtpsM(this.skill[5])
         this.dtps = (this.dtpsP + this.dtpsM)/2
-        this.speed = (4+this.skill[8])/4.65
+        this.speed = (4+this.skill[8])/4.65*movementSpeedMultiplier[this.characterClass]
     }
 
 
@@ -149,5 +140,15 @@ class Hero extends Character {
             specMultiplier = classTankMultipliersDtpsM[this.characterClass]
         }
         return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
+    }
+
+    leaveTown() {
+        if (this.role === "dps") {
+            damagedealers--
+        } else if (this.role === "healer") {
+            healers--
+        } else if (this.role === "tank") {
+            tanks--
+        }
     }
 }

@@ -1,22 +1,29 @@
-function charactergetHungerRate(characterClass) {
-    switch (characterClass) {
-        case "warrior":
-            return 1.3
-        default:
-            return 1.0
-    }
+let hungerMultiplier = { //TODO:
+    Warrior: 1.3,
+    Rogue: 1.0,
+    Ranger: 1.1,
+    Mage: 0.8,
+    Druid: 0.85,
+    Monk: 0.75,
+    Priest: 0.9,
+    Paladin: 1.2,
+    Warlock: 0.95,
+    Shaman: 1.0
 }
 
-function charactergetFatigueRate(characterClass) {
-    switch (characterClass) {
-        case "mage":
-            return 1.3
-        default:
-            return 1.0
-    }
+let fatigueMultiplier = {//TODO:
+    Warrior: 1.2,
+    Rogue: 1.0,
+    Ranger: 0.95,
+    Mage: 0.85,
+    Druid: 0.9,
+    Monk: 0.75,
+    Priest: 1.0,
+    Paladin: 1.25,
+    Warlock: 0.9,
+    Shaman: 0.95
 }
-
-let raceChances = {
+/*IDK let raceChances = {
     human: 100,
     elf: 1,
     dwarf: 10
@@ -26,7 +33,8 @@ let raceMaxAge = {
     human: 100,
     elf: 10000,
     dwarf: 200
-}
+}*/
+
 
 let femaleMaleClassRatio = {
     Warrior: [50,1],
@@ -39,6 +47,19 @@ let femaleMaleClassRatio = {
     Paladin: [40,1],
     Warlock: [1,1],
     Shaman: [1,1]
+}
+
+let movementSpeedMultiplier = {
+    Warrior: 0.95,
+    Rogue: 1.2,
+    Ranger: 1.15,
+    Mage: 0.9,
+    Druid: 1.15,
+    Monk: 1.25,
+    Priest: 0.95,
+    Paladin: 0.9,
+    Warlock: 0.9,
+    Shaman: 0.95,
 }
 
 let spawnChances = {
@@ -67,7 +88,7 @@ let classDpsMultipliersDpsST = {
     Mage: 1,
     Druid: 1.2,
     Monk: 1.2,
-    Priest: 1.4,
+    Priest: 1.3,
     Paladin: 1,
     Warlock: 1.7,
     Shaman: 1.2,
@@ -97,7 +118,7 @@ let classDpsMultipliersDpsAOE = {
     Ranger: 0.85,
     Mage: 2,
     Druid: 1.3,
-    Priest: 1.6,
+    Priest: 1.5,
     Monk: 1.4,
     Paladin: 1.2,
     Warlock: 1.8,

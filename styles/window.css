@@ -15,10 +15,13 @@
     position: fixed;
     background-color: var(--color1);
     color: #FFF;
-    overflow: auto;
     border-radius: 3px;
 }
 
+#windowbody0, #windowbody1, #windowbody2 {
+    overflow: auto;
+    max-height: 80vh;
+}
 
 #window0 {
     top: 4.62vh;
