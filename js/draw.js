@@ -16,7 +16,11 @@ function draw() {
         game2d.drawCircle(x2d, y2d, size, color)
         if (characters[i].uiElements) {
             let baseFontSize = 9
-            characters[i].uiElements.style.color = darkenColor(color,shadowAlpha)
+            if (settings.lights) {
+                characters[i].uiElements.style.color = darkenColor(color,shadowAlpha)
+            } else {
+                characters[i].uiElements.style.color = color
+            }
             characters[i].uiElements.style.fontSize = `${baseFontSize * zoom}px`
             characters[i].uiElements.style.left = `${x2d/dpr}px`
             characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`

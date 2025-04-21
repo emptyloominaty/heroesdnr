@@ -8,24 +8,26 @@ let getHeroRandom = function(level = 1) {
     let sex = rollSex(characterClass)
 
 
-    let first
-    if (sex==="male") {
-        if (moidFirstNames.length !==0) {
+    let name = ""
+    if (sex==="male") { //TODO: A,B,C=hero0-...
+        name = "Hero "+globalCharId+" M"
+        /*if (moidFirstNames.length !==0) {
             let rng = Math.floor(Math.random() * moidFirstNames.length)
-            first = moidFirstNames.splice(rng,1)[0]
-        } else {
-            first = "YIKES"
-        }
+            name = moidFirstNames.splice(rng,1)[0]
+        } else {*/
+            //name = moidFirstNames2[Math.floor(Math.random() * moidFirstNames2.length)]+" "+surnames[Math.floor(Math.random() * surnames.length)]
+        //}
     } else {
-        if (foidFirstNames.length !==0) {
-        let rng = Math.floor(Math.random() * foidFirstNames.length)
-        first = foidFirstNames.splice(rng,1)[0]
-        } else {
-            first = "YIKES"
-        }
+        name = "Hero "+globalCharId+" F"
+        /*if (foidFirstNames.length !==0) {
+            let rng = Math.floor(Math.random() * foidFirstNames.length)
+            name = foidFirstNames.splice(rng,1)[0]
+        } else {*/
+            //name = foidFirstNames2[Math.floor(Math.random() * foidFirstNames2.length)]+" "+surnames[Math.floor(Math.random() * surnames.length)]
+        //}
     }
 
-    let name = first //`${first} ${last}`
+
     let age = 15+(Math.random()*45)
 
     //location edge

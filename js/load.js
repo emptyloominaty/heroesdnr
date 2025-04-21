@@ -7,15 +7,16 @@ function loadImage(src) {
     })
 }
 
-
 function loadFiles() {
+    const imageMap = {
+        terrain_grass: 'textures/terrain/test.png',
+        terrain_road: 'textures/terrain/test3.png',
+        particle_fire: 'textures/particles/fire.png',
+    }
 
-    const imagePaths = [
-        'textures/terrain/test.png',
-        'textures/terrain/test3.png',
-    ]
+    const promises = Object.entries(imageMap).map(([key, path]) =>
+        loadImage(path).then(img => [key, img])
+    )
 
-    const imagePromises = imagePaths.map(loadImage)
-
-    return Promise.all(imagePromises)
+    return Promise.all(promises).then(entries => Object.fromEntries(entries))
 }

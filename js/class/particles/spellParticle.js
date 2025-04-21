@@ -50,8 +50,9 @@ class SpellParticle {
                 this.fireSize += 8 * progressReal
             }
             if (!this.wait) {
-                particles2d.setParticleGlow(2,color) //TODO:SIZE
-                particles2d.drawCircle(x2d, y2d, size, color)
+                //particles2d.setParticleGlow(2,color)
+                //particles2d.drawCircle(x2d, y2d, size, color)
+                particles2d.drawImage(x2d, y2d, size, color, textures.particle_fire)
                 this.data.speed -= (this.data.speed*6) * progressReal
             }
         } else {
@@ -61,7 +62,7 @@ class SpellParticle {
 
         this.wait = false
 
-        this.data.life -= progress
+        this.data.life -= progressReal
         if (this.data.life <= 0) {
             spellParticles[this.id] = undefined
         }

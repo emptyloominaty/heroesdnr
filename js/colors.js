@@ -1,5 +1,5 @@
 let colors = {
-    "Archer":"#AAD372",
+    "Ranger":"#AAD372",
     "Druid":"#FF7C0A",
     "Mage":"#3FC7EB",
     "Monk":"#00FF98",
@@ -27,10 +27,6 @@ let colors = {
         "chaos":"#6c55a5",
         "plague":"#5a0b79",
     },
-
-    "barHealth":"rgba(85,187,63,0.5)",
-    "barHealthSelect":"rgba(27,138,187,0.5)",
-
     logs: ['#f9ff6a','#e78b24','#9e3e3c','#ffa7cb',
     '#80ea80','#00cddd', '#166fbf','#fffdff',
     '#9b8ec8','#d2cc8b','#FF69B4','#cd3d26',

@@ -34,12 +34,13 @@ function initPatterns() {
 
 
 function drawTerrain(firstFrame = false) {
-    if (settings.terrain===0) {
-        return
-    }
     if (firstFrame) {
         initPatterns()
     }
+    if (settings.terrain===0) {
+        return
+    }
+
     terrain2d.reset()
 
     const ctx = terrain2d.canvas

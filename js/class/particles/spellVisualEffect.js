@@ -11,6 +11,8 @@ class SpellVisualEffect {
             this.duration = data.duration
         }
         this.timer = 0
+
+        this.particleTimer = 0.025
     }
     update() {
         if (settings.particleVisuals!==0) {
@@ -88,14 +90,23 @@ class SpellVisualEffect {
 
                 if (settings.particleVisuals>1) {
                     if (this.data.onRun.name==="fire") {
-                        let life = this.data.onRun.life
-                        let dir = (Math.random()*360)
-                        let tt = performance.now()
-                        let area = this.data.onRun.area
-                        for (let i = 0; i<(settings.particleVisuals-1)*gameSpeed; i++) {
-                            addSpellParticle(this.x-(area/2)+(Math.random()*(area)), this.y-(area/2)+(Math.random()*(area)), dir,
-                                "fire", {size:this.data.onRun.size,speed:this.data.onRun.speed,life:life,color:Math.random(),color1:this.data.onRun.color1, color2:this.data.onRun.color2, color3:this.data.onRun.color3, timeCreated:tt})
+                        let skip = true
+                        this.particleTimer -= progressReal
+                        if (this.particleTimer<=0) {
+                            skip = false
+                            this.particleTimer = settings.particleTimer
                         }
+                        if (!skip) {
+                            let life = this.data.onRun.life
+                            let tt = performance.now()
+                            let area = this.data.onRun.area
+                            for (let i = 0; i<(settings.particleVisuals-1); i++) {
+                                let dir = (Math.random()*360)
+                                addSpellParticle(this.x-(area/2)+(Math.random()*(area)), this.y-(area/2)+(Math.random()*(area)), dir,
+                                    "fire", {size:this.data.onRun.size,speed:this.data.onRun.speed,life:life,color:0,color1:this.data.onRun.color1, color2:this.data.onRun.color2, color3:this.data.onRun.color3, timeCreated:tt})
+                            }
+                        }
+
                     }
                 }
 

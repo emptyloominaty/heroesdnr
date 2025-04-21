@@ -31,7 +31,7 @@ let raceMaxAge = {
 let femaleMaleClassRatio = {
     Warrior: [50,1],
     Rogue: [5,1],
-    Archer: [4,1],
+    Ranger: [4,1],
     Mage: [2,1],
     Priest: [1,1.5],
     Druid: [1,1],
@@ -44,7 +44,7 @@ let femaleMaleClassRatio = {
 let spawnChances = {
     Warrior: { tank: 14.65, dps: 14.76 },
     Rogue: { dps: 14.71 },
-    Archer: { dps: 14.71 },
+    Ranger: { dps: 14.71 },
     Mage: { dps: 1.47 },
     Priest: { healer: 6.88, dps: 2.94 },
     Druid: { healer: 2.53, dps: 1.94, tank: 1.35 },
@@ -63,7 +63,7 @@ let roleMultipliersDpsST = {
 let classDpsMultipliersDpsST = {
     Warrior: 1,
     Rogue: 1.5,
-    Archer: 1.5,
+    Ranger: 1.5,
     Mage: 1,
     Druid: 1.2,
     Monk: 1.2,
@@ -94,7 +94,7 @@ let roleMultipliersDpsAOE = {
 let classDpsMultipliersDpsAOE = {
     Warrior: 1.2,
     Rogue: 0.95,
-    Archer: 0.85,
+    Ranger: 0.85,
     Mage: 2,
     Druid: 1.3,
     Priest: 1.6,
@@ -124,7 +124,7 @@ let roleMultipliersHpsST = {
 let classDpsMultipliersHpsST = {
     Warrior: 0,
     Rogue: 0,
-    Archer: 0,
+    Ranger: 0,
     Mage: 0.2,
     Druid: 1,
     Monk: 0.8,
@@ -154,7 +154,7 @@ let roleMultipliersHpsAOE = {
 let classDpsMultipliersHpsAOE = {
     Warrior: 0,
     Rogue: 0,
-    Archer: 0,
+    Ranger: 0,
     Mage: 0.1,
     Druid: 1.2,
     Monk: 0.5,
@@ -184,7 +184,7 @@ let roleMultipliersDtpsP = {
 let classDpsMultipliersDtpsP = {
     Warrior: 1.2,
     Rogue: 0.65,
-    Archer: 0.6,
+    Ranger: 0.6,
     Mage: 0.3,
     Druid: 0.6,
     Monk: 0.7,
@@ -214,7 +214,7 @@ let roleMultipliersDtpsM = {
 let classDpsMultipliersDtpsM = {
     Warrior: 0.2,
     Rogue: 0.8,
-    Archer: 0.6,
+    Ranger: 0.6,
     Mage: 2,
     Druid: 1.5,
     Priest: 1,

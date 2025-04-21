@@ -81,7 +81,7 @@ function updateLighting() {
         if (R < 200) R += (timeSpeed * 15) / fps;
         if (G < 200) G += (timeSpeed * 5) / fps;
         if (B < 200) B += (timeSpeed * 5) / fps;
-        if (shadowAlpha < 0.5) shadowAlpha += 0.001* timeSpeed / fps;
+        if (shadowAlpha > 0.4) shadowAlpha -= 0.001* timeSpeed / fps;
     }
 
     // DUSK TRANSITION
@@ -89,7 +89,7 @@ function updateLighting() {
         if (R > 250) R -= (timeSpeed * 15) / fps;
         if (G > 107) G -= (timeSpeed * 5) / fps;
         if (B > 12) B -= (timeSpeed * 5) / fps;
-        if (shadowAlpha < 0.6) shadowAlpha += 0.001* timeSpeed / fps;
+        if (shadowAlpha > 0.2) shadowAlpha -= 0.001* timeSpeed / fps;
     }
 
     // Clamp values

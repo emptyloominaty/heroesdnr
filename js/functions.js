@@ -22,10 +22,8 @@ let getNumberString = function(number) {
 let getNumberString2 = function(number) {
     if (number>999999) {
         return Math.round((number/1000000)*1000)/1000+"M"
-        //return (number/1000000).toFixed(1)+"M"
     } else if (number>999) {
         return Math.round((number/1000)*1000)/1000+"K"
-        //return (number/1000).toFixed(1)+"K"
     } else {
         return Math.round(number)
     }
@@ -33,7 +31,7 @@ let getNumberString2 = function(number) {
 
 function darkenColor(color, val) {
     const [r, g, b] = [0, 1, 2].map(i => parseInt(color.slice(1 + i * 2, 3 + i * 2), 16))
-    const darken = Math.floor(255 * (0.6-val))
+    const darken = Math.floor(255 * (0.5-val))
     return `rgb(${Math.max(0, r - darken)}, ${Math.max(0, g - darken)}, ${Math.max(0, b - darken)})`
 }
 

@@ -131,7 +131,6 @@ class Character {
         }
         if (!this.goingToInn) {
             if (this.sleepBuildingId !== -1) {
-                console.log(this.name+"YIKES"+this.goingToInn)
                 let building = buildings[this.sleepBuildingId]
                 let bsize =  [building.size[0]-1,building.size[1]-1]
                 let xx = building.location.x-(bsize[0]/2)+(Math.random()*bsize[0])

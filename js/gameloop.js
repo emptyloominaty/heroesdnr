@@ -36,11 +36,12 @@ function loop(timestamp) {
     window.requestAnimationFrame(loop)
 }
 
+let textures
 loadFiles()
     .then(images => {
-        console.log("All files loaded:", images)
+        textures = images
         window.requestAnimationFrame(loop)
     })
     .catch(error => {
         console.error("Error loading files:", error)
-    });
+    })

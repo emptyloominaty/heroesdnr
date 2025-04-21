@@ -32,7 +32,7 @@ canvas {
 }
 #canvasParticles {
     z-index: -10;
-    mix-blend-mode: normal;
+    mix-blend-mode: lighten;
 }
 #canvasLights {
     z-index: -20;
