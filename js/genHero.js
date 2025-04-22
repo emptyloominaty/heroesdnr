@@ -32,7 +32,9 @@ let getHeroRandom = function(level = 1) {
     let age = 15+(Math.random()*45)
 
     //location edge
-    let hero = new Hero(name,age, level, 100, characterClass, "tank", { x: 0, y: 5 })
+    let xx = Math.random() * 30
+    let yy = Math.random() * 30
+    let hero = new Hero(name,age, level, 100, characterClass, "tank", { x: xx, y: yy })
     console.log("r: "+role+" c:"+characterClass+" - ("+tanks+" - "+healers+" - "+damagedealers+")")
     hero.role = role
     hero.sex = sex

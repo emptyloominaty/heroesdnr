@@ -1,4 +1,4 @@
-let hungerMultiplier = { //TODO:
+let hungerMultiplier = {
     Warrior: 1.3,
     Rogue: 1.0,
     Ranger: 1.1,
@@ -11,7 +11,7 @@ let hungerMultiplier = { //TODO:
     Shaman: 1.0
 }
 
-let fatigueMultiplier = {//TODO:
+let fatigueMultiplier = {
     Warrior: 1.2,
     Rogue: 1.0,
     Ranger: 0.95,
@@ -23,7 +23,7 @@ let fatigueMultiplier = {//TODO:
     Warlock: 0.9,
     Shaman: 0.95
 }
-/*IDK let raceChances = {
+let raceChances = {
     human: 100,
     elf: 1,
     dwarf: 10
@@ -33,7 +33,7 @@ let raceMaxAge = {
     human: 100,
     elf: 10000,
     dwarf: 200
-}*/
+}
 
 
 let femaleMaleClassRatio = {

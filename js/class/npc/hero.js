@@ -14,6 +14,9 @@ class Hero extends Character {
             this.skill[i] = getSkillRandom()
         }
 
+        this.fatigueRate = this.fatigueRate * fatigueMultiplier[this.characterClass]
+        this.hungerRate = this.hungerRate * hungerMultiplier[this.characterClass]
+
         this.updateStats()
     }
 

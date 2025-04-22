@@ -1,4 +1,4 @@
-let open_heroeslist = function (reload = false, update = false) {
+let open_heroeslistDebug = function (reload = false, update = false) {
 
     if (update) {
         for (let i = 0; i < heroes.length; i++) {
@@ -8,9 +8,9 @@ let open_heroeslist = function (reload = false, update = false) {
             elementsWindow.hl_name[i].textContent = hero.name
             elementsWindow.hl_status[i].textContent = hero.getStatus()
             
-            elementsWindow.hl_level[i].textContent = hero.level
-            elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
-            elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
+            elementsWindow.hl_level[i].textContent = Math.round(hero.talkingTimer*10)/10
+            elementsWindow.hl_dps[i].textContent = Math.round(hero.idleTimer * 10) / 10
+            elementsWindow.hl_hps[i].textContent = Math.round(hero.waitTimer * 10) / 10
             elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
             elementsWindow.hl_age[i].textContent = Math.round(hero.age*10)/10
             elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
@@ -27,16 +27,16 @@ let open_heroeslist = function (reload = false, update = false) {
     if (!reload) {
         drawHeader("List of Heroes",0)
     }
-    if (currentWindow[0] === "heroeslist" && !reload) {
+    if (currentWindow[0] === "heroeslistDebug" && !reload) {
         close_window(0)
         return
     } else {
         elements.windowBody0.innerHTML = ""
     }
-    currentWindow[0] = "heroeslist"
+    currentWindow[0] = "heroeslistDebug"
     let html = ""
     html += "<div style='display:flex;justify-content: space-between;width:70vw;'>"
-    html += "<div style='overflow:auto;width:100%;'><table> <tr class='heroListFirstRow'><th>Role</th><th>Class</th><th>Name</th><th style='min-width: 150px' >Status</th><th>Level</th><th>Dps</th><th>Hps</th><th>Dtps</th><th>Gold</th><th>Fatigue</th><th>Hunger</th><th>Age</th><th>Location</th><th>Destination</th></tr> "
+    html += "<div style='overflow:auto;width:100%;'><table> <tr class='heroListFirstRow'><th>Role</th><th>Class</th><th>Name</th><th style='min-width: 150px' >Status</th><th>Talk T</th><th>Idle T</th><th>Wait T</th><th>Dtps</th><th>Gold</th><th>Fatigue</th><th>Hunger</th><th>Age</th><th>Location</th><th>Destination</th></tr> "
     for (let i = 0; i < heroes.length; i++) {
         let hero = heroes[i]
         html += "<tr class='heroListRow' onclick='open_heroinfo(false,false,"+i+")'><td id='hl_role"+i+"'>" + hero.role + "</td><td id='hl_class"+i+"'>" + hero.characterClass + "</td><td id='hl_name"+i+"'>>" + hero.name + "</td><td  id='hl_status"+i+"'>>" + hero.getStatus() + "</td><td id='hl_level"+i+"'>>" + hero.level + "</td><td id='hl_dps"+i+"'>>" + getNumberString(hero.dps) + "</td><td  id='hl_hps"+i+"'>>" + getNumberString(hero.hps) + "</td><td id='hl_dtps"+i+"'>>" + getNumberString(hero.dtps) + "</td><td id='hl_gold"+i+"'>>" + getNumberString(hero.inventory.gold) + "</td><td id='hl_fatigue"+i+"'>>" + Math.round(hero.fatigue) + "</td><td id='hl_hunger"+i+"'>" + Math.round(hero.hunger) + "</td><td  id='hl_age"+i+"'>>" + Math.round(hero.age*10)/10 + "</td><td  id='hl_location"+i+"'>> " + Math.round(hero.location.x) + " - " + Math.round(hero.location.y) + "</td><td  id='hl_destination"+i+"'>> " + Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y) + "</td></tr >"
