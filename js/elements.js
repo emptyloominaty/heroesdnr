@@ -19,4 +19,10 @@ let elements = {
     "window2": document.getElementById("window2"),
     "windowHeader2": document.getElementById("windowHeader2"),
     "windowBody2": document.getElementById("windowBody2"),
+    "window3": document.getElementById("window3"),
+    "windowHeader3": document.getElementById("windowHeader3"),
+    "windowBody3": document.getElementById("windowBody3"),
+    "window4": document.getElementById("window4"),
+    "windowHeader4": document.getElementById("windowHeader4"),
+    "windowBody4": document.getElementById("windowBody4"),
 }

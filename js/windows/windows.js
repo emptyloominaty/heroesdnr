@@ -22,7 +22,11 @@ let windowsUpdate = function () {
             open_heroinfo(true,true)
         } else if (currentWindow[i] === "heroeslistDebug") {
             open_heroeslistDebug(true, true)
+        } else if (currentWindow[i] === "buildinginfo") {
+            open_buildinginfo(true, true)
         }
+
+        
     }
 
 }

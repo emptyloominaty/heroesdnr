@@ -11,14 +11,14 @@
 
 
 
-#window0, #window1, #window2 {
+#window0, #window1, #window2, #window3, #window4 {
     position: fixed;
     background-color: var(--color1);
     color: #FFF;
     border-radius: 3px;
 }
 
-#windowbody0, #windowbody1, #windowbody2 {
+#windowbody0, #windowbody1, #windowbody2, #windowbody3, #windowbody4 {
     overflow: auto;
     max-height: 80vh;
 }
@@ -40,7 +40,16 @@
     left: 8vw;
     z-index: 102;
 }
-
+#window3 {
+    top: 5vh;
+    left: 10vw;
+    z-index: 103;
+}
+#window4 {
+    top: 1vh;
+    left: 2vw;
+    z-index: 104;
+}
 .windowHeader {
     font-size: 1.3vw;
     padding: 0.2vw;

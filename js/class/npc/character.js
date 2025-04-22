@@ -29,6 +29,8 @@ class Character {
     loyalty = 100
     entertainment = 100
 
+    sociability = 0.1 + Math.random() * 0.9
+
     speed = 4
     role = "dps"
     xp = 0
@@ -42,6 +44,8 @@ class Character {
     isTalking = false
     talkingTimer = 0
     talkingTargetId = 0
+
+    talkInc = 0
 
     inTown = true
 
@@ -112,54 +116,96 @@ class Character {
                 case "":
                     this.idleTimer -= progress
                     if (this.idleTimer <= 0) {
-
-
                         let rng = Math.random()
 
                         this.wandering = true
                         this.idleTimer = 5 + Math.random() * 5
                         this.waitTimer = 2 + Math.random() * 10
-                        if (rng > 0.95) {
+
+                        if (rng > (0.999 - this.sociability * (0.999 - 0.97)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
                             if (heroes[rng2].inTown && heroes[rng2] !== this) {
-                                let dx = heroes[rng2].location.x - 3 + Math.random() * 6
-                                let dy = heroes[rng2].location.y - 3 + Math.random() * 6
-                                this.destination = { x: dx, y: dy }
-                                let timer = 8 + Math.random() * 12
-                                this.isTalking = true
-                                this.talkingTimer = timer
-                                heroes[rng2].isTalking = true
-                                heroes[rng2].destination = { x: heroes[rng2].location.x, y: heroes[rng2].location.y }
-                                heroes[rng2].talkingTimer = timer + (getDistance({ x: this.location.x, y: this.location.y }, { x: heroes[rng2].location.x, y: heroes[rng2].location.y })/4)
-                                heroes[rng2].talkingTargetId = -1
-                                this.talkingTargetId = rng2
+                                let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
+                                    angle += (Math.random() - 0.5) * 0.5
+                                    let distance = 2 + Math.random() * 2
+                                    let dx = heroes[rng2].location.x - Math.cos(angle) * distance
+                                    let dy = heroes[rng2].location.y - Math.sin(angle) * distance
+                                    this.destination = { x: dx, y: dy }
+                                    let timer = 8 + Math.random() * 12
+                                    this.isTalking = true
+                                    this.talkingTimer = timer
+                                    heroes[rng2].isTalking = true
+                                    heroes[rng2].destination = { x: heroes[rng2].location.x, y: heroes[rng2].location.y }
+                                    heroes[rng2].talkingTimer = timer + (getDistance({ x: this.location.x, y: this.location.y }, { x: heroes[rng2].location.x, y: heroes[rng2].location.y }) / 4)
+                                    heroes[rng2].talkingTargetId = -1
+                                    this.talkingTargetId = rng2
+                                    this.talkInc = 0
                             }
-                        } else if (rng > 0.7) {
+                        } else if (rng > (0.995 - this.sociability * (0.995 - 0.95)) - this.talkInc) {
+                            let rng2 = Math.floor(Math.random() * heroes.length)
+                            if (heroes[rng2].inTown && heroes[rng2] !== this) {
+                                let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
+                                if (getDistance(this.location, heroes[rng2].location) > 20 + Math.random() * 20 * this.sociability) {
+                                    angle += (Math.random() - 0.5) * 0.5
+                                    let dx = heroes[rng2].location.x - Math.cos(angle) * (5+(Math.random()*5))
+                                    let dy = heroes[rng2].location.y - Math.sin(angle) * (5 + (Math.random() * 5))
+                                    this.destination = { x: dx, y: dy }
+                                    this.talkInc = 0.3
+                                } else {
+                                    angle += (Math.random() - 0.5) * 0.5
+                                    let distance = 2 + Math.random() * 2
+                                    let dx = heroes[rng2].location.x - Math.cos(angle) * distance
+                                    let dy = heroes[rng2].location.y - Math.sin(angle) * distance
+                                    this.destination = { x: dx, y: dy }
+                                    let timer = 8 + Math.random() * 12
+                                    this.isTalking = true
+                                    this.talkingTimer = timer
+                                    heroes[rng2].isTalking = true
+                                    heroes[rng2].destination = { x: heroes[rng2].location.x, y: heroes[rng2].location.y }
+                                    heroes[rng2].talkingTimer = timer + (getDistance({ x: this.location.x, y: this.location.y }, { x: heroes[rng2].location.x, y: heroes[rng2].location.y }) / 4)
+                                    heroes[rng2].talkingTargetId = -1
+                                    this.talkingTargetId = rng2
+                                    this.talkInc = 0
+                                }
+                            }
+                        } else if (rng > (0.95 - this.sociability * (0.95 - 0.8)) - this.talkInc) {
                             let heroKeys = Object.keys(this.friendships)
                             let rng2 = Math.floor(Math.random() * heroKeys.length)
                             let chosenKey = heroKeys[rng2]
                             let chosen = heroes[chosenKey]
                             if (chosen !== undefined && chosen.inTown) {
-                                let dx = chosen.location.x - 3 + Math.random() * 6
-                                let dy = chosen.location.y - 3 + Math.random() * 6
-                                this.destination = { x: dx, y: dy }
-                                let timer = 8 + Math.random() * 12
-                                this.isTalking = true
-                                this.talkingTimer = timer
-                                chosen.isTalking = true 
-                                chosen.destination = {x: chosen.location.x, y: chosen.location.y}
-                                chosen.talkingTimer = timer + (getDistance({ x: this.location.x, y: this.location.y }, { x: heroes[rng2].location.x, y: heroes[rng2].location.y }) / 4)
-                                this.talkingTargetId = chosenKey
-                                chosen.talkingTargetId = -1
+                                let angle = Math.atan2(chosen.location.y - this.location.y, chosen.location.x - this.location.x)
+                                if (getDistance(this.location, chosen.location) > 40 + Math.random()*40) {
+                                    angle += (Math.random() - 0.5) * 0.5
+                                    let dx = chosen.location.x - Math.cos(angle) * (5 + (Math.random() * 5))
+                                    let dy = chosen.location.y - Math.sin(angle) * (5 + (Math.random() * 5))
+                                    this.destination = { x: dx, y: dy }
+                                    this.talkInc = 0.3
+                                } else {
+                                    angle += (Math.random() - 0.5) * 0.5
+                                    let distance = 2 + Math.random() * 2
+                                    let dx = chosen.location.x - Math.cos(angle) * distance
+                                    let dy = chosen.location.y - Math.sin(angle) * distance
+                                    this.destination = { x: dx, y: dy }
+                                    let timer = 8 + Math.random() * 12
+                                    this.isTalking = true
+                                    this.talkingTimer = timer
+                                    chosen.isTalking = true
+                                    chosen.destination = { x: chosen.location.x, y: chosen.location.y }
+                                    chosen.talkingTimer = timer + (getDistance({ x: this.location.x, y: this.location.y }, { x: heroes[rng2].location.x, y: heroes[rng2].location.y }) / 4)
+                                    this.talkingTargetId = chosenKey
+                                    chosen.talkingTargetId = -1
+                                    this.talkInc = 0
+                                }
                             }
 
                         } else {
                             let dx = this.location.x - 15 + Math.random() * 30
                             let dy = this.location.y - 15 + Math.random() * 30
-                            if (dx > 1000 && dx < -1000) {
+                            if (dx > 1000 || dx < -1000) {
                                 dx = Math.random() * 30
                             }
-                            if (dy > 600 && dy < -600) {
+                            if (dy > 600 || dy < -600) {
                                 dy = Math.random() * 30
                             }
                             this.destination = { x: dx, y: dy }

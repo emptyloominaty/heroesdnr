@@ -7,10 +7,8 @@ class Inn extends Building {
     prices = {eat: 2, sleep:5}
 
     constructor(location, level = 1) {
-        super()
-        this.location = location
+        super(location, level)
         this.type = "inn"
-        this.level = level
         this.levelUpdate()
     }
 
