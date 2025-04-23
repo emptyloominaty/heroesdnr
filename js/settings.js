@@ -3,5 +3,6 @@ let settings = {
     particleGlow: false,
     terrain: 0,
     lights: false,
-    particleTimer: 0.025
+    particleTimer: 0.025,
+    drawHeroNames: false
 }

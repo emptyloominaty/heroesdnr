@@ -68,15 +68,18 @@ canvas {
 
 .characterUi {
     position: absolute; /*fixed;*/
+    /*transform: translate(-50%, -100%);*/
     color: white;
     font-size: 9px;
     pointer-events: none;
     user-select: none;
-    /*transform: translate(-50%, -100%);*/
-    filter: drop-shadow(-0.16px -0.16px 0 #000) drop-shadow(0.16px -0.16px 0 #000) drop-shadow(-0.16px 0.16px 0 #000) drop-shadow(0.16px 0.16px 0 #000);
+    /*filter: drop-shadow(-0.16px -0.16px 0 #000) drop-shadow(0.16px -0.16px 0 #000) drop-shadow(-0.16px 0.16px 0 #000) drop-shadow(0.16px 0.16px 0 #000);*/
+    text-shadow: -0.16px -0.16px 0 #000, 0.16px -0.16px 0 #000, -0.16px 0.16px 0 #000, 0.16px 0.16px 0 #000;
     /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
     white-space: nowrap;
-    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    text-rendering: optimizeSpeed;
+    /*contain: paint layout;*/
 }
 
 #charactersUi {
