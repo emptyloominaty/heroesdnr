@@ -1,5 +1,5 @@
 let open_heroeslist = function (reload = false, update = false) {
-
+    let windowId = 0
     if (update) {
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
@@ -25,15 +25,16 @@ let open_heroeslist = function (reload = false, update = false) {
 
 
     if (!reload) {
-        drawHeader("List of Heroes",0)
+        open_window(windowId)
+        drawHeader("List of Heroes", windowId)
     }
-    if (currentWindow[0] === "heroeslist" && !reload) {
-        close_window(0)
+    if (currentWindow[windowId] === "heroeslist" && !reload) {
+        close_window(windowId)
         return
     } else {
-        elements.windowBody0.innerHTML = ""
+        elements["windowBody" + windowId].innerHTML = ""
     }
-    currentWindow[0] = "heroeslist"
+    currentWindow[windowId] = "heroeslist"
     let html = ""
     html += "<div style='display:flex;justify-content: space-between;width:70vw;'>"
     html += "<div style='overflow:auto;width:100%;'><table> <tr class='heroListFirstRow'><th>Role</th><th>Class</th><th>Name</th><th style='min-width: 150px' >Status</th><th>Level</th><th>Dps</th><th>Hps</th><th>Dtps</th><th>Gold</th><th>Fatigue</th><th>Hunger</th><th>Age</th><th>Location</th><th>Destination</th></tr> "
@@ -44,7 +45,7 @@ let open_heroeslist = function (reload = false, update = false) {
     html += "</table></div>"
     html += "</div>"
     html += "</div>"
-    elements.windowBody0.innerHTML = html
+    elements["windowBody" + windowId].innerHTML = html
 
     elementsWindow.hl_role = []
     elementsWindow.hl_class = []

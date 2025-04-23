@@ -102,7 +102,7 @@ let classHealerMultipliersDpsST = {
 }
 let classTankMultipliersDpsST = {
     Warrior: 1,
-    Druid: 1.2,
+    Druid: 1.35,
     Paladin: 1.1
 }
 
@@ -133,8 +133,8 @@ let classHealerMultipliersDpsAOE = {
 }
 let classTankMultipliersDpsAOE = {
     Warrior: 1.2,
-    Druid: 1.2,
-    Paladin: 1.1
+    Druid: 1.25,
+    Paladin: 1.15
 }
 //ST HPS
 let roleMultipliersHpsST = {
@@ -222,7 +222,7 @@ let classHealerMultipliersDtpsP = {
     Shaman: 0.6
 }
 let classTankMultipliersDtpsP = {
-    Warrior: 4,
+    Warrior: 5,
     Druid: 3.5,
     Paladin: 4
 }

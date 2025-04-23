@@ -1,22 +1,24 @@
 //TODO: hps,dtps   max:dps,hps,dtps    level charts, dps charts, hps charts, dtps charts, age chart, skill charts
 
 let open_statistics = function (reload = false, update = false) {
+    let windowId = 2
     let dontClose = false
     if (!reload) {
-        drawHeader("Statistics",2)
+        open_window(windowId)
+        drawHeader("Statistics", windowId)
     }
     if (update) {
       //TODO:
 
         return
     }
-    if (currentWindow[2] === "statistics" && !reload && !dontClose) {
-        close_window(2)
+    if (currentWindow[windowId] === "statistics" && !reload && !dontClose) {
+        close_window(windowId)
         return
     } else {
-        elements.windowBody1.innerHTML = ""
+        elements["windowBody" + windowId].innerHTML = ""
     }
-    currentWindow[2] = "statistics"
+    currentWindow[windowId] = "statistics"
     let html = ""
     html += "<div class='statistics' style='display:flex;width:80vw; flex-wrap:wrap;'>"
 
@@ -112,7 +114,7 @@ let open_statistics = function (reload = false, update = false) {
 
     html += "</table></div>"
     html += "</div>"
-    elements.windowBody2.innerHTML = html
+    elements["windowBody" + windowId].innerHTML = html
 
 
 }

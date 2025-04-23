@@ -1,23 +1,25 @@
 let window_buildingId = 0
 let open_buildinginfo = function (reload = false, update = false, id = false) {
+    let windowId = 3
     let dontClose = false
     if (id!==false) {
         window_buildingId = id
         dontClose = true
     }
     if (!reload) {
-        drawHeader(buildings[window_buildingId].name,3)
+        open_window(windowId)
+        drawHeader(buildings[window_buildingId].name, windowId)
     }
     if (update) {
         return
     }
-    if (currentWindow[3] === "buildinginfo" && !reload && !dontClose) {
-        close_window(3)
+    if (currentWindow[windowId] === "buildinginfo" && !reload && !dontClose) {
+        close_window(windowId)
         return
     } else {
-        elements.windowBody3.innerHTML = ""
+        elements["windowBody"+windowId].innerHTML = ""
     }
-    currentWindow[3] = "buildinginfo"
+    currentWindow[windowId] = "buildinginfo"
 
     /*TODO: let html = ""
     html += "<div class='heroinfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"

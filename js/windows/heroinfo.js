@@ -1,11 +1,13 @@
 let window_heroId = 0
 let open_heroinfo = function (reload = false, update = false, id = false) {
+    let windowId = 1
     let dontClose = false
     if (id!==false) {
         window_heroId = id
         dontClose = true
     }
     if (!reload) {
+        open_window(windowId)
         drawHeader(heroes[window_heroId].name+" - "+ heroes[window_heroId].role.charAt(0).toUpperCase() + heroes[window_heroId].role.slice(1)+" "+heroes[window_heroId].characterClass+" Level "+heroes[window_heroId].level,1)
     }
     if (update) {
@@ -41,13 +43,13 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
         return
     }
-    if (currentWindow[1] === "heroinfo" && !reload && !dontClose) {
-        close_window(1)
+    if (currentWindow[windowId] === "heroinfo" && !reload && !dontClose) {
+        close_window(windowId)
         return
     } else {
-        elements.windowBody1.innerHTML = ""
+        elements["windowBody" + windowId].innerHTML = ""
     }
-    currentWindow[1] = "heroinfo"
+    currentWindow[windowId] = "heroinfo"
     let html = ""
     html += "<div class='heroinfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"
     let hero = heroes[window_heroId]
@@ -135,7 +137,7 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
     html += "</div>"
     html += "</div>"
-    elements.windowBody1.innerHTML = html
+    elements["windowBody" + windowId].innerHTML = html
 
 
     elementsWindow.dpsAvg = document.getElementById("hi_dpsAvg")

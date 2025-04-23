@@ -4,8 +4,8 @@ let zoomScroll = function (event) {
     zoom += val
     if (zoom < 1.0) {
         zoom = 1.0
-    } else if (zoom > 6) { 
-        zoom = 6  
+    } else if (zoom > 6.25) { 
+        zoom = 6.25 
     }
 
 }
@@ -72,9 +72,7 @@ setTimeout( ()=> {
     document.addEventListener("mousedown", function(e) {
         for (let i = 0; i < buildings.length; i++) {
             if (isMouseOverObject(buildings[i])) {
-                console.log(i)
-                //TODO: open_buildinginfo ->updgrades
-
+                open_buildinginfo(false,false,i)
                 return
             }
         }

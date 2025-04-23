@@ -67,12 +67,21 @@ canvas {
 }
 
 .characterUi {
-    position: fixed;
+    position: absolute; /*fixed;*/
     color: white;
     font-size: 9px;
     pointer-events: none;
     user-select: none;
-    transform: translate(-50%, -100%);
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    /*transform: translate(-50%, -100%);*/
+    filter: drop-shadow(-0.16px -0.16px 0 #000) drop-shadow(0.16px -0.16px 0 #000) drop-shadow(-0.16px 0.16px 0 #000) drop-shadow(0.16px 0.16px 0 #000);
+    /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
     white-space: nowrap;
+    will-change: transform;
+}
+
+#charactersUi {
+    position:fixed;
+    overflow:visible;
+    top:0;
+    left:0;
 }

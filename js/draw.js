@@ -14,17 +14,20 @@ function draw() {
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom
         let color = colors[characters[i].characterClass]
         game2d.drawCircle(x2d, y2d, size, color)
-        if (characters[i].uiElements) {
-            let baseFontSize = 9
-            if (settings.lights) {
-                characters[i].uiElements.style.color = darkenColor(color,shadowAlpha)
-            } else {
-                characters[i].uiElements.style.color = color
-            }
-            characters[i].uiElements.style.fontSize = `${baseFontSize * zoom}px`
-            characters[i].uiElements.style.left = `${x2d/dpr}px`
-            characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`
+
+        if (settings.lights) {
+            characters[i].uiElements.style.color = darkenColor(color,shadowAlpha)
+        } else {
+            characters[i].uiElements.style.color = color
         }
+
+        //characters[i].uiElements.style.fontSize = `${9 * zoom}px`
+
+        /*characters[i].uiElements.style.left = `${x2d/dpr}px`
+        characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`*/
+        //characters[i].uiElements.style.transform = `translate(${x2d}px, ${y2d - 5 * zoom}px)`; 
+        //characters[i].uiElements.offsetHeight;
+        characters[i].uiElements.style.transform = `translate(-50%, -100%) translate(${x2d}px, ${y2d - 5 * zoom}px) scale(${zoom})`;
     }
     for (let i = 0; i < buildings.length; i++) {
         let sizeX = buildings[i].size[0] * zoom
