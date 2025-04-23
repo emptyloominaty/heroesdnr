@@ -55,6 +55,7 @@ class Character {
         this.name = name
         this.age = age
         this.id = globalCharId
+        charactersMap[this.id] = this
         globalCharId++
         this.level = level
         this.health = health
@@ -70,6 +71,7 @@ class Character {
 
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
+        addToGrid(this)
     }
 
 
@@ -317,6 +319,7 @@ class Character {
 
         if (dx * newDx < 0) this.location.x = this.destination.x
         if (dy * newDy < 0) this.location.y = this.destination.y
+        updateGridPosition(this)
     }
 
     needsSleep() {

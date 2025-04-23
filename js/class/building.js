@@ -1,3 +1,5 @@
+let globalBuildingId = 0
+
 class Building {
     location = {x:0, y:0}
     type = ""
@@ -10,7 +12,10 @@ class Building {
         this.location = location
         this.level = level
         this.name = name
-
+        this.id = globalBuildingId
+        buildingsMap[this.id] = this
+        globalBuildingId++
+        addToGrid(this)
     }
 
     update() {

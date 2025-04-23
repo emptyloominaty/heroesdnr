@@ -10,6 +10,7 @@ let open_buildinginfo = function (reload = false, update = false, id = false) {
         open_window(windowId)
         drawHeader(buildings[window_buildingId].name, windowId)
     }
+    let building = buildingsMap[window_buildingId]
     if (update) {
         return
     }
@@ -23,7 +24,7 @@ let open_buildinginfo = function (reload = false, update = false, id = false) {
 
     /*TODO: let html = ""
     html += "<div class='heroinfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"
-    let hero = heroes[window_heroId]
+
 
 
     html += "<div class='heroinfoText'></div>"

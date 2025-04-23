@@ -1,26 +1,29 @@
+let heroesListLength = 0
 let open_heroeslist = function (reload = false, update = false) {
     let windowId = 0
     if (update) {
-        for (let i = 0; i < heroes.length; i++) {
-            let hero = heroes[i]
-            elementsWindow.hl_role[i].textContent = hero.role
-            elementsWindow.hl_class[i].textContent = hero.characterClass
-            elementsWindow.hl_name[i].textContent = hero.name
-            elementsWindow.hl_status[i].textContent = hero.getStatus()
-            
-            elementsWindow.hl_level[i].textContent = hero.level
-            elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
-            elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
-            elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
-            elementsWindow.hl_age[i].textContent = Math.round(hero.age*10)/10
-            elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
-            elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
-            elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
-            elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
-            elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
+        if (heroes.length===heroesListLength) {
+            for (let i = 0; i < heroes.length; i++) { //TODO:FIX
+                let hero = heroes[i]
+                elementsWindow.hl_role[i].textContent = hero.role
+                elementsWindow.hl_class[i].textContent = hero.characterClass
+                elementsWindow.hl_name[i].textContent = hero.name
+                elementsWindow.hl_status[i].textContent = hero.getStatus()
 
+                elementsWindow.hl_level[i].textContent = hero.level
+                elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
+                elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
+                elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
+                elementsWindow.hl_age[i].textContent = Math.round(hero.age*10)/10
+                elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
+                elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
+                elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
+                elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
+                elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
+
+                }
+            return
         }
-        return
     }
 
 
@@ -77,5 +80,6 @@ let open_heroeslist = function (reload = false, update = false) {
         elementsWindow.hl_location.push(document.getElementById("hl_location"+i))
         elementsWindow.hl_destination.push(document.getElementById("hl_destination"+i))
     }
+    heroesListLength = heroes.length
 }
 

@@ -11,6 +11,8 @@ let incomeI = 0
 let characters = []
 let heroes = []
 let buildings = []
+let charactersMap = {}
+let buildingsMap = {}
 
 let deadHeroes = []
 let inactiveHeroes = []

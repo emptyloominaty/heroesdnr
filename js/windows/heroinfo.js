@@ -10,8 +10,8 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
         open_window(windowId)
         drawHeader(heroes[window_heroId].name+" - "+ heroes[window_heroId].role.charAt(0).toUpperCase() + heroes[window_heroId].role.slice(1)+" "+heroes[window_heroId].characterClass+" Level "+heroes[window_heroId].level,1)
     }
+    let hero = charactersMap[window_heroId]
     if (update) {
-        let hero = heroes[window_heroId]
         elementsWindow.dpsAvg.textContent = getNumberString(hero.dps)
         elementsWindow.dpsST.textContent = getNumberString(hero.stDps)
         elementsWindow.dpsAOE.textContent = getNumberString(hero.aoeDps)
@@ -52,7 +52,6 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
     currentWindow[windowId] = "heroinfo"
     let html = ""
     html += "<div class='heroinfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"
-    let hero = heroes[window_heroId]
 
 
     html += "<div class='heroinfoText'></div>"

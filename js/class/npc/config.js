@@ -89,7 +89,7 @@ let classDpsMultipliersDpsST = {
     Druid: 1.2,
     Monk: 1.2,
     Priest: 1.3,
-    Paladin: 1,
+    Paladin: 1.2,
     Warlock: 1.7,
     Shaman: 1.2,
 }
@@ -158,7 +158,7 @@ let classHealerMultipliersHpsST = {
     Priest: 1.2,
     Druid: 1.1,
     Monk: 1,
-    Paladin: 1,
+    Paladin: 1.3,
     Shaman: 1.1
 }
 let classTankMultipliersHpsST = {
@@ -186,10 +186,10 @@ let classDpsMultipliersHpsAOE = {
 }
 let classHealerMultipliersHpsAOE = {
     Priest: 1.2,
-    Druid: 1.1,
-    Monk: 1.05,
-    Paladin: 1.2,
-    Shaman: 1.1
+    Druid: 1.2,
+    Monk: 1.1,
+    Paladin: 1.0,
+    Shaman: 1.25
 }
 let classTankMultipliersHpsAOE = {
     Warrior: 0,
@@ -236,13 +236,13 @@ let classDpsMultipliersDtpsM = {
     Warrior: 0.2,
     Rogue: 0.8,
     Ranger: 0.6,
-    Mage: 2,
-    Druid: 1.5,
-    Priest: 1,
+    Mage: 2.5,
+    Druid: 1.8,
+    Priest: 1.3,
     Monk: 1,
     Paladin: 1.8,
     Warlock: 1.5,
-    Shaman: 1.7,
+    Shaman: 2,
 }
 let classHealerMultipliersDtpsM = {
     Priest: 1,

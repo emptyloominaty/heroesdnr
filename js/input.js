@@ -65,25 +65,53 @@ let onMouseUpdate = function(e) {
 
     mousePosition2d.x = ((x+((e.pageX)-(game2d.canvasW/2))/zoom))
     mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
+
+    const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
+    if (el && el === document.body) {
+        let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
+        let nearbyObjects = []
+        for (const cell of nearbyCells) {
+            const key = `${cell.x},${cell.y}`
+            const objects = grid[key] || []
+            nearbyObjects.push(...objects)
+        }
+        for (let obj of nearbyObjects) {
+            if (isMouseOverObject(obj)) {
+                if (obj instanceof Character ) {
+                    console.log("Hero:", obj.name)
+                } else if (obj instanceof Building) {
+                    console.log("Building:", obj.type)
+                }
+                return
+            }
+        }
+    }
 }
 
 setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)
     document.addEventListener("mousedown", function(e) {
-        for (let i = 0; i < buildings.length; i++) {
-            if (isMouseOverObject(buildings[i])) {
-                open_buildinginfo(false,false,i)
-                return
+        const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
+        if (el && el === document.body) {
+            let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
+            let nearbyObjects = []
+            for (const cell of nearbyCells) {
+                const key = `${cell.x},${cell.y}`
+                const objects = grid[key] || []
+                nearbyObjects.push(...objects)
             }
-        }
-        for (let i = 0; i < characters.length; i++) {
-            if (isMouseOverObject(characters[i])) {
-                open_heroinfo(false,false,i)
-                return
+            for (let obj of nearbyObjects) {
+                if (isMouseOverObject(obj)) {
+                    if (obj instanceof Character ) {
+                        open_heroinfo(false, false, obj.id)
+                    } else if (obj instanceof Building) {
+                        open_buildinginfo(false, false, obj.id)
+                    }
+                    return
+                }
             }
         }
     })
-
 },1000 )
 
 
