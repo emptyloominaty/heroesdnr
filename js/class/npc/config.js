@@ -85,12 +85,12 @@ let classDpsMultipliersDpsST = {
     Warrior: 1,
     Rogue: 1.5,
     Ranger: 1.5,
-    Mage: 1,
+    Mage: 1.5,
     Druid: 1.2,
     Monk: 1.2,
     Priest: 1.3,
     Paladin: 1.2,
-    Warlock: 1.7,
+    Warlock: 2,
     Shaman: 1.2,
 }
 let classHealerMultipliersDpsST = {
@@ -121,7 +121,7 @@ let classDpsMultipliersDpsAOE = {
     Priest: 1.5,
     Monk: 1.4,
     Paladin: 1.2,
-    Warlock: 1.8,
+    Warlock: 1.9,
     Shaman: 1.7,
 }
 let classHealerMultipliersDpsAOE = {

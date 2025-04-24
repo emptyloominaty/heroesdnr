@@ -48,8 +48,25 @@ for (let i = 0; i<currentWindow.length; i++) {
     })
     document.addEventListener("mousemove", (e) => {
         if (isDragging[i]) {
-            elements["window"+i].style.left = `${e.clientX - offsetX[i]}px`
-            elements["window"+i].style.top = `${e.clientY - offsetY[i]}px`
+            const el = elements["window" + i]
+            el.style.left = `${e.clientX - offsetX[i]}px`
+            el.style.top = `${e.clientY - offsetY[i]}px`
+
+            const winWidth = window.innerWidth
+            const winHeight = window.innerHeight
+
+            //const rect = el.getBoundingClientRect()
+            const width = 50 //rect.width
+            const height = 20 //rect.height
+
+            let left = parseInt(elements["window" + i].style.left, 10)
+            let top = parseInt(elements["window" + i].style.top, 10)
+
+            left = Math.max(0, Math.min(left, winWidth - width))
+            top = Math.max(0, Math.min(top, winHeight - height))
+
+            el.style.left = `${left}px`
+            el.style.top = `${top}px`
         }
     })
 

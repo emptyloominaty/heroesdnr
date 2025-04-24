@@ -162,3 +162,11 @@ tr:nth-child(odd) {
 .heroListRow:hover {
     background-color: var(--color4);
 }
+
+.statsHeader th:hover {
+    background-color: var(--color4);
+}
+
+.statsHeaderThSort {
+    background-color: var(--color5);
+}

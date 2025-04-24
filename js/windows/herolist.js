@@ -14,7 +14,7 @@ let open_heroeslist = function (reload = false, update = false) {
                 elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
                 elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
                 elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
-                elementsWindow.hl_age[i].textContent = Math.round(hero.age*10)/10
+                elementsWindow.hl_age[i].textContent = Math.round(hero.age)
                 elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
                 elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
                 elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)

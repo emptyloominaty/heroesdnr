@@ -1,6 +1,6 @@
 let globalCharId = 0
 
-let getHeroRandom = function(level = 1) {
+let spawnHeroRandom = function(level = 1) {
 
 
     let roll = rollClassRole()
@@ -29,7 +29,7 @@ let getHeroRandom = function(level = 1) {
     }
 
 
-    let age = 15+(Math.random()*45)
+    let age = generateAge()
 
     //location edge
     let xx = Math.random() * 30
@@ -140,3 +140,25 @@ function adjustSpawnChances(spawnChances) {
 
     return adjusted
 }
+
+
+const ageBrackets = [
+    { min: 15, max: 19, weight: 3 }, 
+    { min: 20, max: 25, weight: 6 },
+    { min: 26, max: 35, weight: 5 },
+    { min: 36, max: 50, weight: 2 },
+    { min: 51, max: 60, weight: 1 }, 
+]
+function pickWeightedBracket(brackets) {
+    const totalWeight = brackets.reduce((sum, b) => sum + b.weight, 0)
+    let r = Math.random() * totalWeight
+    for (const b of brackets) {
+        if (r < b.weight) return b
+        r -= b.weight
+    }
+    return brackets[brackets.length - 1]
+}
+function generateAge() {
+    const bracket = pickWeightedBracket(ageBrackets)
+    return bracket.min + Math.random() * (bracket.max - bracket.min)
+} 

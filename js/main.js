@@ -28,7 +28,7 @@ buildings.push(new Inn({ x: 50, y: 45 },"Inn 1",1))
 
 //TEST
 for (let i = 0; i<5; i++) {
-    getHeroRandom(1)
+    spawnHeroRandom(1)
 }
 
 
