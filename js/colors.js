@@ -15,6 +15,15 @@ let colors = {
     "text":"#d1d1d1",
     "absorb":"#a4e9ff",
 
+    roles: {
+        /*tank: "#4A90E2",
+        healer: "#7ED6A5",
+        dps: "#E26A6A",*/
+        tank: "#64afff",
+        healer: "#5ff184",
+        dps: "#ff6161",
+    },
+
     spells:{
         "physical":"#a8a83f",
         "arcane":"#e5b7e0",

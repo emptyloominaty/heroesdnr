@@ -1,4 +1,3 @@
-//TODO: hps,dtps   max:dps,hps,dtps    level charts, dps charts, hps charts, dtps charts, age chart, skill charts
 let open_statistics = function (reload = false, update = false) {
     let windowId = 2
     let dontClose = false
@@ -36,6 +35,7 @@ let open_statistics = function (reload = false, update = false) {
             combinedData[key] = {
                 className: h.characterClass,
                 specName: h.characterSpec,
+                role: h.role,
                 count: 0,
                 dps: 0,
                 stDps: 0,
@@ -63,7 +63,7 @@ let open_statistics = function (reload = false, update = false) {
         combinedData[key].ms += h.speed || 0
     })
 
-    
+
     let sortedKeys = Object.keys(combinedData).sort((a, b) => {
         return combinedData[b].dps - combinedData[a].dps
     })
@@ -86,24 +86,29 @@ let open_statistics = function (reload = false, update = false) {
         <th class="statsHeaderTh" onclick="sortTable('ms')" data-sortkey="ms">Speed</th>
 </tr>`
 
+
     sortedKeys.forEach(key => {
         let data = combinedData[key]
         let c = data.count || 1
         let [classText, specText] = key.split(' - ')
-        html += `<tr>
-        <td data-sortkey="className">${classText}</td>
-        <td data-sortkey="specName">${specText}</td>
-        <td data-sortkey="count">${data.count}</td>
-        <td data-sortkey="dps">${getNumberString(data.dps / c)}</td>
-        <td data-sortkey="stDps">${getNumberString(data.stDps / c)}</td>
-        <td data-sortkey="aoeDps">${getNumberString(data.aoeDps / c)}</td>
-        <td data-sortkey="hps">${getNumberString(data.hps / c)}</td>
-        <td data-sortkey="stHps">${getNumberString(data.stHps / c)}</td>
-        <td data-sortkey="aoeHps">${getNumberString(data.aoeHps / c)}</td>
-        <td data-sortkey="dtps">${getNumberString(data.dtps / c)}</td>
-        <td data-sortkey="dtpsM">${getNumberString(data.dtpsM / c)}</td>
-        <td data-sortkey="dtpsP">${getNumberString(data.dtpsP / c)}</td>
-        <td data-sortkey="ms">${Math.round(data.ms / c*100)/100}</td>
+        let classColor = colors[classText] || "#FFFFFF"
+        let roleColor = colors.roles[data.role] || "#FFFFFF"
+        let bgColor = pSBC(0.65, classColor, "#111111")
+
+        html += `<tr class="statistics_tr_row" style="background-color:${bgColor}">
+        <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
+        <td data-sortkey="specName" style="position:relative;color:${roleColor}">${specText}<div class="gradientWow2"></div></td>
+        <td data-sortkey="count" style="position:relative;">${data.count}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dps" style="position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="stDps" style="position:relative;">${getNumberString(data.stDps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="aoeDps" style="position:relative;">${getNumberString(data.aoeDps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="hps" style="position:relative;">${getNumberString(data.hps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="stHps" style="position:relative;">${getNumberString(data.stHps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="aoeHps" style="position:relative;">${getNumberString(data.aoeHps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtps" style="position:relative;">${getNumberString(data.dtps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtpsM" style="position:relative;">${getNumberString(data.dtpsM / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtpsP" style="position:relative;">${getNumberString(data.dtpsP / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="ms" style="position:relative;">${Math.round(data.ms / c*100)/100}<div class="gradientWow2"></div></td>
     </tr>`
     })
 
