@@ -1,34 +1,4 @@
 //TODO: hps,dtps   max:dps,hps,dtps    level charts, dps charts, hps charts, dtps charts, age chart, skill charts
-statistics_sortMode = "name"
-statistics_dpsMode = "dps"
-statistics_roleDpsMode = "dps"
-let statistics_setSortMode = function (val,role = "",type = "") {
-    statistics_sortMode = val
-    setTimeout(() => {
-        if (role !== "") {
-            statistics_roleDpsMode = role
-        }
-        open_statistics(true, false)
-        const headers = document.querySelectorAll('#statsDpsHeader th')
-        headers.forEach(header => {
-            header.classList.remove('statsHeaderThSort')
-        })
-
-        let newHeader
-        if (role !== "") {
-            const sortKey = `${role}_${type}`;
-            newHeader = Array.from(headers).find(h => h.dataset.sortkey === sortKey);
-        } else {
-            newHeader = Array.from(headers).find(h => h.dataset.sortkey === val)
-        }
-        if (newHeader) {
-            newHeader.classList.add('statsHeaderThSort') 
-        }
-    }, 100)
-}
-let statistics_setDpsMode = function(val) {
-    statistics_dpsMode = val
-}
 let open_statistics = function (reload = false, update = false) {
     let windowId = 2
     let dontClose = false
@@ -54,111 +24,92 @@ let open_statistics = function (reload = false, update = false) {
     /*
     html += "<span style='width:100%;'></span>" //next row
     */
-    const classCounts = heroes.reduce((acc, h) => {
+    let classCounts = heroes.reduce((acc, h) => {
         acc[h.characterClass] = (acc[h.characterClass] || 0) + 1
         return acc
     }, {})
 
-    const classRoleCounts = {}
-    const dpsData = {}
-
+    let combinedData = {}
     heroes.forEach(h => {
-        classRoleCounts[h.characterClass] ??= {}
-        classRoleCounts[h.characterClass][h.role] = (classRoleCounts[h.characterClass][h.role] || 0) + 1
+        let key = `${h.characterClass} - ${h.characterSpec}`
+        if (!combinedData[key]) {
+            combinedData[key] = {
+                className: h.characterClass,
+                specName: h.characterSpec,
+                count: 0,
+                dps: 0,
+                stDps: 0,
+                aoeDps: 0,
+                hps: 0,
+                stHps: 0,
+                aoeHps: 0,
+                dtps: 0,
+                dtpsM: 0,
+                dtpsP: 0,
+                ms: 0,
+            }
+        }
 
-        dpsData[h.characterClass] ??= {}
-        dpsData[h.characterClass][h.role] ??= { dps: 0, stDps: 0, aoeDps: 0, count: 0 }
-
-        dpsData[h.characterClass][h.role].dps += h.dps || 0
-        dpsData[h.characterClass][h.role].stDps += h.stDps || 0
-        dpsData[h.characterClass][h.role].aoeDps += h.aoeDps || 0
-        dpsData[h.characterClass][h.role].count++
+        combinedData[key].count++
+        combinedData[key].dps += h.dps || 0
+        combinedData[key].stDps += h.stDps || 0
+        combinedData[key].aoeDps += h.aoeDps || 0
+        combinedData[key].hps += h.hps || 0
+        combinedData[key].stHps += h.stHps || 0
+        combinedData[key].aoeHps += h.aoeHps || 0
+        combinedData[key].dtps += h.dtps || 0
+        combinedData[key].dtpsM += h.dtpsM || 0
+        combinedData[key].dtpsP += h.dtpsP || 0
+        combinedData[key].ms += h.speed || 0
     })
 
-
-    const allRoles = [...new Set(heroes.map(h => h.role))]
-
+    
+    let sortedKeys = Object.keys(combinedData).sort((a, b) => {
+        return combinedData[b].dps - combinedData[a].dps
+    })
 
     html += "<div style='overflow:auto'><table>"
+    html += `
+<tr class="statsHeader">
+    <th class="statsHeaderTh" onclick="sortTable('className')" data-sortkey="className">Class</th>
+    <th class="statsHeaderTh" onclick="sortTable('specName')" data-sortkey="specName">Spec</th>
+    <th class="statsHeaderTh" onclick="sortTable('count')" data-sortkey="count">Count</th>
+    <th class="statsHeaderTh" onclick="sortTable('dps')" data-sortkey="dps">DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('stDps')" data-sortkey="stDps">ST DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('aoeDps')" data-sortkey="aoeDps">AOE DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('hps')" data-sortkey="hps">HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('stHps')" data-sortkey="stHps">ST HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('aoeHps')" data-sortkey="aoeHps">AOE HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtps')" data-sortkey="dtps">DTPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtpsM')" data-sortkey="dtpsM">DTPS (M)</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtpsP')" data-sortkey="dtpsP">DTPS (P)</th>
+        <th class="statsHeaderTh" onclick="sortTable('ms')" data-sortkey="ms">Speed</th>
+</tr>`
 
-
-    html += `<tr id="statsDpsHeader" class="statsHeader" ><th class="statsHeaderThSort" onclick="statistics_setSortMode('name')" data-sortkey="name">Class</th><th onclick="statistics_setSortMode('count')" data-sortkey="count">Total</th>`
-    allRoles.forEach(role => html += `<th onclick="statistics_setSortMode('roleCount','${role}','count')" data-sortkey="${role}_count">${role}s</th>`)
-    allRoles.forEach(role => {
-        html += `
-        <th onclick="statistics_setSortMode('dps','${role}','dps'); statistics_setDpsMode('dps')" data-sortkey="${role}_dps">${role} DPS</th>
-        <th onclick="statistics_setSortMode('dps','${role}','stDps'); statistics_setDpsMode('stDps')" data-sortkey="${role}_stDps">${role} ST DPS</th>
-        <th onclick="statistics_setSortMode('dps','${role}','aoeDps'); statistics_setDpsMode('aoeDps')" data-sortkey="${role}_aoeDps">${role} AOE DPS</th>
-    `
-    })
-
-
-
-    html += "</tr>"
-
-    let sortedClassNames
-    let sortDps = statistics_dpsMode
-    if (statistics_sortMode === "dps") {
-        sortedClassNames = Object.keys(classCounts)
-            .sort((a, b) => {
-                const roleDataA = dpsData[a]?.[statistics_roleDpsMode]
-                const roleDataB = dpsData[b]?.[statistics_roleDpsMode]
-                const avgDpsA = roleDataA ? roleDataA[sortDps] / roleDataA.count : 0
-                const avgDpsB = roleDataB ? roleDataB[sortDps] / roleDataB.count : 0
-                return avgDpsB - avgDpsA
-            })
-    } else if (statistics_sortMode === "count") {
-        sortedClassNames = Object.keys(classCounts)
-            .sort((a, b) => {
-                const totalA = Object.values(classRoleCounts[a] || {}).reduce((sum, count) => sum + count, 0);
-                const totalB = Object.values(classRoleCounts[b] || {}).reduce((sum, count) => sum + count, 0);
-                return totalB - totalA;
-            })
-
-    } else if (statistics_sortMode === "roleCount") {
-        sortedClassNames = Object.keys(classCounts)
-            .sort((a, b) => {
-                const countA = (classRoleCounts[a]?.[statistics_roleDpsMode]) || 0;
-                const countB = (classRoleCounts[b]?.[statistics_roleDpsMode]) || 0;
-                return countB - countA;
-            })
-    } else { //(statistics_sortMode === "name")
-        sortedClassNames = Object.keys(classCounts).sort()
-    }
-
-    sortedClassNames.forEach(className => {
-        html += `<tr><td>${className}</td>`
-
-
-
-            const count = classCounts[className]
-            html += `<td>${count > 0 ? count : ""}</td>`
-
-
-
-        allRoles.forEach(role => {
-            const count = classRoleCounts[className]?.[role]
-            html += `<td>${count > 0 ? count : ""}</td>`
-        })
-
-
-
-        allRoles.forEach(role => {
-            const data = dpsData[className]?.[role]
-            if (data && data.count > 0) {
-                const avgDps = getNumberString(data.dps / data.count)
-                const avgSt = getNumberString(data.stDps / data.count)
-                const avgAoe = getNumberString(data.aoeDps / data.count)
-                html += `<td>${avgDps}</td><td>${avgSt}</td><td>${avgAoe}</td>`
-            } else {
-                html += `<td></td><td></td><td></td>`
-            }
-        })
-
-        html += "</tr>"
+    sortedKeys.forEach(key => {
+        let data = combinedData[key]
+        let c = data.count || 1
+        let [classText, specText] = key.split(' - ')
+        html += `<tr>
+        <td data-sortkey="className">${classText}</td>
+        <td data-sortkey="specName">${specText}</td>
+        <td data-sortkey="count">${data.count}</td>
+        <td data-sortkey="dps">${getNumberString(data.dps / c)}</td>
+        <td data-sortkey="stDps">${getNumberString(data.stDps / c)}</td>
+        <td data-sortkey="aoeDps">${getNumberString(data.aoeDps / c)}</td>
+        <td data-sortkey="hps">${getNumberString(data.hps / c)}</td>
+        <td data-sortkey="stHps">${getNumberString(data.stHps / c)}</td>
+        <td data-sortkey="aoeHps">${getNumberString(data.aoeHps / c)}</td>
+        <td data-sortkey="dtps">${getNumberString(data.dtps / c)}</td>
+        <td data-sortkey="dtpsM">${getNumberString(data.dtpsM / c)}</td>
+        <td data-sortkey="dtpsP">${getNumberString(data.dtpsP / c)}</td>
+        <td data-sortkey="ms">${Math.round(data.ms / c*100)/100}</td>
+    </tr>`
     })
 
     html += "</table></div>"
+
+
     html += "</div>"
     elements["windowBody" + windowId].innerHTML = html
 
@@ -166,4 +117,45 @@ let open_statistics = function (reload = false, update = false) {
 }
 
 
+let currentSort = {
+    key: null, 
+    order: 'asc',
+}
 
+function sortTable(sortKey) {
+    const table = document.querySelector("table")
+    const rows = Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+
+    if (currentSort.key === sortKey) {
+        currentSort.order = (currentSort.order === 'asc') ? 'desc' : 'asc'
+    } else {
+        currentSort.key = sortKey
+        currentSort.order = 'asc'
+    }
+
+    rows.sort((rowA, rowB) => {
+        const cellA = rowA.querySelector(`[data-sortkey="${sortKey}"]`).textContent.trim()
+        const cellB = rowB.querySelector(`[data-sortkey="${sortKey}"]`).textContent.trim()
+
+        const valA = parseFloat(cellA) || cellA
+        const valB = parseFloat(cellB) || cellB
+
+        if (valA < valB) return currentSort.order === 'asc' ? -1 : 1
+        if (valA > valB) return currentSort.order === 'asc' ? 1 : -1
+        return 0
+    })
+
+    rows.forEach(row => table.appendChild(row))
+
+    updateHeaderSort(sortKey)
+}
+
+function updateHeaderSort(sortKey) {
+    const headers = document.querySelectorAll('.statsHeaderTh')
+    headers.forEach(header => header.classList.remove('statsHeaderThSort'))
+
+    const sortedHeader = document.querySelector(`[data-sortkey="${sortKey}"]`)
+    if (sortedHeader) {
+        sortedHeader.classList.add('statsHeaderThSort')
+    }
+}

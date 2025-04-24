@@ -51,7 +51,7 @@ class Character {
 
     friendships = {}
 
-    constructor(name, age, level, health, characterClass, role, location) {
+    constructor(name, age, level, health, characterClass, role, location,characterSpec) {
         this.name = name
         this.age = age
         this.id = globalCharId
@@ -61,6 +61,7 @@ class Character {
         this.health = health
         this.characterClass = characterClass
         this.role = role
+        this.characterSpec = role //TODO:characterSpec
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
         this.hungerRate = 0.95 + (Math.random() * 0.1)

@@ -54,7 +54,7 @@ let movementSpeedMultiplier = {
     Rogue: 1.2,
     Ranger: 1.15,
     Mage: 0.9,
-    Druid: 1.15,
+    Druid: 1.35,
     Monk: 1.25,
     Priest: 0.95,
     Paladin: 0.9,
@@ -63,16 +63,16 @@ let movementSpeedMultiplier = {
 }
 
 let spawnChances = {
-    Warrior: { tank: 14.65, dps: 14.76 },
+    Warrior: { tank: 14.65, dps: 10.76 },
     Rogue: { dps: 14.71 },
     Ranger: { dps: 14.71 },
-    Mage: { dps: 1.47 },
+    Mage: { dps: 2.47 },
     Priest: { healer: 6.88, dps: 2.94 },
     Druid: { healer: 2.53, dps: 1.94, tank: 1.35 },
     Monk: { dps: 5.88, healer: 2.41 },
     Paladin: { healer: 3.94, dps: 4.94, tank: 3.94 },
-    Warlock: { dps: 0.48 },
-    Shaman: { dps: 1.18, healer: 1.28 }
+    Warlock: { dps: 1.48 },
+    Shaman: { dps: 2.18, healer: 2.28 }
 }
 
 //ST DPS
@@ -82,15 +82,15 @@ let roleMultipliersDpsST = {
     healer: 0.4
 }
 let classDpsMultipliersDpsST = {
-    Warrior: 1,
-    Rogue: 1.5,
-    Ranger: 1.5,
-    Mage: 1.5,
-    Druid: 1.2,
+    Warrior: 1.0,
+    Rogue: 1.9,
+    Ranger: 1.85,
+    Mage: 1.3,
+    Druid: 0.8,
     Monk: 1.2,
-    Priest: 1.3,
+    Priest: 1.2,
     Paladin: 1.2,
-    Warlock: 2,
+    Warlock: 1.7,
     Shaman: 1.2,
 }
 let classHealerMultipliersDpsST = {
@@ -102,7 +102,7 @@ let classHealerMultipliersDpsST = {
 }
 let classTankMultipliersDpsST = {
     Warrior: 1,
-    Druid: 1.35,
+    Druid: 1.4,
     Paladin: 1.1
 }
 
@@ -113,32 +113,32 @@ let roleMultipliersDpsAOE = {
     healer: 0.6
 }
 let classDpsMultipliersDpsAOE = {
-    Warrior: 1.2,
-    Rogue: 0.95,
-    Ranger: 0.85,
-    Mage: 2,
-    Druid: 1.3,
+    Warrior: 1.4,
+    Rogue: 0.97,
+    Ranger: 0.94,
+    Mage: 1.9,
+    Druid: 1.8,
     Priest: 1.5,
-    Monk: 1.4,
-    Paladin: 1.2,
-    Warlock: 1.9,
+    Monk: 1.55,
+    Paladin: 1.5,
+    Warlock: 1.8,
     Shaman: 1.7,
 }
 let classHealerMultipliersDpsAOE = {
     Priest: 0.6,
     Druid: 1,
-    Monk: 1.5,
+    Monk: 1.9,
     Paladin: 1.4,
     Shaman: 0.5
 }
 let classTankMultipliersDpsAOE = {
     Warrior: 1.2,
-    Druid: 1.25,
+    Druid: 1.4,
     Paladin: 1.15
 }
 //ST HPS
 let roleMultipliersHpsST = {
-    dps: 0.1,
+    dps: 0.2,
     tank: 0.2,
     healer: 1
 }
@@ -158,18 +158,18 @@ let classHealerMultipliersHpsST = {
     Priest: 1.2,
     Druid: 1.1,
     Monk: 1,
-    Paladin: 1.3,
-    Shaman: 1.1
+    Paladin: 1.4,
+    Shaman: 1
 }
 let classTankMultipliersHpsST = {
     Warrior: 0,
     Druid: 1,
-    Paladin: 2.5
+    Paladin: 3
 }
 //AOE HPS
 let roleMultipliersHpsAOE = {
     dps: 0.2,
-    tank: 0.1,
+    tank: 0.2,
     healer: 2
 }
 let classDpsMultipliersHpsAOE = {
@@ -177,7 +177,7 @@ let classDpsMultipliersHpsAOE = {
     Rogue: 0,
     Ranger: 0,
     Mage: 0.1,
-    Druid: 1.2,
+    Druid: 2,
     Monk: 0.5,
     Priest: 4,
     Paladin: 3,
@@ -187,14 +187,14 @@ let classDpsMultipliersHpsAOE = {
 let classHealerMultipliersHpsAOE = {
     Priest: 1.2,
     Druid: 1.2,
-    Monk: 1.1,
+    Monk: 1.15,
     Paladin: 1.0,
-    Shaman: 1.25
+    Shaman: 1.35
 }
 let classTankMultipliersHpsAOE = {
     Warrior: 0,
-    Druid: 1,
-    Paladin: 2.5
+    Druid: 2,
+    Paladin: 1.5
 }
 //DTPS Physical
 let roleMultipliersDtpsP = {
@@ -218,7 +218,7 @@ let classHealerMultipliersDtpsP = {
     Priest: 0.3,
     Druid: 0.6,
     Monk: 0.65,
-    Paladin: 1.5,
+    Paladin: 2,
     Shaman: 0.6
 }
 let classTankMultipliersDtpsP = {
@@ -237,7 +237,7 @@ let classDpsMultipliersDtpsM = {
     Rogue: 0.8,
     Ranger: 0.6,
     Mage: 2.5,
-    Druid: 1.8,
+    Druid: 2.3,
     Priest: 1.3,
     Monk: 1,
     Paladin: 1.8,
