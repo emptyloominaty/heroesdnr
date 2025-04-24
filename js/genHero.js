@@ -3,10 +3,11 @@ let globalCharId = 0
 let spawnHeroRandom = function(level = 1) {
 
 
-    let roll = rollClassRole()
+    let roll = rollClassSpec()
     let characterClass = roll.class
-    let role = roll.role
-    let sex = rollSex(characterClass)
+    let spec = roll.spec
+    let role = spec //TODO
+    let sex = rollSex(characterClass,spec)
 
 
     let name = ""
@@ -35,7 +36,7 @@ let spawnHeroRandom = function(level = 1) {
     let xx = Math.random() * 30
     let yy = Math.random() * 30
     let hero = new Hero(name,age, level, 100, characterClass, role, { x: xx, y: yy })
-    console.log("r: "+role+" c:"+characterClass+" - ("+tanks+" - "+healers+" - "+damagedealers+")")
+    //console.log("r: "+role+" c:"+characterClass+" - ("+tanks+" - "+healers+" - "+damagedealers+")")
     hero.sex = sex
     for (let i = 0; i<hero.skill.length; i++) {
         hero.skill[i] -= ((30-hero.age)/100)*Math.random()
@@ -57,15 +58,15 @@ let spawnHeroRandom = function(level = 1) {
     return hero
 }
 
-function rollClassRole() {
+function rollClassSpec() {
     let spawnChances2 = adjustSpawnChances(spawnChances)
     const flatChances = []
     for (const className in spawnChances2) {
-        const roles = spawnChances2[className]
-        for (const role in roles) {
-            const weight = roles[role]
+        const specs = spawnChances2[className]
+        for (const spec in specs) {
+            const weight = specs[spec]
             if (weight > 0) {
-                flatChances.push({ class: className, role, weight })
+                flatChances.push({ class: className, spec, weight })
             }
         }
     }
@@ -77,10 +78,10 @@ function rollClassRole() {
     for (const entry of flatChances) {
         cumulative += entry.weight
         if (roll < cumulative) {
-            return { class: entry.class, role: entry.role }
+            return { class: entry.class, spec: entry.spec }
         }
     }
-    return { class: "Warrior", role: "dps" }
+    return { class: "Warrior", spec: "dps" }
 }
 
 
@@ -102,14 +103,15 @@ let getSkillRandom = function() {
     }
 }
 
-function rollSex(className, ) {
-    let [maleRatio, femaleRatio] = femaleMaleClassRatio[className]
+function rollSex(className, specName) {
+    console.log(className+" - "+specName)
+    let [maleRatio, femaleRatio] = heroesConfig[className][specName].femaleR
     let total = maleRatio + femaleRatio
     let roll = Math.random() * total
     return roll < maleRatio ? "male" : "female"
 }
 
-function adjustSpawnChances(spawnChances) {
+function adjustSpawnChances(spawnChances) { //TODO:
     const totalCurrent = tanks + healers + damagedealers
     const target = { tank: 1, healer: 1, dps: 3 }
     const totalTarget = target.tank + target.healer + target.dps
@@ -120,14 +122,12 @@ function adjustSpawnChances(spawnChances) {
         dps: (target.dps / totalTarget) * totalCurrent
     }
 
-    // Compute role multipliers based on how underrepresented they are
     const bias = {
         tank: Math.max(0.1, expected.tank / Math.max(1, tanks)),
         healer: Math.max(0.1, expected.healer / Math.max(1, healers)),
         dps: Math.max(0.1, expected.dps / Math.max(1, damagedealers))
     }
 
-    // Adjust the spawnChances using the role bias, keeping class distributions intact
     const adjusted = {}
     for (const className in spawnChances) {
         adjusted[className] = {}
@@ -136,7 +136,6 @@ function adjustSpawnChances(spawnChances) {
             adjusted[className][role] = baseWeight * bias[role]
         }
     }
-
     return adjusted
 }
 

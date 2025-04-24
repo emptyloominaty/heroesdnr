@@ -14,8 +14,8 @@ class Hero extends Character {
             this.skill[i] = getSkillRandom()
         }
 
-        this.fatigueRate = this.fatigueRate * fatigueMultiplier[this.characterClass]
-        this.hungerRate = this.hungerRate * hungerMultiplier[this.characterClass]
+        this.fatigueRate = this.fatigueRate * heroesConfig[this.characterClass][this.characterSpec].fMul
+        this.hungerRate = this.hungerRate * heroesConfig[this.characterClass][this.characterSpec].hMul
 
         this.updateStats()
     }
@@ -30,7 +30,7 @@ class Hero extends Character {
         this.dtpsP = this.getDtpsP(this.skill[4])
         this.dtpsM = this.getDtpsM(this.skill[5])
         this.dtps = (this.dtpsP + this.dtpsM)/2
-        this.speed = (4+this.skill[8])/4.65*movementSpeedMultiplier[this.characterClass]
+        this.speed = (4+this.skill[8])/4.65*heroesConfig[this.characterClass][this.characterSpec].speed
     }
 
 
@@ -59,59 +59,29 @@ class Hero extends Character {
     getSTDps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
-        let roleMultiplier = roleMultipliersDpsST[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersDpsST[this.characterClass]
-        } else if (this.role === "healer") {
-            specMultiplier = classHealerMultipliersDpsST[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersDpsST[this.characterClass]
-        }
+        let roleMultiplier = rolesConfig[this.role].dpsSt
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsSt
         return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
     getAOEDps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
-        let roleMultiplier = roleMultipliersDpsAOE[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersDpsAOE[this.characterClass]
-        } else if (this.role === "healer") {
-            specMultiplier = classHealerMultipliersDpsAOE[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersDpsAOE[this.characterClass]
-        }
+        let roleMultiplier =  rolesConfig[this.role].dpsAoe
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsAoe
         return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
     getSTHps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1
-        let roleMultiplier = roleMultipliersHpsST[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersHpsST[this.characterClass]
-        } else if (this.role === "healer") {
-            weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
-            specMultiplier = classHealerMultipliersHpsST[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersHpsST[this.characterClass]
-        }
+        let roleMultiplier =  rolesConfig[this.role].hpsSt
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsSt
         return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
     getAOEHps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1
-        let roleMultiplier = roleMultipliersHpsAOE[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersHpsAOE[this.characterClass]
-        } else if (this.role === "healer") {
-            weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
-            specMultiplier = classHealerMultipliersHpsAOE[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersHpsAOE[this.characterClass]
-        }
+        let roleMultiplier =  rolesConfig[this.role].hpsAoe
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
         return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
 
@@ -119,29 +89,15 @@ class Hero extends Character {
     getDtpsP(skill) {
         let base = 5 + (this.level * 0.2)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.5)
-        let roleMultiplier = roleMultipliersDtpsP[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersDtpsP[this.characterClass]
-        } else if (this.role === "healer") {
-            specMultiplier = classHealerMultipliersDtpsP[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersDtpsP[this.characterClass]
-        }
+        let roleMultiplier = rolesConfig[this.role].dtpsP
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsP
         return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
     }
     getDtpsM(skill) {
         let base = 5 + (this.level * 0.2)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.1)
-        let roleMultiplier = roleMultipliersDtpsM[this.role]
-        let specMultiplier = 1
-        if (this.role === "dps") {
-            specMultiplier = classDpsMultipliersDtpsM[this.characterClass]
-        } else if (this.role === "healer") {
-            specMultiplier = classHealerMultipliersDtpsM[this.characterClass]
-        } else if (this.role === "tank") {
-            specMultiplier = classTankMultipliersDtpsM[this.characterClass]
-        }
+        let roleMultiplier =  rolesConfig[this.role].dtpsM
+        let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM
         return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
     }
 
