@@ -173,7 +173,7 @@ function sortTable(sortKey,id) {
         currentSort.order = (currentSort.order === 'asc') ? 'desc' : 'asc'
     } else {
         currentSort.key = sortKey
-        currentSort.order = 'asc'
+        currentSort.order = 'desc'
     }
 
     rows.sort((rowA, rowB) => {

@@ -158,14 +158,16 @@ let open_statistics2 = function (reload = false, update = false) {
     }
 
     sortedClassNames.forEach(className => {
-        html += `<tr><td>${className}</td>`
+        let classColor = colors[className] || "#FFFFFF"
+        let bgColor = pSBC(0.55, classColor, "#111111")
+        html += `<tr style="background-color: ${bgColor}"><td style="position:relative">${className}<div class="gradientWow2"></div></td>`
 
         const count = classCounts[className]
-        html += `<td>${count > 0 ? count : ""}</td>`
+        html += `<td style="position:relative">${count > 0 ? count : ""}<div class="gradientWow2"></div></td>`
 
         allRoles.forEach(role => {
             const count = classRoleCounts[className]?.[role]
-            html += `<td>${count > 0 ? count : ""}</td>`
+            html += `<td style="position:relative">${count > 0 ? count : ""}<div class="gradientWow2"></div></td>`
         })
 
         allRoles.forEach(role => {
@@ -174,9 +176,9 @@ let open_statistics2 = function (reload = false, update = false) {
                 const avgDps = getNumberString(data.dps / data.count)
                 const avgSt = getNumberString(data.stDps / data.count)
                 const avgAoe = getNumberString(data.aoeDps / data.count)
-                html += `<td>${avgDps}</td><td>${avgSt}</td><td>${avgAoe}</td>`
+                html += `<td style="position:relative">${avgDps}<div class="gradientWow2"></div></td><td style="position:relative">${avgSt}<div class="gradientWow2"></div></td><td style="position:relative">${avgAoe}<div class="gradientWow2"></div></td>`
             } else {
-                html += `<td></td><td></td><td></td>`
+                html += `<td style="position:relative"><div class="gradientWow2"></div></td><td style="position:relative"><div class="gradientWow2"></div></td><td style="position:relative"><div class="gradientWow2"></div></td>`
             }
         })
 

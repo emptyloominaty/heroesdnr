@@ -163,6 +163,10 @@ tr:nth-child(odd) {
     background-color: var(--color4);
 }
 
+.heroListRow {
+    position:relative;
+}
+
 .statsHeader th:hover {
     background-color: var(--color4);
 }
@@ -184,6 +188,10 @@ tr:nth-child(odd) {
 
 .statistics_tr_row td {
     color: #eeeeee;
+    text-shadow: -1px -1px 1px rgba(0,0,0,0.8), 1px -1px 1px rgba(0,0,0,0.8), -1px 1px 1px #000, 1px 1px 1px rgba(0,0,0,0.8);
+}
+
+.windowBody {
     text-shadow: -1px -1px 1px rgba(0,0,0,0.8), 1px -1px 1px rgba(0,0,0,0.8), -1px 1px 1px #000, 1px 1px 1px rgba(0,0,0,0.8);
 }
 
