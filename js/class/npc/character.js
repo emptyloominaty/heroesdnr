@@ -17,6 +17,10 @@ class Character {
         food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: [], gold: 100
     }
 
+    rankPoints = "0"
+
+    log = []
+
     fatigue = 100 
     fatigueRate = 1.0
     sleepSpeed = 0.3
@@ -72,6 +76,7 @@ class Character {
 
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
+        this.addLog(messages.heroLog.joinTown())
         addToGrid(this)
     }
 
@@ -349,6 +354,8 @@ class Character {
     updateFriendship(fId, fVal) {
         if (this.friendships[fId] === undefined) {
             this.friendships[fId] = 0
+            this.addLog(messages.heroLog.newFriend(heroes[fId].name))
+            heroes[fId].addLog(messages.heroLog.newFriend(this.name))
         }
         let scaling = 1 - this.friendships[fId] / 100
         this.friendships[fId] += fVal * scaling
@@ -356,6 +363,13 @@ class Character {
             heroes[fId].friendships[this.id] = 0
         }
         heroes[fId].friendships[this.id] += fVal * scaling
+    }
+
+    addLog(message) {
+        this.log.push({ time: realtime, message:message})
+        if (this.log.length > settings.maxLogSize) {
+            this.log.shift()
+        }
     }
 
     createUI() {

@@ -4,5 +4,6 @@ let settings = {
     terrain: 0,
     lights: false,
     particleTimer: 0.025,
-    drawHeroNames: false
+    drawHeroNames: false,
+    maxLogSize: 50
 }

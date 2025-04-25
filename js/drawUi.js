@@ -12,7 +12,7 @@ function drawUi() {
     }
     elements["heroes"].textContent = heroes.length + "/" + heroesMax
 
-    let realtime = time +240
+    realtime = time + 240
     elements["time"].textContent = `${String(Math.floor((realtime % 720) / 30)).padStart(2, '0')}:${String(Math.floor((realtime % 30) * 2)).padStart(2, '0')} ${Math.floor(realtime / 720)}d`;
 
     windowsUpdate()

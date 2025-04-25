@@ -15,6 +15,7 @@ let colors = {
     "text":"#d1d1d1",
     "absorb":"#a4e9ff",
 
+    logTime: "#959511",
     roles: {
         /*tank: "#4A90E2",
         healer: "#7ED6A5",

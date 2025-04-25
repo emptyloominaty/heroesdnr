@@ -39,11 +39,16 @@ class Hero extends Character {
         this.statistics.goldEarned += val
     }
 
+    gainRankPoints(val) {
+        this.rankPoints += val
+    }
+
     gainXp(val) {
         this.xp += val
-        if (this.xp>=this.xpNeed) {
+        if (this.xp >= this.xpNeed) {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
+            let skillText = "" //TODO?
             for (let i = 0; i<this.skill.length; i++) {
                 if (Math.random()<0.04*(0.65/this.skill[i])) {
                     this.skill[i] += Math.random()*0.05
@@ -52,8 +57,9 @@ class Hero extends Character {
                 }
                 this.skill[i] = Math.max(0.1, Math.min(1, this.skill[i]))
             }
+            this.addLog(messages.heroLog.levelUp(this.level))
             this.updateStats()
-        }
+        } 
     }
 
     getSTDps(skill) {

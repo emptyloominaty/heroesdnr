@@ -24,13 +24,15 @@ let tanks = 0
 let heroesMax = 0
 
 
-buildings.push(new Inn({ x: 50, y: 45 },"Inn 1",1))
+buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 1))
 
 //TEST
 for (let i = 0; i<5; i++) {
     spawnHeroRandom(1)
 }
 
+
+let hourTimer = 0
 
 function update() {
     //input
@@ -51,7 +53,19 @@ function update() {
         characters[i].update()
     }
 
+    
 
+
+    hourTimer += progress
+    if (hourTimer > 30) {
+        hourTimer = 0
+        if (heroesMax > heroes.length) {
+            if (Math.random() > 1 * (heroes.length / heroesMax)) {
+                spawnHeroRandom()
+            }
+            
+        }
+    }
 
     gold2 = gold
     incomeI += progress

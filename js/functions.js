@@ -46,6 +46,10 @@ let getTime = function(number) {
     }
 }
 
+let getTime2 = function (number) {
+    return `${String(Math.floor((number % 720) / 30)).padStart(2, '0')}:${String(Math.floor((number % 30) * 2)).padStart(2, '0')} ${Math.floor(number / 720)}d`
+}
+
 function isMouseOverObject(obj) {
     let xx = obj.location.x - obj.size[0]/2
     let yy = obj.location.y - obj.size[1]/2

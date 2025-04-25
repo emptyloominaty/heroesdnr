@@ -1,3 +1,4 @@
+let realtime = 0
 let elements = {
     "gold": document.getElementById("gold"),
     "income": document.getElementById("income"),
@@ -25,4 +26,5 @@ let elements = {
     "window4": document.getElementById("window4"),
     "windowHeader4": document.getElementById("windowHeader4"),
     "windowBody4": document.getElementById("windowBody4"),
+    "canvasParticles": document.getElementById("canvasParticles"),
 }

@@ -67,7 +67,7 @@ let onMouseUpdate = function(e) {
     mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
 
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
-    if (el && el === document.body) {
+    if (el && (el === document.body || el === elements.canvasParticles)) {
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
         let nearbyObjects = []
         for (const cell of nearbyCells) {
@@ -92,7 +92,7 @@ setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)
     document.addEventListener("mousedown", function(e) {
         const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
-        if (el && el === document.body) {
+        if (el && (el === document.body || el === elements.canvasParticles)) {
             let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
             let nearbyObjects = []
             for (const cell of nearbyCells) {

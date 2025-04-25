@@ -41,6 +41,13 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
         elementsWindow.xp.textContent = getNumberString2(hero.xp)
         elementsWindow.xpNeed.textContent = getNumberString2(hero.xpNeed)
 
+        elementsWindow.age.textContent = Math.floor(hero.age)
+
+        elementsWindow.rankPoints.textContent = getNumberString2(hero.rankPoints)
+        elementsWindow.rank.textContent = getRank(hero.rankPoints)
+
+        elementsWindow.speed.textContent = Math.round(hero.speed * 100) / 100
+
         return
     }
     if (currentWindow[windowId] === "heroinfo" && !reload && !dontClose) {
@@ -55,11 +62,47 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
 
     html += "<div class='heroinfoText'></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Spec</th><th>Class</th></tr>"
+    html += `  
+    <tr>
+      <td id="hi_spec">${hero.characterSpec.charAt(0).toUpperCase() + hero.characterSpec.slice(1)}</td>
+      <td id="hi_class">${hero.characterClass}</td>
+    </tr>`
+    html += "</table></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Age</th><th>Sex</th></tr>"
+    html += `  
+    <tr>
+      <td id="hi_age">${Math.floor(hero.age)}</td>
+      <td id="hi_sex">${hero.sex.charAt(0).toUpperCase() + hero.sex.slice(1)}</td>
+    </tr>`
+    html += "</table></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Speed</th></tr>"
+    html += `  
+    <tr>
+      <td id="hi_speed">${Math.round(hero.speed*100)/100}</td>
+    </tr>`
+    html += "</table></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Friends</th></tr>"
+    html += `  
+    <tr>
+      <td id="hi_speed">${Object.keys(hero.friendships).length}</td>
+    </tr>`
+    html += "</table></div>"
+    html += "<span style='width:100%;'></span>" //next row
+
+    html += "<div class='heroinfoText'></div>"
     html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Xp</th><th>Next Level</th></tr>"
     html += `  
     <tr>
       <td id="hi_xp">${getNumberString2(hero.xp)}</td>
       <td id="hi_xpNeed">${getNumberString2(hero.xpNeed)}</td>
+    </tr>`
+    html += "</table></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Rank Points</th><th>Rank</th></tr>"
+    html += `  
+    <tr>
+      <td id="hi_rankPoints">${getNumberString2(hero.rankPoints)}</td>
+      <td id="hi_rank">${getRank(hero.rankPoints)}</td>
     </tr>`
     html += "</table></div>"
     html += "<span style='width:100%;'></span>" //next row
@@ -128,8 +171,15 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
 `
     html += "</table></div>"
+    html += "<span style='width:100%;'></span>" //next row
 
+    html += "<div class='heroinfoText'>Log</div>"
+    let logText = ""
 
+    for (let i = hero.log.length - 1; i >= 0; i--) {
+        logText += "<span style='color:"+colors.logTime+"'>"+getTime2(hero.log[i].time)+"</span>: "+hero.log[i].message+"<br>"
+    }
+    html += `<div class="hi_log" id="hi_log">${logText}</div> `
 
 
     //TODO:  statistics,
@@ -138,6 +188,8 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
     html += "</div>"
     elements["windowBody" + windowId].innerHTML = html
 
+    let col = window.getComputedStyle(elements["windowHeader" + windowId]).color
+    elements["windowHeader" + windowId].style.color = colors[hero.characterClass]
 
     elementsWindow.dpsAvg = document.getElementById("hi_dpsAvg")
     elementsWindow.dpsST = document.getElementById("hi_dpsST")
@@ -167,6 +219,18 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
     elementsWindow.xp = document.getElementById("hi_xp")
     elementsWindow.xpNeed = document.getElementById("hi_xpNeed")
+
+    elementsWindow.age = document.getElementById("hi_age")
+    elementsWindow.sex = document.getElementById("hi_sex")
+
+    elementsWindow.spec = document.getElementById("hi_spec")
+    elementsWindow.class = document.getElementById("hi_class")
+
+    elementsWindow.rank = document.getElementById("hi_rank")
+    elementsWindow.rankPoints = document.getElementById("hi_rankPoints")
+
+    elementsWindow.speed = document.getElementById("hi_speed")
+    elementsWindow.log = document.getElementById("hi_log")
 }
 
 
