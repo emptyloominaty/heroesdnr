@@ -53,8 +53,7 @@ function update() {
         characters[i].update()
     }
 
-    
-
+    dungeonController.update()
 
     hourTimer += progress
     if (hourTimer > 30) {

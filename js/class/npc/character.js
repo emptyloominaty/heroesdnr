@@ -55,6 +55,11 @@ class Character {
 
     friendships = {}
 
+    isInDungeon = false
+    goingToDungeon = false
+
+    canTalk = true
+
     constructor(name, age, level, health, characterClass, role, location,characterSpec) {
         this.name = name
         this.age = age
@@ -83,12 +88,26 @@ class Character {
 
 
     update() {
+        this.canTalk = !this.goingToDungeon || !this.isInDungeon || !this.goingToInn || this.status !== "Eating" || this.status !== "Sleeping"
+        if (this.isInDungeon) {
+            this.status = "In Dungeon"
+
+            return
+        }
+
         this.hunger -= progress * 0.12 * this.hungerRate
         this.fatigue -= progress * 0.08 * this.fatigueRate
 
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             this.atDestination = true
-            if (this.isTalking && this.status !== "Eating" && this.status !== "Sleeping") {
+            if (this.goingToDungeon) {
+                //TODO:
+                dungeonController.startSoloDungeon(this)
+                this.isInDungeon = true
+                this.goingToDungeon = false
+                return
+            }
+            if (this.isTalking && this.canTalk) {
                 this.status = "Talking"
                 this.wandering = false
                 if (this.talkingTimer <= 0) {
@@ -128,13 +147,16 @@ class Character {
                     if (this.idleTimer <= 0) {
                         let rng = Math.random()
 
+                        if (this.decideToGoToDungeon()) {
+                            return
+                        }
                         this.wandering = true
                         this.idleTimer = 5 + Math.random() * 5
                         this.waitTimer = 2 + Math.random() * 10
 
                         if (rng > (0.999 - this.sociability * (0.999 - 0.97)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
-                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].status!=="Eating" && heroes[rng2].status!=="Sleeping") {
+                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].canTalk) {
                                 let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
                                     angle += (Math.random() - 0.5) * 0.5
                                     let distance = 2 + Math.random() * 2
@@ -153,7 +175,7 @@ class Character {
                             }
                         } else if (rng > (0.995 - this.sociability * (0.995 - 0.95)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
-                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].status!=="Eating" && heroes[rng2].status!=="Sleeping") {
+                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].canTalk) {
                                 let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
                                 if (getDistance(this.location, heroes[rng2].location) > 20 + Math.random() * 20 * this.sociability) {
                                     angle += (Math.random() - 0.5) * 0.5
@@ -178,12 +200,12 @@ class Character {
                                     this.talkInc = 0
                                 }
                             }
-                        } else if (rng > (0.95 - this.sociability * (0.95 - 0.8)) - this.talkInc) {
+                        } else if (rng > (0.95 - this.sociability * (0.95 - 0.8)) - this.talkInc ) {
                             let heroKeys = Object.keys(this.friendships)
                             let rng2 = Math.floor(Math.random() * heroKeys.length)
                             let chosenKey = heroKeys[rng2]
                             let chosen = heroes[chosenKey]
-                            if (chosen !== undefined && chosen.inTown) {
+                            if (chosen !== undefined && chosen.inTown  && chosen.canTalk) {
                                 let angle = Math.atan2(chosen.location.y - this.location.y, chosen.location.x - this.location.x)
                                 if (getDistance(this.location, chosen.location) > 40 + Math.random()*40) {
                                     angle += (Math.random() - 0.5) * 0.5
@@ -335,7 +357,7 @@ class Character {
     }
 
     isHungry() {
-        return this.hunger < 30
+        return this.hunger < 25
     }
 
     getStatus() {
@@ -344,6 +366,17 @@ class Character {
         }
         return this.status
     }
+
+    decideToGoToDungeon() {
+        let rng = Math.random()
+        if (rng < 0.05) {
+            this.goingToDungeon = true
+            this.destination = {x:-500,y:30} //TEST
+            return true
+        }
+        return false
+    }
+
 
     updateDay() {
         if (this.age>this.maxAge) {
