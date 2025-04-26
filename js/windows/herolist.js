@@ -1,29 +1,121 @@
 let heroesListLength = 0
-let open_heroeslist = function (reload = false, update = false) {
+let heroesListTableMode = "default"
+let open_heroeslist = function (reload = false, update = false,renameTableHeader = false) {
     let windowId = 0
     if (update) {
         if (heroes.length===heroesListLength) {
-            for (let i = 0; i < heroes.length; i++) { //TODO:FIX
+            for (let i = 0; i < heroes.length; i++) {
                 let hero = heroes[i]
                 elementsWindow.hl_role[i].textContent = hero.role
                 elementsWindow.hl_class[i].textContent = hero.characterClass
                 elementsWindow.hl_name[i].textContent = hero.name
                 elementsWindow.hl_status[i].textContent = hero.getStatus()
-
-                elementsWindow.hl_level[i].textContent = hero.level
-                elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
-                elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
-                elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
                 elementsWindow.hl_age[i].textContent = Math.round(hero.age)
-                elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
-                elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
-                elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
-                elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
-                elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
+                elementsWindow.hl_level[i].textContent = hero.level
+
+                if (heroesListTableMode==="default") {
+                    elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
+                    elementsWindow.hl_hps[i].textContent = getNumberString(hero.hps)
+                    elementsWindow.hl_dtps[i].textContent = getNumberString(hero.dtps)
+                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
+                    elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
+                    elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
+                    elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
+                    elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
+                } else if (heroesListTableMode==="throughput") {
+                    elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
+                    elementsWindow.hl_hps[i].textContent = getNumberString(hero.stDps)
+                    elementsWindow.hl_dtps[i].textContent = getNumberString(hero.aoeDps)
+                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.hps)
+                    elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.stHps)
+                    elementsWindow.hl_hunger[i].textContent = getNumberString(hero.aoeHps)
+                    elementsWindow.hl_location[i].textContent = getNumberString(hero.dtpsM)
+                    elementsWindow.hl_destination[i].textContent = getNumberString(hero.dtpsP)
+                } else if (heroesListTableMode==="statistics") {
+                    elementsWindow.hl_dps[i].textContent = hero.statistics.dungeonSoloRuns
+                    elementsWindow.hl_hps[i].textContent = hero.statistics.dungeonGroupRuns
+                    elementsWindow.hl_dtps[i].textContent = hero.statistics.raidRuns
+                    elementsWindow.hl_gold[i].textContent = hero.statistics.questsCompleted
+                    elementsWindow.hl_fatigue[i].textContent = getNumberString2(hero.xp)
+                    elementsWindow.hl_hunger[i].textContent = getRank(hero.rankPoints)
+                    elementsWindow.hl_location[i].textContent = getNumberString2(hero.rankPoints)
+                    elementsWindow.hl_destination[i].textContent = Math.round(hero.speed*100)/100
+                } else if (heroesListTableMode==="inventory") {
+                    elementsWindow.hl_dps[i].textContent = ""
+                    elementsWindow.hl_hps[i].textContent = ""
+                    elementsWindow.hl_dtps[i].textContent = ""
+                    elementsWindow.hl_gold[i].textContent = ""
+                    elementsWindow.hl_fatigue[i].textContent = ""
+                    elementsWindow.hl_hunger[i].textContent = ""
+                    elementsWindow.hl_location[i].textContent = ""
+                    elementsWindow.hl_destination[i].textContent = ""
+                }
+
+
+
+                //TODO:Options:Default,Throughtput,Statistics  [+experience,+ rank, + rankpoints,,speed] [,+weaponlevel,+armorlevel]
 
                 }
             return
         }
+    }
+    if (renameTableHeader) {
+        /*
+            elementsWindow.hl_btn_default = document.getElementById("hl_btn_default")
+    elementsWindow.hl_btn_throughput = document.getElementById("hl_btn_throughput")
+    elementsWindow.hl_btn_statistics = document.getElementById("hl_btn_statistics")
+    elementsWindow.hl_btn_inventory = document.getElementById("hl_btn_inventory")
+         */
+        const buttons = [
+            elementsWindow.hl_btn_default,
+            elementsWindow.hl_btn_throughput,
+            elementsWindow.hl_btn_statistics,
+            elementsWindow.hl_btn_inventory
+        ]
+        buttons.forEach(button => button.classList.remove('button_activated'))
+
+        if (heroesListTableMode==="default") {
+            elementsWindow.hl_header1.textContent = "Dps"
+            elementsWindow.hl_header2.textContent = "Hps"
+            elementsWindow.hl_header3.textContent = "Dtps"
+            elementsWindow.hl_header4.textContent = "Gold"
+            elementsWindow.hl_header5.textContent = "Fatigue"
+            elementsWindow.hl_header6.textContent = "Hunger"
+            elementsWindow.hl_header7.textContent = "Location"
+            elementsWindow.hl_header8.textContent = "Destination"
+            elementsWindow.hl_btn_default.classList.add('button_activated')
+        } else if (heroesListTableMode==="throughput") {
+            elementsWindow.hl_header1.textContent = "DPS"
+            elementsWindow.hl_header2.textContent = "ST"
+            elementsWindow.hl_header3.textContent = "AOE"
+            elementsWindow.hl_header4.textContent = "HPS"
+            elementsWindow.hl_header5.textContent = "ST"
+            elementsWindow.hl_header6.textContent = "AOE"
+            elementsWindow.hl_header7.textContent = "DTPS M"
+            elementsWindow.hl_header8.textContent = "DTPS P"
+            elementsWindow.hl_btn_throughput.classList.add('button_activated')
+        } else if (heroesListTableMode==="statistics") {
+            elementsWindow.hl_header1.textContent = "D Solo"
+            elementsWindow.hl_header2.textContent = "D Group"
+            elementsWindow.hl_header3.textContent = "Raids"
+            elementsWindow.hl_header4.textContent = "Quests"
+            elementsWindow.hl_header5.textContent = "XP"
+            elementsWindow.hl_header6.textContent = "Rank"
+            elementsWindow.hl_header7.textContent = "Rank Points"
+            elementsWindow.hl_header8.textContent = "Speed"
+            elementsWindow.hl_btn_statistics.classList.add('button_activated')
+        } else if (heroesListTableMode==="inventory") {
+            elementsWindow.hl_header1.textContent = ""
+            elementsWindow.hl_header2.textContent = ""
+            elementsWindow.hl_header3.textContent = ""
+            elementsWindow.hl_header4.textContent = ""
+            elementsWindow.hl_header5.textContent = ""
+            elementsWindow.hl_header6.textContent = ""
+            elementsWindow.hl_header7.textContent = ""
+            elementsWindow.hl_header8.textContent = ""
+            elementsWindow.hl_btn_inventory.classList.add('button_activated')
+        }
+        return
     }
 
 
@@ -38,20 +130,68 @@ let open_heroeslist = function (reload = false, update = false) {
         elements["windowBody" + windowId].innerHTML = ""
     }
     currentWindow[windowId] = "heroeslist"
+
+
+
     let html = ""
-    html += "<div style='display:flex;justify-content: space-between;width:70vw;'>"
-    html += "<div style='overflow:auto;width:100%;'><table> <tr class='heroListFirstRow'><th>Role</th><th>Class</th><th>Name</th><th style='min-width: 150px' >Status</th><th>Level</th><th>Dps</th><th>Hps</th><th>Dtps</th><th>Gold</th><th>Fatigue</th><th>Hunger</th><th>Age</th><th>Location</th><th>Destination</th></tr> "
+    html += "<div style='display:flex; flex-wrap:wrap;width:100%;'>"
+    html += `<button class="button_activated" id="hl_btn_default" onclick="heroesListTableMode = 'default'; open_heroeslist(false,false,true)">Default</button>`
+    html += `<button id="hl_btn_throughput" onclick="heroesListTableMode = 'throughput'; open_heroeslist(false,false,true)">Throughput</button>`
+    html += `<button id="hl_btn_statistics" onclick="heroesListTableMode = 'statistics'; open_heroeslist(false,false,true)">Statistics</button>`
+    html += `<button id="hl_btn_inventory" onclick="heroesListTableMode = 'inventory'; open_heroeslist(false,false,true)">Inventory</button>`
+    html += "<span style='width:100%;'></span>" //next row
+
+    html += `<div style='overflow:auto;width:100%;'><table><tr class='heroListFirstRow'><th class="statsHeaderTh" onclick="sortTable('roleName',${windowId})" data-sortkey='roleName'>Role</th>
+        <th class="statsHeaderTh" onclick="sortTable('className',${windowId})" data-sortkey='className'>Class</th>
+        <th class="statsHeaderTh" onclick="sortTable('name',${windowId})" data-sortkey='name'>Name</th>
+        <th class="statsHeaderTh" onclick="sortTable('status',${windowId})" data-sortkey='status' style='min-width: 150px'>Status</th>    
+        <th class="statsHeaderTh" onclick="sortTable('level',${windowId})" data-sortkey='level'>Level</th>
+        
+        <th class="statsHeaderTh" id="hl_header1" onclick="sortTable('dps',${windowId})" data-sortkey='dps'>Dps</th>
+        <th class="statsHeaderTh" id="hl_header2" onclick="sortTable('hps',${windowId})" data-sortkey='hps'>Hps</th>
+        <th class="statsHeaderTh" id="hl_header3" onclick="sortTable('dtps',${windowId})" data-sortkey='dtps'>Dtps</th>
+        <th class="statsHeaderTh" id="hl_header4" onclick="sortTable('gold',${windowId})" data-sortkey='gold'>Gold</th>
+        <th class="statsHeaderTh" id="hl_header5" onclick="sortTable('fatigue',${windowId})" data-sortkey='fatigue'>Fatigue</th>
+        <th class="statsHeaderTh" id="hl_header6" onclick="sortTable('hunger',${windowId})" data-sortkey='hunger' >Hunger</th>
+        <th class="statsHeaderTh" id="hl_header7" onclick="sortTable('location',${windowId})" data-sortkey='location' >Location</th>
+        <th class="statsHeaderTh" id="hl_header8" onclick="sortTable('destination',${windowId})"data-sortkey='destination' >Destination</th>
+        
+        <th class="statsHeaderTh" onclick="sortTable('sex',${windowId})" data-sortkey='sex'>Sex</th>
+        <th class="statsHeaderTh" onclick="sortTable('age',${windowId})" data-sortkey='age'>Age</th></tr>`
     for (let i = 0; i < heroes.length; i++) {
         let hero = heroes[i]
         let classColor = colors[heroes[i].characterClass] || "#FFFFFF"
         let bgColor = pSBC(0.55, classColor, "#111111")
-
-        html += "<tr style='background-color: "+bgColor+"' class='heroListRow' onclick='open_heroinfo(false,false,"+i+")'><td id='hl_role"+i+"'>" + hero.role + "</td><td id='hl_class"+i+"'>" + hero.characterClass + "</td><td id='hl_name"+i+"'>>" + hero.name + "</td><td  id='hl_status"+i+"'>>" + hero.getStatus() + "</td><td id='hl_level"+i+"'>>" + hero.level + "</td><td id='hl_dps"+i+"'>>" + getNumberString(hero.dps) + "</td><td  id='hl_hps"+i+"'>" + getNumberString(hero.hps) + "</td><td id='hl_dtps"+i+"'>>" + getNumberString(hero.dtps) + "</td><td id='hl_gold"+i+"'>>" + getNumberString(hero.inventory.gold) + "</td><td id='hl_fatigue"+i+"'>" + Math.round(hero.fatigue) + "</td><td id='hl_hunger"+i+"'>" + Math.round(hero.hunger) + "</td><td  id='hl_age"+i+"'>" + Math.round(hero.age*10)/10 + "</td><td  id='hl_location"+i+"'>> " + Math.round(hero.location.x) + " - " + Math.round(hero.location.y) + "</td><td  id='hl_destination"+i+"'>> " + Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y) + "</td>   <td colspan='12' style='width: 100%;'><div class='gradientWow2'></div></td></tr >"
+        let roleColor = colors.roles[hero.role] || "#FFFFFF"
+        html += "<tr style='background-color: "+bgColor+"' class='heroListRow' onclick='open_heroinfo(false,false,"+i+")'>"+
+            "<td data-sortkey='roleName' id='hl_role"+i+"' style='color: "+roleColor+"'>" + hero.role + "</td><td data-sortkey='className' id='hl_class"+i+"'>" + hero.characterClass + "</td>"+
+            "<td data-sortkey='name' id='hl_name"+i+"'>>" + hero.name + "</td><td data-sortkey='status' id='hl_status"+i+"'>>" + hero.getStatus() + "</td>"+
+            "<td data-sortkey='level' id='hl_level"+i+"'>>" + hero.level + "</td><td data-sortkey='dps' id='hl_dps"+i+"'>>" + getNumberString(hero.dps) + "</td>"+
+            "<td data-sortkey='hps' id='hl_hps"+i+"'>" + getNumberString(hero.hps) + "</td><td data-sortkey='dtps' id='hl_dtps"+i+"'>>" + getNumberString(hero.dtps) + "</td>"+
+            "<td data-sortkey='gold' id='hl_gold"+i+"'>>" + getNumberString(hero.inventory.gold) + "</td><td data-sortkey='fatigue' id='hl_fatigue"+i+"'>" + Math.round(hero.fatigue) + "</td>"+
+            "<td data-sortkey='hunger' id='hl_hunger"+i+"'>" + Math.round(hero.hunger) + "</td>"+
+            "<td data-sortkey='location' id='hl_location"+i+"'>> " + Math.round(hero.location.x) + " - " + Math.round(hero.location.y) + "</td>"+
+            "<td data-sortkey='destination' id='hl_destination"+i+"'>> " + Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y) + "</td>"+
+            "<td data-sortkey='sex' id='hl_sex"+i+"'>" + hero.sex.charAt(0).toUpperCase() + "</td><td data-sortkey='age' id='hl_age"+i+"'>" + Math.round(hero.age*10)/10 + "</td><td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div class='gradientWow2'></div></td></tr>"
     }
     html += "</table></div>"
     html += "</div>"
     html += "</div>"
     elements["windowBody" + windowId].innerHTML = html
+
+    elementsWindow.hl_header1 = document.getElementById("hl_header1")
+    elementsWindow.hl_header2 = document.getElementById("hl_header2")
+    elementsWindow.hl_header3 = document.getElementById("hl_header3")
+    elementsWindow.hl_header4 = document.getElementById("hl_header4")
+    elementsWindow.hl_header5 = document.getElementById("hl_header5")
+    elementsWindow.hl_header6 = document.getElementById("hl_header6")
+    elementsWindow.hl_header7 = document.getElementById("hl_header7")
+    elementsWindow.hl_header8 = document.getElementById("hl_header8")
+
+    elementsWindow.hl_btn_default = document.getElementById("hl_btn_default")
+    elementsWindow.hl_btn_throughput = document.getElementById("hl_btn_throughput")
+    elementsWindow.hl_btn_statistics = document.getElementById("hl_btn_statistics")
+    elementsWindow.hl_btn_inventory = document.getElementById("hl_btn_inventory")
 
     elementsWindow.hl_role = []
     elementsWindow.hl_class = []

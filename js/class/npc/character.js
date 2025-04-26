@@ -88,11 +88,7 @@ class Character {
 
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             this.atDestination = true
-            if (this.needsSleep() || this.isHungry()) {
-                this.wandering = false
-                this.findInn()
-            }
-            if (this.isTalking) {
+            if (this.isTalking && this.status !== "Eating" && this.status !== "Sleeping") {
                 this.status = "Talking"
                 this.wandering = false
                 if (this.talkingTimer <= 0) {
@@ -106,6 +102,12 @@ class Character {
                     }
                 }
             }
+
+            if (this.needsSleep() || this.isHungry()) {
+                this.wandering = false
+                this.findInn()
+            }
+
             if (this.wandering) {
                 this.status = "Waiting"
                 if (this.waitTimer<=0) {
@@ -132,7 +134,7 @@ class Character {
 
                         if (rng > (0.999 - this.sociability * (0.999 - 0.97)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
-                            if (heroes[rng2].inTown && heroes[rng2] !== this) {
+                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].status!=="Eating" && heroes[rng2].status!=="Sleeping") {
                                 let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
                                     angle += (Math.random() - 0.5) * 0.5
                                     let distance = 2 + Math.random() * 2
@@ -151,7 +153,7 @@ class Character {
                             }
                         } else if (rng > (0.995 - this.sociability * (0.995 - 0.95)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
-                            if (heroes[rng2].inTown && heroes[rng2] !== this) {
+                            if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].status!=="Eating" && heroes[rng2].status!=="Sleeping") {
                                 let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
                                 if (getDistance(this.location, heroes[rng2].location) > 20 + Math.random() * 20 * this.sociability) {
                                     angle += (Math.random() - 0.5) * 0.5

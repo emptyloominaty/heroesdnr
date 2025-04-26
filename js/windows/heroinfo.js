@@ -69,11 +69,12 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
       <td id="hi_class">${hero.characterClass}</td>
     </tr>`
     html += "</table></div>"
-    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Age</th><th>Sex</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Age</th><th>Sex</th><th>Race</th></tr>"
     html += `  
     <tr>
       <td id="hi_age">${Math.floor(hero.age)}</td>
       <td id="hi_sex">${hero.sex.charAt(0).toUpperCase() + hero.sex.slice(1)}</td>
+      <td id="hi_race">${hero.race.charAt(0).toUpperCase() + hero.race.slice(1)}</td>
     </tr>`
     html += "</table></div>"
     html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Speed</th></tr>"
@@ -82,10 +83,23 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
       <td id="hi_speed">${Math.round(hero.speed*100)/100}</td>
     </tr>`
     html += "</table></div>"
-    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Friends</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Friends/Knowns/Enemies</th></tr>"
+    let friends = 0
+    let knownPeople = 0
+    let enemies = 0
+        Object.keys(hero.friendships).forEach(key => {
+            if (hero.friendships[key]>10) {
+                friends++
+            } else if (hero.friendships[key]<0) {
+                enemies++
+            } else {
+                knownPeople++
+            }
+        })
+    let strKnownPeople =  friends+"/"+knownPeople+"/"+enemies
     html += `  
     <tr>
-      <td id="hi_speed">${Object.keys(hero.friendships).length}</td>
+      <td id="hi_friends">${strKnownPeople}</td>
     </tr>`
     html += "</table></div>"
     html += "<span style='width:100%;'></span>" //next row
@@ -231,6 +245,7 @@ let open_heroinfo = function (reload = false, update = false, id = false) {
 
     elementsWindow.speed = document.getElementById("hi_speed")
     elementsWindow.log = document.getElementById("hi_log")
+    elementsWindow.friends = document.getElementById("hi_friends")
 }
 
 

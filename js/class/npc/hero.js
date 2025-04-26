@@ -5,7 +5,7 @@ class Hero extends Character {
     dps = 1
     hps = 0
     dtps = 0
-    statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 }
+    statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 , questsCompleted: 0}
     constructor(name, age, level, health, characterClass, role, location) {
         super(name, age, level, health, characterClass, role, location)
         characters.push(this)
@@ -93,14 +93,14 @@ class Hero extends Character {
 
 
     getDtpsP(skill) {
-        let base = 5 + (this.level * 0.2)
+        let base = 5 + (this.level * 1.5)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.5)
         let roleMultiplier = rolesConfig[this.role].dtpsP
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsP
         return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
     }
     getDtpsM(skill) {
-        let base = 5 + (this.level * 0.2)
+        let base = 5 + (this.level * 1.5)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.1)
         let roleMultiplier =  rolesConfig[this.role].dtpsM
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM

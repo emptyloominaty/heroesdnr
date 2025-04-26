@@ -88,3 +88,24 @@ canvas {
     top:0;
     left:0;
 }
+
+
+
+button {
+    background-color: rgba(255, 255, 255, 0);
+    font-size:0.72vw;
+    padding:2px 5px 2px 5px;
+    margin:0 3px 0 3px;
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    color:#FFF;
+}
+
+.button_activated {
+    border:1px solid rgba(255,255,255,1) ;
+    background-color: rgba(255, 255, 255, 0.2) ;
+}
+
+button:hover {
+    background-color: #444144;
+}

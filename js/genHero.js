@@ -12,7 +12,7 @@ let spawnHeroRandom = function(level = 1) {
 
     let name = ""
     if (sex==="male") { //TODO: A,B,C=hero0-...
-        name = "Hero "+globalCharId+" M"
+        name = "Hero "+globalCharId
         /*if (moidFirstNames.length !==0) {
             let rng = Math.floor(Math.random() * moidFirstNames.length)
             name = moidFirstNames.splice(rng,1)[0]
@@ -20,7 +20,7 @@ let spawnHeroRandom = function(level = 1) {
             //name = moidFirstNames2[Math.floor(Math.random() * moidFirstNames2.length)]+" "+surnames[Math.floor(Math.random() * surnames.length)]
         //}
     } else {
-        name = "Hero "+globalCharId+" F"
+        name = "Hero "+globalCharId
         /*if (foidFirstNames.length !==0) {
             let rng = Math.floor(Math.random() * foidFirstNames.length)
             name = foidFirstNames.splice(rng,1)[0]

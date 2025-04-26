@@ -14,12 +14,8 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
     }
     if (resetColors) {
         elementsWindow.btn_heatMode.textContent = `HeatMap: ${heatMapcolorMode ? 'ON' : 'OFF'}`
-
-   
         const tds = elements["windowBody" + windowId].querySelectorAll("div > div > table > tbody > tr > td")
         tds.forEach(td => td.classList.toggle("no-heatmap-bg"))
-        console.log(tds)
-
         return
     }
 
@@ -33,7 +29,7 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
     let html = ""
     html += "<div class='statistics' style='display:flex;width:80vw; flex-wrap:wrap;'>"
 
-    html += `<button id="btn_heatMode" onclick="heatMapcolorMode = !heatMapcolorMode; open_statistics(false,false,true,true)">HeatMap: ${heatMapcolorMode ? 'ON' : 'OFF'}</button>`
+    html += `<button id="btn_heatMode" onclick="heatMapcolorMode = !heatMapcolorMode; open_statistics(false,false,true)">HeatMap: ${heatMapcolorMode ? 'ON' : 'OFF'}</button>`
 
     
     html += "<span style='width:100%;'></span>" //next row
@@ -98,7 +94,7 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
     <th class="statsHeaderTh" onclick="sortTable('dtps',2)" data-sortkey="dtps">DTPS</th>
     <th class="statsHeaderTh" onclick="sortTable('dtpsM',2)" data-sortkey="dtpsM">DTPS (M)</th>
     <th class="statsHeaderTh" onclick="sortTable('dtpsP',2)" data-sortkey="dtpsP">DTPS (P)</th>
-        <th class="statsHeaderTh" onclick="sortTable('ms',2)" data-sortkey="ms">Speed</th>
+    <th class="statsHeaderTh" onclick="sortTable('ms',2)" data-sortkey="ms">Speed</th>
 </tr>`
 //----------------
     const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms"]
@@ -123,8 +119,6 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
         let classColor = colors[classText] || "#FFFFFF"
         let roleColor = colors.roles[data.role] || "#FFFFFF"
         let bgColor = pSBC(0.55, classColor, "#111111")
-
-
 
         html += `<tr class="statistics_tr_row" style="background-color:${bgColor}">
         <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
@@ -158,33 +152,31 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
 }
 
 
-let currentSort = {
-    key: null, 
-    order: 'asc',
+let currentSort = []
+for (let i = 0; i<16; i++) {
+    currentSort.push({key: null,order: 'asc'})
 }
 
 function sortTable(sortKey,id) {
     const table = elements["windowBody" + id].querySelector("div > div table tbody")
-
-
     const rows = Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
 
-    if (currentSort.key === sortKey) {
-        currentSort.order = (currentSort.order === 'asc') ? 'desc' : 'asc'
+    if (currentSort[id].key === sortKey) {
+        currentSort[id].order = (currentSort[id].order === 'asc') ? 'desc' : 'asc'
     } else {
-        currentSort.key = sortKey
-        currentSort.order = 'desc'
+        currentSort[id].key = sortKey
+        currentSort[id].order = 'desc'
     }
 
     rows.sort((rowA, rowB) => {
         const cellA = rowA.querySelector(`[data-sortkey="${sortKey}"]`).textContent.trim()
         const cellB = rowB.querySelector(`[data-sortkey="${sortKey}"]`).textContent.trim()
 
-        const valA = parseFloat(cellA) || cellA
-        const valB = parseFloat(cellB) || cellB
+        const valA = parseSortableValue(cellA)
+        const valB = parseSortableValue(cellB)
 
-        if (valA < valB) return currentSort.order === 'asc' ? -1 : 1
-        if (valA > valB) return currentSort.order === 'asc' ? 1 : -1
+        if (valA < valB) return currentSort[id].order === 'asc' ? -1 : 1
+        if (valA > valB) return currentSort[id].order === 'asc' ? 1 : -1
         return 0
     })
 
@@ -201,6 +193,22 @@ function updateHeaderSort(sortKey) {
         sortedHeader.classList.add('statsHeaderThSort')
     }
 }
+
+function parseSortableValue(str) {
+    str = str.trim().toLowerCase()
+    if (/^\d+(\.\d+)?[kmb]?$/.test(str)) {
+        if (str.endsWith('k')) {
+            return parseFloat(str) * 1000
+        } else if (str.endsWith('m')) {
+            return parseFloat(str) * 1000000
+        } else if (str.endsWith('b')) {
+            return parseFloat(str) * 1000000000
+        }
+        return parseFloat(str)
+    }
+    return str
+}
+
 
 
 //----------------

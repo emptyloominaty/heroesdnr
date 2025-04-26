@@ -1,13 +1,15 @@
 let zoomScroll = function (event) {
-    //event.preventDefault()
-    let val = event.deltaY * -0.001 * zoom
-    zoom += val
-    if (zoom < 1.0) {
-        zoom = 1.0
-    } else if (zoom > 6.25) { 
-        zoom = 6.25 
+    const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
+    if (el && (el === document.body || el === elements.canvasParticles)) {
+        //event.preventDefault()
+        let val = event.deltaY * -0.001 * zoom
+        zoom += val
+        if (zoom < 1.0) {
+            zoom = 1.0
+        } else if (zoom > 6.25) {
+            zoom = 6.25
+        }
     }
-
 }
 let keys = {}
 
