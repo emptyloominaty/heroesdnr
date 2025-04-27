@@ -88,10 +88,9 @@ class Character {
 
 
     update() {
-        this.canTalk = !this.goingToDungeon || !this.isInDungeon || !this.goingToInn || this.status !== "Eating" || this.status !== "Sleeping"
+        this.canTalk = !this.goingToDungeon && !this.isInDungeon && !this.goingToInn && this.status !== "Eating" && this.status !== "Sleeping"
         if (this.isInDungeon) {
             this.status = "In Dungeon"
-
             return
         }
 
@@ -102,7 +101,7 @@ class Character {
             this.atDestination = true
             if (this.goingToDungeon) {
                 //TODO:
-                dungeonController.startSoloDungeon(this)
+                dungeonController.startSoloDungeon([this])
                 this.isInDungeon = true
                 this.goingToDungeon = false
                 return

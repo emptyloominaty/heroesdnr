@@ -4,18 +4,17 @@ class DungeonController {
     location = {x: -500,y: 30}
     maxHistory = 100
 
-    startSoloDungeon(hero) {
+    startSoloDungeon(heroes) {
         let timer = 20 //TODO
-        this.currentRuns.push({type:"solo",heroes:[hero],stage:0, dungeon:this.generateDungeon("solo",1)})
+        this.currentRuns.push({type:"solo",heroes:heroes,stage:0, dungeon:this.generateDungeon("solo",1)})
     }
 
     startGroupDungeon(heroes) {
         let timer = 20 //TODO
-        this.currentRuns.push({type:"group",heroes:[heroes]})
+        this.currentRuns.push({type:"group",heroes:heroes})
     }
 
     endDungeon(heroes,type) {
-        //TODO: chance - fail, critical fail, death, escape, success
         if (type==="solo") {
         }
     }
@@ -23,11 +22,10 @@ class DungeonController {
     finishStage(run) {
         let stage = run.dungeon.stages[run.stage]
         if (run.type==="solo") {
-            let dpsSt = run.heroes[0].dpsSt
-            let dpsAoe = run.heroes[0].dpsAoe
-            let dtpsM = run.heroes[0].dtpsM + run.heroes[0].hpsSt
-            let dtpsP = run.heroes[0].dtpsP + run.heroes[0].hpsSt
-
+            let dpsSt = run.heroes[0].stDps
+            let dpsAoe = run.heroes[0].aoeDps
+            let dtpsM = run.heroes[0].dtpsM + run.heroes[0].stHps
+            let dtpsP = run.heroes[0].dtpsP + run.heroes[0].stHps
             let escapeChance = 0
             let criticalFailureChance = 0
             let dpsSuccess = false
@@ -53,9 +51,9 @@ class DungeonController {
             if (dtpsChance>rng) {
                 dtpsSuccess = true
             }
-            if (dpsSuccess && dtpsSuccess) {
-                run.heroes[0].gainGold(run.rewards.gold)
-                run.heroes[0].gainXp(run.rewards.xp)
+            if (dpsSuccess && dtpsSuccess) { //TODO:stage rewards run.reward.gold = finish run reward
+                run.heroes[0].gainGold(run.dungeon.rewards.gold)
+                run.heroes[0].gainXp(run.dungeon.rewards.xp)
             } else {
                 let dpsDeficit = Math.max(0, stage.dpsReq - dpsChance * stage.dpsReq)
                 let dtpsDeficit = Math.max(0, stage.dtpsReq - dtpsChance * stage.dtpsReq)
@@ -83,14 +81,16 @@ class DungeonController {
 
     update() {
         for (let i = 0; i<this.currentRuns.length; i++) {
+
             let stages = this.currentRuns[i].dungeon.stages
-                if (stages[this.currentRuns[i].stage].timer > 0) { //TODO:FIX?
+                if (stages[this.currentRuns[i].stage].timer > 0) {
                    stages[this.currentRuns[i].stage].timer -= progress
                 } else {
                   if (stages.length>this.currentRuns[i].stage) {
+
                       this.finishStage(this.currentRuns[i])
                       this.currentRuns[i].stage++
-                      //??????????????
+
                       if (stages.length===this.currentRuns[i].stage) {
                           this.endDungeon(this.currentRuns[i].heroes, this.currentRuns[i].type)
                           for (let j = 0; j < this.currentRuns[i].heroes.length; j++) {
@@ -99,7 +99,7 @@ class DungeonController {
                               this.currentRuns[i].heroes[j].status = ""
                           }
                           this.runsHistory.push(this.currentRuns[i])
-                          this.runsHistory.splice(i, 1)
+                          this.currentRuns.splice(i, 1)
                           i--
                           if (this.runsHistory.length > this.maxHistory) {
                               this.runsHistory.shift()
@@ -126,8 +126,8 @@ class DungeonController {
             })
         }*/
 
-        let stages = [{dpsReq:10*difficulty,enemies:"aoe",dtpsReq:4*difficulty,damageType: "physical",timer:10*(Math.random()*5)},
-            {dpsReq:100*difficulty,enemies:"st",dtpsReq:5*difficulty,damageType: "magic",timer:10*(Math.random()*5)}]
+        let stages = [{dpsReq:10*difficulty,enemies:"aoe",dtpsReq:1*difficulty,damageType: "physical",timer:10*(Math.random()*5)},
+            {dpsReq:100*difficulty,enemies:"st",dtpsReq:2*difficulty,damageType: "magic",timer:10*(Math.random()*5)}]
         let rewards = {gold:Math.round(10+(Math.random()*50*difficulty)),xp: Math.round(10+(Math.random()*50*difficulty))} //TODO:items
         return {stages:stages,rewards:rewards}
     }
