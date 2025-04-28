@@ -16,6 +16,13 @@ let colors = {
     "absorb":"#a4e9ff",
 
     logTime: "#959511",
+    log: {
+        levelUp: "#ffff44",
+        success: "#79ff64",
+        failure: "#ff7373",
+        friend: "#a6f1ff",
+    },
+
     roles: {
         /*tank: "#4A90E2",
         healer: "#7ED6A5",

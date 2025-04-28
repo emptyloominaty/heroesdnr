@@ -53,7 +53,10 @@ function update() {
         characters[i].update()
     }
 
-    dungeonController.update()
+    for (let i = 0; i < dungeonControllers.length; i++) {
+        dungeonControllers[i].update()
+    }
+
 
     hourTimer += progress
     if (hourTimer > 30) {

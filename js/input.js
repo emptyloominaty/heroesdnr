@@ -105,9 +105,9 @@ setTimeout( ()=> {
             for (let obj of nearbyObjects) {
                 if (isMouseOverObject(obj)) {
                     if (obj instanceof Character ) {
-                        open_heroinfo(false, false, obj.id)
+                        open_heroinfo(undefined,false, false, obj.id)
                     } else if (obj instanceof Building) {
-                        open_buildinginfo(false, false, obj.id)
+                        open_buildinginfo(undefined,false, false, obj.id)
                     }
                     return
                 }

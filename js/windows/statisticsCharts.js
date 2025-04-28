@@ -4,7 +4,7 @@ let open_statisticsCharts = function (btn_el = undefined, reload = false, update
     let dontClose = false
     if (!reload) {
         open_window(windowId, btn_el)
-        drawHeader("Statistics", windowId)
+        drawHeader("Statistics", windowId,btn_el)
     }
     if (update) {
       //TODO:

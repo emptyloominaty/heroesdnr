@@ -19,8 +19,8 @@ let open_window = function (w = 0,el = undefined) {
 let elementsWindow = {}
 let currentWindow = ["", "", "", "", "", "", "", "", ""]
 
-let drawHeader = function(name, w = 0) {
-    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window("+w+")'>x</div></div>"
+let drawHeader = function(name, w = 0, el = undefined) {
+    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window("+w+","+el+")'>x</div></div>"
 }
 
 
@@ -32,8 +32,8 @@ let windowsUpdate = function () {
             open_heroeslist(undefined,true,true)
         } else if (currentWindow[i] === "heroinfo") {
             open_heroinfo(undefined,true,true)
-        } else if (currentWindow[i] === "heroeslistDebug") {
-            open_heroeslistDebug(undefined,true,true)
+        } else if (currentWindow[i] === "dungeonlist") {
+            open_dungeonlist(undefined,true,true)
         } else if (currentWindow[i] === "buildinginfo") {
             open_buildinginfo(undefined,true,true)
         }

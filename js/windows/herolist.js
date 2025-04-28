@@ -32,19 +32,19 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_location[i].textContent = getNumberString(hero.dtpsM)
                     elementsWindow.hl_destination[i].textContent = getNumberString(hero.dtpsP)
                 } else if (heroesListTableMode==="statistics") {
-                    elementsWindow.hl_dps[i].textContent = hero.statistics.dungeonSoloRuns
-                    elementsWindow.hl_hps[i].textContent = hero.statistics.dungeonGroupRuns
-                    elementsWindow.hl_dtps[i].textContent = hero.statistics.raidRuns
+                    elementsWindow.hl_dps[i].textContent = hero.statistics.dungeonSoloRuns.success
+                    elementsWindow.hl_hps[i].textContent = hero.statistics.dungeonGroupRuns.success
+                    elementsWindow.hl_dtps[i].textContent = hero.statistics.raidRuns.success
                     elementsWindow.hl_gold[i].textContent = hero.statistics.questsCompleted
-                    elementsWindow.hl_fatigue[i].textContent = getNumberString2(hero.xp)
+                    elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.xp)
                     elementsWindow.hl_hunger[i].textContent = getRank(hero.rankPoints)
-                    elementsWindow.hl_location[i].textContent = getNumberString2(hero.rankPoints)
+                    elementsWindow.hl_location[i].textContent = getNumberString(hero.rankPoints)
                     elementsWindow.hl_destination[i].textContent = Math.round(hero.speed*100)/100
                 } else if (heroesListTableMode==="inventory") {
-                    elementsWindow.hl_dps[i].textContent = ""
-                    elementsWindow.hl_hps[i].textContent = ""
+                    elementsWindow.hl_dps[i].textContent = hero.inventory.weaponLevel
+                    elementsWindow.hl_hps[i].textContent = hero.inventory.armorLevel
                     elementsWindow.hl_dtps[i].textContent = ""
-                    elementsWindow.hl_gold[i].textContent = ""
+                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
                     elementsWindow.hl_fatigue[i].textContent = ""
                     elementsWindow.hl_hunger[i].textContent = ""
                     elementsWindow.hl_location[i].textContent = ""
@@ -54,7 +54,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_hps[i].textContent = Math.round(hero.idleTimer * 10) / 10
                     elementsWindow.hl_dtps[i].textContent = Math.round(hero.waitTimer * 10) / 10
                     elementsWindow.hl_age[i].textContent = Math.round(hero.age * 10) / 10
-                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
+                    elementsWindow.hl_gold[i].textContent = hero.statistics.dungeonSoloRuns.success + "/" + hero.statistics.dungeonSoloRuns.escape + "/" + hero.statistics.dungeonSoloRuns.failure + "/"+hero.statistics.dungeonSoloRuns.criticalFailure
                     elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
                     elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
                     elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
@@ -107,10 +107,10 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             elementsWindow.hl_header8.textContent = "Speed"
             elementsWindow.hl_btn_statistics.classList.add('button_activated')
         } else if (heroesListTableMode==="inventory") {
-            elementsWindow.hl_header1.textContent = ""
-            elementsWindow.hl_header2.textContent = ""
+            elementsWindow.hl_header1.textContent = "Weapon Level"
+            elementsWindow.hl_header2.textContent = "Armor Level"
             elementsWindow.hl_header3.textContent = ""
-            elementsWindow.hl_header4.textContent = ""
+            elementsWindow.hl_header4.textContent = "Gold"
             elementsWindow.hl_header5.textContent = ""
             elementsWindow.hl_header6.textContent = ""
             elementsWindow.hl_header7.textContent = ""
@@ -120,7 +120,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             elementsWindow.hl_header1.textContent = "T Timer"
             elementsWindow.hl_header2.textContent = "I Timer"
             elementsWindow.hl_header3.textContent = "W Timer"
-            elementsWindow.hl_header4.textContent = ""
+            elementsWindow.hl_header4.textContent = "Solo: S/E/F/CF"
             elementsWindow.hl_header5.textContent = ""
             elementsWindow.hl_header6.textContent = ""
             elementsWindow.hl_header7.textContent = "Location"
@@ -133,7 +133,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
 
     if (!reload) {
         open_window(windowId, btn_el)
-        drawHeader("List of Heroes", windowId)
+        drawHeader("List of Heroes", windowId,btn_el)
     }
     if (currentWindow[windowId] === "heroeslist" && !reload) {
         close_window(windowId, btn_el)
@@ -186,7 +186,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             "<td data-sortkey='hunger' id='hl_hunger"+i+"'>" + Math.round(hero.hunger) + "</td>"+
             "<td data-sortkey='location' id='hl_location"+i+"'>> " + Math.round(hero.location.x) + " - " + Math.round(hero.location.y) + "</td>"+
             "<td data-sortkey='destination' id='hl_destination"+i+"'>> " + Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y) + "</td>"+
-            "<td data-sortkey='sex' id='hl_sex"+i+"'>" + hero.sex.charAt(0).toUpperCase() + "</td><td data-sortkey='age' id='hl_age"+i+"'>" + Math.round(hero.age*10)/10 + "</td><td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div class='gradientWow2'></div></td></tr>"
+            "<td data-sortkey='sex' id='hl_sex"+i+"'>" + hero.sex.charAt(0).toUpperCase() + "</td><td data-sortkey='age' id='hl_age"+i+"'>" + Math.floor(hero.age*10)/10 + "</td><td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div class='gradientWow2'></div></td></tr>"
     }
     html += "</table></div>"
     html += "</div>"
@@ -239,5 +239,6 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
         elementsWindow.hl_destination.push(document.getElementById("hl_destination"+i))
     }
     heroesListLength = heroes.length
+    open_heroeslist(undefined,false,false,true)
 }
 

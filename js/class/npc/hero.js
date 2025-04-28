@@ -5,7 +5,7 @@ class Hero extends Character {
     dps = 1
     hps = 0
     dtps = 0
-    statistics = {dungeonSoloRuns: 0, dungeonGroupRuns: 0, raidRuns:0, goldEarned:0 , questsCompleted: 0}
+    statistics = {dungeonSoloRuns: {success:0, escape:0, failure:0, criticalFailure:0}, dungeonGroupRuns: {success:0, escape:0, failure:0, criticalFailure:0}, raidRuns: {success:0, escape:0, failure:0, criticalFailure:0}, goldEarned:0 , questsCompleted: 0}
     constructor(name, age, level, health, characterClass, role, location) {
         super(name, age, level, health, characterClass, role, location)
         characters.push(this)
@@ -35,12 +35,15 @@ class Hero extends Character {
 
 
     gainGold(val) {
-        this.inventory.gold += val
-        this.statistics.goldEarned += val
+        this.inventory.gold += Number(val)
+        this.statistics.goldEarned += Number(val)
     }
 
     gainRankPoints(val) {
-        this.rankPoints += val
+        this.rankPoints += Number(val)
+        if (this.rankPoints<0) {
+            this.rankPoints = 0
+        }
     }
 
     gainXp(val) {

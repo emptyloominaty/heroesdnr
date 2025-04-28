@@ -3,9 +3,13 @@ class DungeonController {
     runsHistory = []
     location = {x: -500,y: 30}
     maxHistory = 100
+    name = "Dungeon"
+    runCount =  {success:0, escape:0, failure:0, criticalFailure: 0, total:0}
 
-    startSoloDungeon(heroes) {
-        let timer = 20 //TODO
+    minlvl = 1
+    maxlvl = 10
+
+    startDungeon(heroes,type = "solo") {
         let dungeonSpeed = 1
         let c = 0
         for (let i = 0; i < heroes.length; i++) {
@@ -13,22 +17,49 @@ class DungeonController {
         }
         dungeonSpeed = c/heroes.length
         
-        this.currentRuns.push({type: "solo", heroes: heroes, stage: 0, dungeon: this.generateDungeon("solo", 1), log: [], dungeonSpeed: dungeonSpeed})
+        this.currentRuns.push({type: type, heroes: heroes, stage: 0, dungeon: this.generateDungeon(type, 1), log: [], dungeonSpeed: dungeonSpeed})
+        let run = this.currentRuns[this.currentRuns.length-1]
+        this.updateStagesSpeed(run)
+
     }
 
-    startGroupDungeon(heroes) {
-        let timer = 20 //TODO
-        this.currentRuns.push({type: "group",heroes: heroes,log: []})
+    updateStagesSpeed(run) {
+        for (let a = 0; a<run.dungeon.stages.length; a++) {
+            let dps = 0
+            for (let i = 0; i < run.heroes.length; i++) {
+                if (run.dungeon.stages[a].enemies === "aoe") {
+                    dps += run.heroes[i].aoeDps
+                } else if (run.dungeon.stages[a].enemies === "st") {
+                    dps += run.heroes[i].stDps
+                }
+            }
+            run.dungeon.stages.stageSpeed = 0.25 + (dps / run.dungeon.stages[a].dpsReq)
+        }
     }
 
-    endDungeon(heroes,type,run) {
-        for(let i=0;i<heroes.length;i++) {
+
+    endDungeon(heroes,type,run,fail) {
+        this.runCount.total++
+        if (fail) {
+            return
+        }
+        this.runCount.success++
+        for (let i=0; i<heroes.length; i++) {
             heroes[i].gainGold(run.dungeon.rewards.gold)
             heroes[i].gainXp(run.dungeon.rewards.xp)
+            heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints)
+            if (type==="solo") {
+                heroes[i].statistics.dungeonSoloRuns.success++
+                heroes[i].addLog(messages.heroLog.dungeonSuccess("dungeon"))
+            } else if (type==="group") {
+                heroes[i].statistics.dungeonGroupRuns.success++
+                heroes[i].addLog(messages.heroLog.dungeonGroupSuccess("dungeon"))
+            }
         }
     }
 
     finishStage(run) {
+        let type = run.type
         let stage = run.dungeon.stages[run.stage]
         let escapeChance = 0
         let criticalFailureChance = 0
@@ -63,8 +94,6 @@ class DungeonController {
             dtpsM = run.heroes[0].dtpsM + run.heroes[0].stHps
             dtpsP = run.heroes[0].dtpsP + run.heroes[0].stHps
 
-            _dps
-            _dtps
             _dpsNeeded = stage.dpsReq
             _dtpsNeeded = stage.dtpsReq
 
@@ -109,9 +138,8 @@ class DungeonController {
             if (dpsDeficit > 0) {
                 dtpsNeededMultiplier = dtpsMultiplier * (1 + dpsMissingRatio)
             } else {
-                dtpsNeededMultiplier = dtpsMultiplier;
+                dtpsNeededMultiplier = dtpsMultiplier
             }
-
 
             _dpsNeeded = _dpsNeeded * dpsNeededMultiplier
             _dtpsNeeded = _dtpsNeeded * dtpsNeededMultiplier
@@ -131,17 +159,26 @@ class DungeonController {
                 stageResult = "Success"
             } else {
                 escapeChance = Math.min(1, 0.3 + (1 - dpsDeficit / stage.dpsReq) * 0.2 + (1 - dtpsDeficit / stage.dtpsReq) * 0.2)
-                criticalFailureChance = Math.min(1, 0.4 + (dpsDeficit / stage.dpsReq) * 0.4 + (dtpsDeficit / stage.dtpsReq) * 0.4)
+                criticalFailureChance = Math.min(1, 0.1 + (dpsDeficit / stage.dpsReq) * 0.4 + (dtpsDeficit / stage.dtpsReq) * 0.4)
 
                 escapeSuccess = Math.random() < escapeChance
                 criticalFailure = Math.random() < criticalFailureChance
 
                 if (escapeSuccess) {
-                    stageResult = "Escape" //TODO: end dungeon
+                    stageResult = "Escape"
+                    run.heroes[0].statistics.dungeonSoloRuns.escape++
+                    run.heroes[0].gainRankPoints(run.dungeon.rewards.rankPoints/10)
+                    this.runCount.escape++
                 } else if (criticalFailure) {
-                    stageResult = "Critical failure" //TODO: end dungeon,  -skill,  50% death
+                    stageResult = "Critical failure" //TODO: -skill,  50% death
+                    run.heroes[0].statistics.dungeonSoloRuns.criticalFailure++
+                    run.heroes[0].gainRankPoints(run.dungeon.rewards.rankPoints/5)
+                    this.runCount.criticalFailure++
                 } else {
-                    stageResult = "Failure" //TODO: end dungeon, -skill
+                    stageResult = "Failure" //TODO: -skill
+                    run.heroes[0].statistics.dungeonSoloRuns.failure++
+                    run.heroes[0].gainRankPoints(run.dungeon.rewards.rankPoints/2)
+                    this.runCount.failure++
                 }
             }
         }
@@ -161,19 +198,21 @@ class DungeonController {
 
     update() {
         for (let i = 0; i<this.currentRuns.length; i++) {
-
             let stages = this.currentRuns[i].dungeon.stages
                 if (stages[this.currentRuns[i].stage].timer > 0) {
-                    stages[this.currentRuns[i].stage].timer -= progress * this.currentRuns[i].dungeonSpeed
+                    stages[this.currentRuns[i].stage].timer -= progress * this.currentRuns[i].dungeonSpeed * stages[this.currentRuns[i].stage].stageSpeed
                 } else {
                   if (stages.length>this.currentRuns[i].stage) {
-
                       let log = this.finishStage(this.currentRuns[i])
                       this.currentRuns[i].log.push(log)
                       this.currentRuns[i].stage++
-
+                      let fail = false
+                      if (log.stageResult === "Escape" || log.stageResult === "Critical failure" || log.stageResult === "Failure") {
+                          this.currentRuns[i].stage = stages.length
+                          fail = true
+                      }
                       if (stages.length===this.currentRuns[i].stage) {
-                          this.endDungeon(this.currentRuns[i].heroes,this.currentRuns[i].type,this.currentRuns[i])
+                          this.endDungeon(this.currentRuns[i].heroes,this.currentRuns[i].type,this.currentRuns[i],fail)
                           for (let j = 0; j < this.currentRuns[i].heroes.length; j++) {
 
                               this.currentRuns[i].heroes[j].isInDungeon = false
@@ -207,12 +246,12 @@ class DungeonController {
             })
         }*/
 
-        let stages = [{dpsReq:4*difficulty,enemies:"aoe",dtpsReq:1*difficulty,damageType: "physical",timer:10*(Math.random()*5),reward:{gold:Math.round(10+(Math.random()*50*difficulty)),xp:Math.round(10+(Math.random()*50*difficulty))}},
-            {dpsReq:6*difficulty,enemies:"st",dtpsReq:2*difficulty,damageType: "magic",timer:10*(Math.random()*5),reward:{gold:Math.round(10+(Math.random()*50*difficulty)),xp:Math.round(10+(Math.random()*50*difficulty))},}]
-        let rewards = {gold:Math.round(10+(Math.random()*50*difficulty)),xp: Math.round(10+(Math.random()*50*difficulty))} //TODO:items
+        let stages = [{dpsReq:4*difficulty,enemies:"aoe",dtpsReq:1*difficulty,damageType: "physical",stageSpeed:1,timer:30*(Math.random()*20),reward:{gold:Math.round(10+(Math.random()*10*difficulty)),xp:Math.round(10+(Math.random()*10*difficulty))}},
+            {dpsReq:6*difficulty,enemies:"st",dtpsReq:2*difficulty,damageType: "magic",stageSpeed:1,timer:20*(Math.random()*20),reward:{gold:Math.round(10+(Math.random()*10*difficulty)),xp:Math.round(10+(Math.random()*10*difficulty))},}]
+        let rewards = {rankPoints:5*difficulty,gold:Math.round(10+(Math.random()*50*difficulty)),xp: Math.round(10+(Math.random()*50*difficulty))} //TODO:items
         return {stages:stages,rewards:rewards}
     }
 
 }
 
-let dungeonController = new DungeonController()
+let dungeonControllers = [new DungeonController()]

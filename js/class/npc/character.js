@@ -17,7 +17,7 @@ class Character {
         food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: [], gold: 100
     }
 
-    rankPoints = "0"
+    rankPoints = 0
 
     log = []
 
@@ -101,7 +101,7 @@ class Character {
             this.atDestination = true
             if (this.goingToDungeon) {
                 //TODO:
-                dungeonController.startSoloDungeon([this])
+                dungeonControllers[0].startDungeon([this])
                 this.isInDungeon = true
                 this.goingToDungeon = false
                 return
@@ -369,6 +369,7 @@ class Character {
     decideToGoToDungeon() {
         let rng = Math.random()
         if (rng < 0.05) {
+            //TODO: dungeonControllers
             this.goingToDungeon = true
             this.destination = {x:-500,y:30} //TEST
             return true

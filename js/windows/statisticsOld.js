@@ -49,7 +49,7 @@ let open_statistics2 = function (btn_el = undefined, reload = false, update = fa
     let dontClose = false
     if (!reload) {
         open_window(windowId, btn_el)
-        drawHeader("Statistics2", windowId)
+        drawHeader("Statistics2", windowId,btn_el)
     }
     if (update) {
         //TODO:

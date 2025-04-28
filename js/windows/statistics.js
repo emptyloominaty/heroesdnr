@@ -5,7 +5,7 @@ let open_statistics = function (btn_el = undefined, reload = false, update = fal
     let dontClose = false
     if (!reload) {
         open_window(windowId, btn_el)
-        drawHeader("Statistics", windowId)
+        drawHeader("Statistics", windowId,btn_el)
     }
     if (update) {
       //TODO:

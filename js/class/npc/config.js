@@ -109,7 +109,7 @@ let rolesConfig = {
 
 let heroesConfig = {
     Warrior: {
-        dps:    {dpsSt: 1.0, dpsAoe: 1.4, hpsSt:0.0, hpsAoe:0.0, dtpsP:1.2, dtpsM:0.2, speed: 1.1, hMul: 1.25, fMul: 1.2, femaleR:[50,1]},
+        dps:    {dpsSt: 1.0, dpsAoe: 1.4, hpsSt:0.0, hpsAoe:0.0, dtpsP:1.2, dtpsM:0.45, speed: 1.1, hMul: 1.25, fMul: 1.2, femaleR:[50,1]},
         tank:   {dpsSt: 0.5, dpsAoe: 0.65, hpsSt:0.0, hpsAoe:0.0, dtpsP:5.3, dtpsM:3, speed: 0.9, hMul: 1.3, fMul: 1.2, femaleR:[100,1]}},
     Rogue: {
         dps:    {dpsSt: 1.9, dpsAoe: 1.0, hpsSt:0.0, hpsAoe:0.0, dtpsP:0.65, dtpsM:0.8, speed: 1.2, hMul: 1.0, fMul: 1.0, femaleR:[5,1]}},
