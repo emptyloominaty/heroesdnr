@@ -153,7 +153,7 @@ class Character {
                         this.idleTimer = 5 + Math.random() * 5
                         this.waitTimer = 2 + Math.random() * 10
 
-                        if (rng > (0.999 - this.sociability * (0.999 - 0.97)) - this.talkInc) {
+                        if (rng > (0.999999 - this.sociability * (0.999999 - 0.9999)) - this.talkInc) {
                             let rng2 = Math.floor(Math.random() * heroes.length)
                             if (heroes[rng2].inTown && heroes[rng2] !== this && heroes[rng2].canTalk) {
                                 let angle = Math.atan2(heroes[rng2].location.y - this.location.y, heroes[rng2].location.x - this.location.x)
