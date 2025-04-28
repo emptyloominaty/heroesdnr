@@ -1,10 +1,10 @@
 let statRanges = {}
 let heatMapcolorMode = false
-let open_statistics = function (reload = false, update = false, resetColors = false) {
+let open_statistics = function (btn_el = undefined, reload = false, update = false, resetColors = false) {
     let windowId = 2
     let dontClose = false
     if (!reload) {
-        open_window(windowId)
+        open_window(windowId, btn_el)
         drawHeader("Statistics", windowId)
     }
     if (update) {
@@ -20,7 +20,7 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
     }
 
     if (currentWindow[windowId] === "statistics" && !reload && !dontClose) {
-        close_window(windowId)
+        close_window(windowId, btn_el)
         return
     } else {
         elements["windowBody" + windowId].innerHTML = ""
@@ -29,7 +29,7 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
     let html = ""
     html += "<div class='statistics' style='display:flex;width:80vw; flex-wrap:wrap;'>"
 
-    html += `<button id="btn_heatMode" onclick="heatMapcolorMode = !heatMapcolorMode; open_statistics(false,false,true)">HeatMap: ${heatMapcolorMode ? 'ON' : 'OFF'}</button>`
+    html += `<button id="btn_heatMode" onclick="heatMapcolorMode = !heatMapcolorMode; open_statistics(undefined,false,false,true)">HeatMap: ${heatMapcolorMode ? 'ON' : 'OFF'}</button>`
 
     
     html += "<span style='width:100%;'></span>" //next row
@@ -148,7 +148,7 @@ let open_statistics = function (reload = false, update = false, resetColors = fa
 
 
     //hide heat map if false
-    open_statistics(false, false, true, true)
+    open_statistics(undefined, false, false, true, true)
 }
 
 

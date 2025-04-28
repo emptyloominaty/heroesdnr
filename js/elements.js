@@ -27,4 +27,17 @@ let elements = {
     "windowHeader4": document.getElementById("windowHeader4"),
     "windowBody4": document.getElementById("windowBody4"),
     "canvasParticles": document.getElementById("canvasParticles"),
+    "window5": document.getElementById("window5"),
+    "windowHeader5": document.getElementById("windowHeader5"),
+    "windowBody5": document.getElementById("windowBody5"),
+    "window6": document.getElementById("window6"),
+    "windowHeader6": document.getElementById("windowHeader6"),
+    "windowBody6": document.getElementById("windowBody6"),
+    "window7": document.getElementById("window7"),
+    "windowHeader7": document.getElementById("windowHeader7"),
+    "windowBody7": document.getElementById("windowBody7"),
+    "window8": document.getElementById("window8"),
+    "windowHeader8": document.getElementById("windowHeader8"),
+    "windowBody8": document.getElementById("windowBody8"),
+
 }

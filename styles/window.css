@@ -11,7 +11,7 @@
 
 
 
-#window0, #window1, #window2, #window3, #window4 {
+#window0, #window1, #window2, #window3, #window4, #window5, #window6, #window7, #window8 {
     position: fixed;
     background-color: var(--color1);
     color: #FFF;
@@ -19,7 +19,7 @@
     display: none;
 }
 
-#windowbody0, #windowbody1, #windowbody2, #windowbody3, #windowbody4 {
+#windowbody0, #windowbody1, #windowbody2, #windowbody3, #windowbody4, #windowbody5, #windowbody6, #windowbody7, #windowbody8 {
     overflow: auto;
     max-height: 90vh;
 }
@@ -50,6 +50,26 @@
     top: 1vh;
     left: 2vw;
     z-index: 104;
+}
+#window5 {
+    top: 2vh;
+    left: 3vw;
+    z-index: 105;
+}
+#window6 {
+    top: 3vh;
+    left: 4vw;
+    z-index: 106;
+}
+#window7 {
+    top: 4vh;
+    left: 5vw;
+    z-index: 107;
+}
+#window8 {
+    top: 6vh;
+    left: 7vw;
+    z-index: 108;
 }
 .windowHeader {
     font-size: 1.3vw;

@@ -1,17 +1,23 @@
-let close_window = function (w = 0) {
+let close_window = function (w = 0,el = undefined) {
     elements["windowHeader"+w].innerHTML = ""
     elements["windowBody"+w].innerHTML = ""
     currentWindow[w] = ""
     document.getElementById("window" + w).style.display = "none"
+    if (el !== undefined) {
+        el.classList.remove("button_activated")
+    }
 }
 
 
-let open_window = function (w = 0) {
+let open_window = function (w = 0,el = undefined) {
     document.getElementById("window" + w).style.display = "block"
+    if (el !== undefined) {
+        el.classList.add("button_activated")
+    }
 }
 
 let elementsWindow = {}
-let currentWindow = ["","",""]
+let currentWindow = ["", "", "", "", "", "", "", "", ""]
 
 let drawHeader = function(name, w = 0) {
     elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window("+w+")'>x</div></div>"
@@ -23,13 +29,13 @@ let windowsUpdate = function () {
         if (currentWindow[i] === "") {
             continue
         } else if (currentWindow[i] === "heroeslist") {
-            open_heroeslist(true,true)
+            open_heroeslist(undefined,true,true)
         } else if (currentWindow[i] === "heroinfo") {
-            open_heroinfo(true,true)
+            open_heroinfo(undefined,true,true)
         } else if (currentWindow[i] === "heroeslistDebug") {
-            open_heroeslistDebug(true, true)
+            open_heroeslistDebug(undefined,true,true)
         } else if (currentWindow[i] === "buildinginfo") {
-            open_buildinginfo(true, true)
+            open_buildinginfo(undefined,true,true)
         }
     }
 }
@@ -75,7 +81,7 @@ for (let i = 0; i<currentWindow.length; i++) {
     })
 }
 
-let zOrder = ["window0", "window1", "window2", "window3", "window4"]
+let zOrder = ["window0", "window1", "window2", "window3", "window4", "window5", "window6", "window7", "window8"]
 
 function bringToTop(targetId) {
     zOrder = zOrder.filter(id => id !== targetId)

@@ -21,7 +21,7 @@ let statistics_setSortMode = function (val, role = "", type = "", table = "dps")
     }
 
     setTimeout(() => {
-        open_statistics2(true, false);
+        open_statistics2(undefined, true, false);
 
         const headers = document.querySelectorAll(`#stats${table}Header th`);
         headers.forEach(header => {
@@ -44,11 +44,11 @@ let statistics_setSortMode = function (val, role = "", type = "", table = "dps")
 let statistics_setPsMode = function (val, table = "dps") {
     statistics_psMode[table] = val
 }
-let open_statistics2 = function (reload = false, update = false) {
-    let windowId = 2
+let open_statistics2 = function (btn_el = undefined, reload = false, update = false) {
+    let windowId = 4
     let dontClose = false
     if (!reload) {
-        open_window(windowId)
+        open_window(windowId, btn_el)
         drawHeader("Statistics2", windowId)
     }
     if (update) {
@@ -57,7 +57,7 @@ let open_statistics2 = function (reload = false, update = false) {
         return
     }
     if (currentWindow[windowId] === "statistics2" && !reload && !dontClose) {
-        close_window(windowId)
+        close_window(windowId, btn_el)
         return
     } else {
         elements["windowBody" + windowId].innerHTML = ""

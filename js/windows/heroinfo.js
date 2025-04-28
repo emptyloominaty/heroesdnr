@@ -1,5 +1,5 @@
 let window_heroId = 0
-let open_heroinfo = function (reload = false, update = false, id = false) {
+let open_heroinfo = function (btn_el = undefined, reload = false, update = false, id = false) {
     let windowId = 1
     let dontClose = false
     if (id!==false) {

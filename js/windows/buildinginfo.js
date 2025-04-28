@@ -1,5 +1,5 @@
 let window_buildingId = 0
-let open_buildinginfo = function (reload = false, update = false, id = false) {
+let open_buildinginfo = function (btn_el = undefined, reload = false, update = false, id = false) {
     let windowId = 3
     let dontClose = false
     if (id!==false) {

@@ -1,6 +1,6 @@
 let heroesListLength = 0
 let heroesListTableMode = "default"
-let open_heroeslist = function (reload = false, update = false,renameTableHeader = false) {
+let open_heroeslist = function (btn_el = undefined, reload = false, update = false,renameTableHeader = false) {
     let windowId = 0
     if (update) {
         if (heroes.length===heroesListLength) {
@@ -49,28 +49,30 @@ let open_heroeslist = function (reload = false, update = false,renameTableHeader
                     elementsWindow.hl_hunger[i].textContent = ""
                     elementsWindow.hl_location[i].textContent = ""
                     elementsWindow.hl_destination[i].textContent = ""
+                } else if (heroesListTableMode === "debug") {
+                    elementsWindow.hl_dps[i].textContent = Math.round(hero.talkingTimer * 10) / 10
+                    elementsWindow.hl_hps[i].textContent = Math.round(hero.idleTimer * 10) / 10
+                    elementsWindow.hl_dtps[i].textContent = Math.round(hero.waitTimer * 10) / 10
+                    elementsWindow.hl_age[i].textContent = Math.round(hero.age * 10) / 10
+                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
+                    elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
+                    elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
+                    elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
+                    elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
                 }
-
-
-
-                //TODO:Options:Default,Throughtput,Statistics  [+experience,+ rank, + rankpoints,,speed] [,+weaponlevel,+armorlevel]
-
-                }
+            }
             return
         }
     }
     if (renameTableHeader) {
-        /*
-            elementsWindow.hl_btn_default = document.getElementById("hl_btn_default")
-    elementsWindow.hl_btn_throughput = document.getElementById("hl_btn_throughput")
-    elementsWindow.hl_btn_statistics = document.getElementById("hl_btn_statistics")
-    elementsWindow.hl_btn_inventory = document.getElementById("hl_btn_inventory")
-         */
+
         const buttons = [
             elementsWindow.hl_btn_default,
             elementsWindow.hl_btn_throughput,
             elementsWindow.hl_btn_statistics,
-            elementsWindow.hl_btn_inventory
+            elementsWindow.hl_btn_inventory,
+            elementsWindow.hl_btn_debug
+
         ]
         buttons.forEach(button => button.classList.remove('button_activated'))
 
@@ -114,17 +116,27 @@ let open_heroeslist = function (reload = false, update = false,renameTableHeader
             elementsWindow.hl_header7.textContent = ""
             elementsWindow.hl_header8.textContent = ""
             elementsWindow.hl_btn_inventory.classList.add('button_activated')
+        } else if (heroesListTableMode === "debug") {
+            elementsWindow.hl_header1.textContent = "T Timer"
+            elementsWindow.hl_header2.textContent = "I Timer"
+            elementsWindow.hl_header3.textContent = "W Timer"
+            elementsWindow.hl_header4.textContent = ""
+            elementsWindow.hl_header5.textContent = ""
+            elementsWindow.hl_header6.textContent = ""
+            elementsWindow.hl_header7.textContent = "Location"
+            elementsWindow.hl_header8.textContent = "Destination"
+            elementsWindow.hl_btn_debug.classList.add('button_activated')
         }
         return
     }
 
 
     if (!reload) {
-        open_window(windowId)
+        open_window(windowId, btn_el)
         drawHeader("List of Heroes", windowId)
     }
     if (currentWindow[windowId] === "heroeslist" && !reload) {
-        close_window(windowId)
+        close_window(windowId, btn_el)
         return
     } else {
         elements["windowBody" + windowId].innerHTML = ""
@@ -135,10 +147,12 @@ let open_heroeslist = function (reload = false, update = false,renameTableHeader
 
     let html = ""
     html += "<div style='display:flex; flex-wrap:wrap;width:100%;'>"
-    html += `<button class="button_activated" id="hl_btn_default" onclick="heroesListTableMode = 'default'; open_heroeslist(false,false,true)">Default</button>`
-    html += `<button id="hl_btn_throughput" onclick="heroesListTableMode = 'throughput'; open_heroeslist(false,false,true)">Throughput</button>`
-    html += `<button id="hl_btn_statistics" onclick="heroesListTableMode = 'statistics'; open_heroeslist(false,false,true)">Statistics</button>`
-    html += `<button id="hl_btn_inventory" onclick="heroesListTableMode = 'inventory'; open_heroeslist(false,false,true)">Inventory</button>`
+    html += `<button class="button_activated" id="hl_btn_default" onclick="heroesListTableMode = 'default'; open_heroeslist(undefined,false,false,true)">Default</button>`
+    html += `<button id="hl_btn_throughput" onclick="heroesListTableMode = 'throughput'; open_heroeslist(undefined,false,false,true)">Throughput</button>`
+    html += `<button id="hl_btn_statistics" onclick="heroesListTableMode = 'statistics'; open_heroeslist(undefined,false,false,true)">Statistics</button>`
+    html += `<button id="hl_btn_inventory" onclick="heroesListTableMode = 'inventory'; open_heroeslist(undefined,false,false,true)">Inventory</button>`
+    html += `<button id="hl_btn_debug" onclick="heroesListTableMode = 'debug'; open_heroeslist(undefined,false,false,true)">Debug</button>`
+
     html += "<span style='width:100%;'></span>" //next row
 
     html += `<div style='overflow:auto;width:100%;'><table><tr class='heroListFirstRow'><th class="statsHeaderTh" onclick="sortTable('roleName',${windowId})" data-sortkey='roleName'>Role</th>
@@ -163,7 +177,7 @@ let open_heroeslist = function (reload = false, update = false,renameTableHeader
         let classColor = colors[heroes[i].characterClass] || "#FFFFFF"
         let bgColor = pSBC(0.55, classColor, "#111111")
         let roleColor = colors.roles[hero.role] || "#FFFFFF"
-        html += "<tr style='background-color: "+bgColor+"' class='heroListRow' onclick='open_heroinfo(false,false,"+i+")'>"+
+        html += "<tr style='background-color: " + bgColor +"' class='heroListRow' onclick='open_heroinfo(undefined,false,false,"+i+")'>"+
             "<td data-sortkey='roleName' id='hl_role"+i+"' style='color: "+roleColor+"'>" + hero.role + "</td><td data-sortkey='className' id='hl_class"+i+"'>" + hero.characterClass + "</td>"+
             "<td data-sortkey='name' id='hl_name"+i+"'>>" + hero.name + "</td><td data-sortkey='status' id='hl_status"+i+"'>>" + hero.getStatus() + "</td>"+
             "<td data-sortkey='level' id='hl_level"+i+"'>>" + hero.level + "</td><td data-sortkey='dps' id='hl_dps"+i+"'>>" + getNumberString(hero.dps) + "</td>"+
@@ -192,6 +206,7 @@ let open_heroeslist = function (reload = false, update = false,renameTableHeader
     elementsWindow.hl_btn_throughput = document.getElementById("hl_btn_throughput")
     elementsWindow.hl_btn_statistics = document.getElementById("hl_btn_statistics")
     elementsWindow.hl_btn_inventory = document.getElementById("hl_btn_inventory")
+    elementsWindow.hl_btn_debug = document.getElementById("hl_btn_debug")
 
     elementsWindow.hl_role = []
     elementsWindow.hl_class = []
