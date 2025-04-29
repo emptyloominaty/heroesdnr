@@ -31,13 +31,18 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_hunger[i].textContent = getNumberString(hero.aoeHps)
                     elementsWindow.hl_location[i].textContent = getNumberString(hero.dtpsM)
                     elementsWindow.hl_destination[i].textContent = getNumberString(hero.dtpsP)
-                } else if (heroesListTableMode==="statistics") {
+                } else if (heroesListTableMode === "statistics") {
+                    let rank = getRank(hero.rankPoints)
+                    let rankC = rank
+                    if (isMythicPlusNumber(rankC)) {
+                        rankC = "Mythic I"
+                    }
                     elementsWindow.hl_dps[i].textContent = hero.statistics.dungeonSoloRuns.success
                     elementsWindow.hl_hps[i].textContent = hero.statistics.dungeonGroupRuns.success
                     elementsWindow.hl_dtps[i].textContent = hero.statistics.raidRuns.success
                     elementsWindow.hl_gold[i].textContent = hero.statistics.questsCompleted
                     elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.xp)
-                    elementsWindow.hl_hunger[i].textContent = getRank(hero.rankPoints)
+                    elementsWindow.hl_hunger[i].innerHTML = "<span style='color:" + colors.ranks[rankC] + ";'>" + rank + "</span>"
                     elementsWindow.hl_location[i].textContent = getNumberString(hero.rankPoints)
                     elementsWindow.hl_destination[i].textContent = Math.round(hero.speed*100)/100
                 } else if (heroesListTableMode==="inventory") {

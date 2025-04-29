@@ -32,6 +32,44 @@ let colors = {
         dps: "#ff6161",
     },
 
+    ranks: {
+        "Bronze V": "#6c4e31",
+        "Bronze IV": "#845e36",
+        "Bronze III": "#9c7144",
+        "Bronze II": "#b48859",
+        "Bronze I": "#b5916a",
+
+        "Silver V": "#697076",
+        "Silver IV": "#7c848c",
+        "Silver III": "#929ba2",
+        "Silver II": "#a7b1b7",
+        "Silver I": "#aebac1",
+
+        "Gold V": "#a57800",
+        "Gold IV": "#c08f00",
+        "Gold III": "#ddb100",
+        "Gold II": "#f2d450",
+        "Gold I": "#eacc62",
+
+        "Diamond V": "#005c78",
+        "Diamond IV": "#00749b",
+        "Diamond III": "#0094c6",
+        "Diamond II": "#3eb8e5",
+        "Diamond I": "#56c3ec",
+
+        "Legendary V": "#7a0050",
+        "Legendary IV": "#970065",
+        "Legendary III": "#b6007a",
+        "Legendary II": "#d10090",
+        "Legendary I": "#c13091",
+
+        "Mythic V": "#860086",
+        "Mythic IV": "#a500a5",
+        "Mythic III": "#cc50cc",
+        "Mythic II": "#e68de6",
+        "Mythic I": "#f29af2"
+    },
+
     spells:{
         "physical":"#a8a83f",
         "arcane":"#e5b7e0",

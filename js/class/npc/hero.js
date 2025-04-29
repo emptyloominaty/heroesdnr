@@ -20,6 +20,7 @@ class Hero extends Character {
         this.hungerRate = this.hungerRate * heroesConfig[this.characterClass][this.characterSpec].hMul
 
         this.updateStats()
+        this.hero = true
     }
 
     updateStats() {

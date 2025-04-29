@@ -81,6 +81,11 @@ function update() {
             characters[i].age += (1/365)
             characters[i].updateDay()
         }
+        for (let i = 0; i < heroes.length; i++) {
+            if (heroes[i].rankPoints > 0) {
+                heroes[i].rankPoints -= Math.min(8.5,heroes[i].rankPoints/1000)
+            }
+        }
         for (let i = 0; i < buildings.length; i++) {
             buildings[i].updateDay()
         }

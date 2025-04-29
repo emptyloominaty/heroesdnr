@@ -9,7 +9,8 @@ class Character {
     sex = "male"
     race = "human"
     maxAge = 100
-    size = [10,10]
+    size = [10, 10]
+    hero = false
 
     sleepBuildingId = -1
 
@@ -387,6 +388,9 @@ class Character {
     }
 
     updateFriendship(fId, fVal) {
+        if (!heroes[fId]) {
+            return
+        }
         if (this.friendships[fId] === undefined) {
             this.friendships[fId] = 0
             this.addLog(messages.heroLog.newFriend(heroes[fId].name))
@@ -413,7 +417,9 @@ class Character {
         if (deadHeroes.length > settings.maxLogSizeDeadCharacters) {
             deadHeroes.shift()
         }
-        heroes = heroes.filter(h => h !== this)
+        if (this.hero) {
+            heroes = heroes.filter(h => h !== this)
+        } 
         characters = characters.filter(c => c !== this)
         delete charactersMap[this.id]
     }

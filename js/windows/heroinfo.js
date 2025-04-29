@@ -44,7 +44,12 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
         elementsWindow.age.textContent = Math.floor(hero.age)
 
         elementsWindow.rankPoints.textContent = getNumberString2(hero.rankPoints)
-        elementsWindow.rank.textContent = getRank(hero.rankPoints)
+        let rank = getRank(hero.rankPoints)
+        let rankC = rank
+        if (isMythicPlusNumber(rankC)) {
+            rankC = "Mythic I"
+        }
+        elementsWindow.rank.innerHTML = "<span style='color:"+colors.ranks[rankC]+";'>"+rank+"</span>"
 
         elementsWindow.speed.textContent = Math.round(hero.speed * 100) / 100
 
