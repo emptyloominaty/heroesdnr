@@ -91,7 +91,7 @@ class DungeonController {
 
         let stageResult = ""
 
-        if (run.type === "solo") {
+        if (run.type === "solo") { //TODO FIX BUG? dtpsMissingRatio,  dpsMissingRatio (mage?)
             dpsSt = run.heroes[0].stDps
             dpsAoe = run.heroes[0].aoeDps
             dtpsM = run.heroes[0].dtpsM + run.heroes[0].stHps
@@ -119,8 +119,8 @@ class DungeonController {
             dpsDeficit = Math.max(0, stage.dpsReq - (dpsChance * stage.dpsReq))
             dtpsDeficit = Math.max(0, stage.dtpsReq - (dtpsChance * stage.dtpsReq))
 
-            dpsMissingRatio = dpsDeficit / (stage.dpsReq - dpsDeficit)
-            dtpsMissingRatio = dtpsDeficit / (stage.dtpsReq - dtpsDeficit)
+            dpsMissingRatio =  dpsDeficit / (stage.dpsReq - dpsDeficit)
+            dtpsMissingRatio =  dtpsDeficit / (stage.dtpsReq - dtpsDeficit)
 
             if (dpsChance >= 1 || dtpsChance >= 1) {
                 if (dpsChance < 1) {

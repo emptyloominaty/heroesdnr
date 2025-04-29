@@ -75,28 +75,28 @@ class Hero extends Character {
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
         let roleMultiplier = rolesConfig[this.role].dpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsSt
-        return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getAOEDps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
         let roleMultiplier =  rolesConfig[this.role].dpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsAoe
-        return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getSTHps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1
         let roleMultiplier =  rolesConfig[this.role].hpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsSt
-        return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getAOEHps(skill) {
         let base = 10 + (this.level * 2)
         let weaponBonus = 1
         let roleMultiplier =  rolesConfig[this.role].hpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
-        return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
 
     getDtpsP(skill) {
@@ -104,14 +104,14 @@ class Hero extends Character {
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.5)
         let roleMultiplier = rolesConfig[this.role].dtpsP
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsP
-        return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getDtpsM(skill) {
         let base = 5 + (this.level * 1.5)
         let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.1)
         let roleMultiplier =  rolesConfig[this.role].dtpsM
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM
-        return Math.floor((base * armorBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
 
     leaveTown() {
