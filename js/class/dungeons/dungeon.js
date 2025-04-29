@@ -91,7 +91,7 @@ class DungeonController {
 
         let stageResult = ""
 
-        if (run.type === "solo") { //TODO FIX BUG? dtpsMissingRatio,  dpsMissingRatio (mage?)
+        if (run.type === "solo") {
             dpsSt = run.heroes[0].stDps
             dpsAoe = run.heroes[0].aoeDps
             dtpsM = run.heroes[0].dtpsM + run.heroes[0].stHps
