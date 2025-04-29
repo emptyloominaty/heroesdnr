@@ -1,10 +1,17 @@
-let close_window = function (w = 0,el = undefined) {
+let close_window = function (w = 0,el = undefined,header = false, id = "") {
     elements["windowHeader"+w].innerHTML = ""
     elements["windowBody"+w].innerHTML = ""
     currentWindow[w] = ""
     document.getElementById("window" + w).style.display = "none"
-    if (el !== undefined) {
+    if (el) {
         el.classList.remove("button_activated")
+    } 
+    if (header) {
+        let div = document.getElementById("menu_buttons") 
+        el = div.querySelector("#" + id)
+        if (el) {
+            el.classList.remove("button_activated")
+        }
     }
 }
 
@@ -19,8 +26,19 @@ let open_window = function (w = 0,el = undefined) {
 let elementsWindow = {}
 let currentWindow = ["", "", "", "", "", "", "", "", ""]
 
-let drawHeader = function(name, w = 0, el = undefined) {
-    elements["windowHeader"+w].innerHTML = "<div class='windowHeader'><span id='windowHeaderName' style='padding:2px;'>"+name+"</span> <div style='padding:0 3px 0 3px;font-size:20px;' onclick='close_window("+w+","+el+")'>x</div></div>"
+let drawHeader = function (name, w = 0, el = undefined) {
+    let btn = true
+    if (!el) {
+        el = {id: ""}
+        btn = false
+    }
+    elements["windowHeader" + w].innerHTML = `
+  <div class='windowHeader'>
+    <span id='windowHeaderName' style='padding:2px;'>${name}</span>
+    <div style='padding:0 3px 0 3px;font-size:20px;'
+         onclick='close_window(${w}, null, ${btn}, "${el.id}")'>x</div>
+  </div>
+`
 }
 
 
