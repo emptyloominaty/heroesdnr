@@ -76,16 +76,16 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
         html += "<td>" + hero.name + "</td>"
         html += "<td style='color:" + roleColor + ";'>" + hero.role + "</td>"
         html += "<td>" + hero.level + "</td>"
-        html += "<td>" + hero.dps + "</td>"
-        html += "<td>" + hero.stDps + "</td>"
-        html += "<td>" + hero.aoeDps + "</td>"
-        html += "<td>" + hero.hps + "</td>"
-        html += "<td>" + hero.stHps + "</td>"
-        html += "<td>" + hero.aoeHps + "</td>"
-        html += "<td>" + hero.dtps + "</td>"
-        html += "<td>" + hero.dtpsP + "</td>"
-        html += "<td>" + hero.dtpsM + "</td>"
-        html += "<td>" + hero.rankPoints + "</td>"
+        html += "<td>" + getNumberString(hero.dps) + "</td>"
+        html += "<td>" + getNumberString(hero.stDps) + "</td>"
+        html += "<td>" + getNumberString(hero.aoeDps) + "</td>"
+        html += "<td>" + getNumberString(hero.hps) + "</td>"
+        html += "<td>" + getNumberString(hero.stHps) + "</td>"
+        html += "<td>" + getNumberString(hero.aoeHps) + "</td>"
+        html += "<td>" + getNumberString(hero.dtps) + "</td>"
+        html += "<td>" + getNumberString(hero.dtpsP) + "</td>"
+        html += "<td>" + getNumberString(hero.dtpsM) + "</td>"
+        html += "<td>" + getNumberString(hero.rankPoints) + "</td>"
         html += "<td style='color:" + colors.ranks[rankC] +"'>" + rank + "</td>"
         html += "<td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div class='gradientWow2'></div></td></tr>"
     }
@@ -103,7 +103,7 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
         //log._dps, log._dpsNeeded, stage.enemies, log._dtps, log._dtpsNeeded, stage.damageType, stage.stageSpeed, log.stageResult, stage.reward.gold, stage.reward.xp
     }
 
-    html += '<div style="padding-top:1vw"><table><thead><tr><th>Stage</th><th>DPS</th><th>DPS Needed</th><th>Enemies</th><th>DTPS</th><th>DTPS Needed</th><th>Damage Type</th><th>Speed</th><th>Result</th><th>Gold</th><th>XP</th></tr></thead><tbody>';
+    html += '<div style="padding-top:1vw"><table><thead><tr><th>Stage</th><th>DPS</th><th>DPS Needed</th><th>Enemies</th><th>DTPS</th><th>DTPS Needed</th><th>Damage Type</th><th>Speed</th><th>Result</th><th>Time</th><th>Gold</th><th>XP</th><th>S/E/F/C (D) %</th></tr></thead><tbody>';
 
     for (let i = 0; i < run.dungeon.stages.length; i++) {
         let stage = run.dungeon.stages[i];
@@ -111,20 +111,26 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
         if (!log) {
             log = {_dps: "", _dpsNeeded: "", _dtps: "", _dtpsNeeded:"",stageResult:""}
         }
+
+
         html += `<tr>
                 <td>${i + 1}</td>
                 <td>${getNumberString(log._dps)}</td>
-                <td>${getNumberString(log._dpsNeeded)}</td>
+                <td>${getNumberString(log._dpsNeeded)+"/"+getNumberString(stage.dpsReq)}</td>
                 <td>${stage.enemies}</td>
                 <td>${getNumberString(log._dtps)}</td>
-                <td>${getNumberString(log._dtpsNeeded)}</td>
+                <td>${getNumberString(log._dtpsNeeded)+"/"+getNumberString(stage.dtpsReq)}</td>
                 <td>${stage.damageType}</td>
                 <td>${Math.round(stage.stageSpeed*100)/100}</td>
-                <td>${log.stageResult}</td>
+                <td style="color:${colors[log.stageResult]}">${log.stageResult}</td>
+                <td>${getTime(stage.timerMax/stage.stageSpeed/run.dungeonSpeed)}</td>
                 <td>${Math.round(stage.reward.gold)}</td>
                 <td>${Math.round(stage.reward.xp)}</td>
+                <td><span style="color:#4fef4f">${stage.chances.success}</span>/<span style="color:#eee044">${stage.chances.escape}</span>/<span style="color:#ee9944">${stage.chances.failure}</span>/<span style="color:#ff4444">${stage.chances.criticalFailure}</span> <span style="color:#b01616">(${stage.chances.death})</span></td>
               </tr>`;
     }
+
+
 
     html += '</tbody></table></div>';
 

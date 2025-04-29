@@ -58,6 +58,9 @@ class Character {
 
     isInDungeon = false
     goingToDungeon = false
+    dungeonId = 0
+    dungeonGroup = []
+    groupLeader = false
 
     canTalk = true
 
@@ -100,11 +103,13 @@ class Character {
 
         if (this.location.x === this.destination.x && this.location.y === this.destination.y) {
             this.atDestination = true
-            if (this.goingToDungeon) {
-                //TODO:
-                dungeonControllers[0].startDungeon([this])
-                this.isInDungeon = true
-                this.goingToDungeon = false
+            if (this.goingToDungeon && this.groupLeader) {
+                for (let i = 0; i<this.dungeonGroup.length; i++) {
+                    this.dungeonGroup[i].isInDungeon = true
+                    this.dungeonGroup[i].goingToDungeon = false
+                }
+                console.log(this.dungeonGroup) //TODO: FIX
+                dungeonControllers[this.dungeonId].startDungeon(this.dungeonGroup,this)
                 return
             }
             if (this.isTalking && this.canTalk) {
@@ -145,11 +150,10 @@ class Character {
                 case "":
                     this.idleTimer -= progress
                     if (this.idleTimer <= 0) {
-                        let rng = Math.random()
-
                         if (this.decideToGoToDungeon()) {
                             return
                         }
+                        let rng = Math.random()
                         this.wandering = true
                         this.idleTimer = 5 + Math.random() * 5
                         this.waitTimer = 2 + Math.random() * 10
@@ -369,10 +373,27 @@ class Character {
 
     decideToGoToDungeon() {
         let rng = Math.random()
-        if (rng < 0.05) {
-            //TODO: dungeonControllers
+        let dcId = Math.floor(Math.random()*dungeonControllers.length)
+        if (rng < 0.03) { // SOLO DUNGEON
             this.goingToDungeon = true
-            this.destination = {x:-500,y:30} //TEST
+            this.destination = {x:dungeonControllers[dcId].location.x,y:dungeonControllers[dcId].location.y}
+            this.dungeonGroup = [this]
+            this.groupLeader = true
+            this.dungeonId = dcId
+            return true
+        } else if (rng < 0.06) { // GROUP DUNGEON
+            let group = this.findGroupForDungeon()
+            if (!this.dungeonGroup) {
+                return false
+            }
+            this.dungeonGroup = group
+            this.groupLeader = true
+            for (let i = 0; i<this.dungeonGroup.length; i++) {
+                this.dungeonGroup[i].goingToDungeon = true
+                this.dungeonGroup[i].groupLeader = true
+                this.dungeonGroup[i].dungeonId = dcId
+                this.dungeonGroup[i].destination = {x:dungeonControllers[dcId].location.x,y:dungeonControllers[dcId].location.y}
+            }
             return true
         }
         return false
@@ -419,10 +440,57 @@ class Character {
         }
         if (this.hero) {
             heroes = heroes.filter(h => h !== this)
-        } 
+        }
+        this.destroyUI()
         characters = characters.filter(c => c !== this)
         delete charactersMap[this.id]
     }
+
+    findGroupForDungeon(size = 5) {
+        let group = [this]
+        let healer = false
+        let tank = false
+        let dpses = 0
+        if (this.role==="healer") {
+            healer = true
+        } else if (this.role==="tank") {
+            tank = true
+        } else {
+            dpses++
+        }
+        let loop = 0
+        for (let i = 0; i < heroes.length; i++) {
+            let hero = heroes[i]
+            if (hero !== this && hero.inTown && hero.canTalk) {
+                if (loop > 0 || (this.friendships[hero.id] && this.friendships[hero.id] >= 0)) {
+                    if (hero.role==="healer" && !healer) {
+                        healer = true
+                        group.push(hero)
+                    }
+                    if (hero.role==="tank" && !tank) {
+                        tank = true
+                        group.push(hero)
+                    }
+                    if (hero.role==="dps" && dpses < size-2) {
+                        dpses++
+                        group.push(hero)
+                    }
+                }
+            }
+            if (group.length>=size) {
+                break
+            }
+            if (i >= heroes.length-1 && loop<1) {
+                i = 0
+                loop++
+            }
+        }
+        if (tank && healer && group.length===size)  {
+            return group
+        }
+        return false
+    }
+
 
     createUI() {
         this.uiElements = document.createElement('div')

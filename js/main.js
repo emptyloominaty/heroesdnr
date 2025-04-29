@@ -24,7 +24,7 @@ let tanks = 0
 let heroesMax = 0
 
 
-buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 1))
+buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 2))
 
 //TEST
 for (let i = 0; i<5; i++) {
