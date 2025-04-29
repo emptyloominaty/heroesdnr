@@ -37,17 +37,21 @@ function darkenColor(color, val) {
 
 
 let getTime = function(number) {
-    if (number>3600) {
-        return (number/3600).toFixed(0)+"h"
-    } else if (number>60) {
-        return (number/60).toFixed(0)+"m"
-    } else {
-        return (number).toFixed(0)+"s"
+    // Convert the number to a scale where 1 day = 720 units
+    let totalMinutes = (number / 720) * 1440; // 1 day = 1440 minutes
+
+    if (totalMinutes >= 60) { // If more than 1 hour
+        let hours = Math.floor(totalMinutes / 60);
+        return `${hours}h`;
+    } else if (totalMinutes >= 1) { // If more than 1 minute
+        return `${Math.floor(totalMinutes)}m`;
+    } else { // If less than 1 minute
+        return `${(totalMinutes * 60).toFixed(0)}s`;
     }
 }
 
 let getTime2 = function (number) {
-    return `${String(Math.floor((number % 720) / 30)).padStart(2, '0')}:${String(Math.floor((number % 30) * 2)).padStart(2, '0')} ${Math.floor(number / 720)}d`
+    return `${Math.floor(number / 720)}d ${String(Math.floor((number % 720) / 30)).padStart(2, '0')}:${String(Math.floor((number % 30) * 2)).padStart(2, '0')}`
 }
 
 function isMouseOverObject(obj) {

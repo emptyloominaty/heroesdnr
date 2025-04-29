@@ -407,6 +407,17 @@ class Character {
         }
     }
 
+    die(location = {x: 0, y: 0}) {
+        console.log(this.id + " - " + this.name + " died YIKES")
+        deadHeroes.push({name: this.name, id: this.id, age: this.age, timeofDeath: realtime, location: location, })
+        if (deadHeroes.length > settings.maxLogSizeDeadCharacters) {
+            deadHeroes.shift()
+        }
+        heroes = heroes.filter(h => h !== this)
+        characters = characters.filter(c => c !== this)
+        delete charactersMap[this.id]
+    }
+
     createUI() {
         this.uiElements = document.createElement('div')
         this.uiElements.classList.add('characterUi')

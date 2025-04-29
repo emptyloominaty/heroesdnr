@@ -46,7 +46,7 @@ let open_dungeonlist = function (btn_el = undefined, reload = false, update = fa
     for (let i = 0; i < dungeonControllers.length; i++) {
         let dungeon = dungeonControllers[i]
         let runs = dungeon.runCount.success+"/"+dungeon.runCount.escape+"/"+dungeon.runCount.failure+"/"+dungeon.runCount.criticalFailure
-        html += "<tr class='heroListRow' onclick='open_heroinfo(undefined,false,false,"+i+")'>"+
+        html += "<tr class='heroListRow' onclick='open_dungeonlogs(undefined,false,false,"+i+")'>"+
             "<td data-sortkey='dungeonName' id='dl_dungeonName"+i+"'>" + dungeon.name + "</td><td data-sortkey='currentRuns' id='dl_currentRuns"+i+"'>" + dungeon.currentRuns.length + "</td>"+
             "<td data-sortkey='totalRuns' id='dl_totalRuns"+i+"'>>" + dungeon.runCount.total + "</td><td data-sortkey='runs' id='dl_runs"+i+"'>>" + runs + "</td>"+
             "<td data-sortkey='level' id='dl_level"+i+"'>>" + dungeon.minlvl+"-"+dungeon.maxlvl + "</td>"+

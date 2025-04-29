@@ -196,6 +196,11 @@ function updateHeaderSort(sortKey) {
 
 function parseSortableValue(str) {
     str = str.trim().toLowerCase()
+    if (/^\d+\s*h$/.test(str) || /^\d+h$/.test(str)) {
+        const hours = parseInt(str.replace(/[^\d]/g, '').trim())
+        return hours
+    }
+
     if (/^\d+(\.\d+)?[kmb]?$/.test(str)) {
         if (str.endsWith('k')) {
             return parseFloat(str) * 1000

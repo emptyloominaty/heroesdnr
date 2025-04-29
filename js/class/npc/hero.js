@@ -5,6 +5,8 @@ class Hero extends Character {
     dps = 1
     hps = 0
     dtps = 0
+    critFailD = 1
+    escapeChance = 1
     statistics = {dungeonSoloRuns: {success:0, escape:0, failure:0, criticalFailure:0}, dungeonGroupRuns: {success:0, escape:0, failure:0, criticalFailure:0}, raidRuns: {success:0, escape:0, failure:0, criticalFailure:0}, goldEarned:0 , questsCompleted: 0}
     constructor(name, age, level, health, characterClass, role, location) {
         super(name, age, level, health, characterClass, role, location)
@@ -30,7 +32,9 @@ class Hero extends Character {
         this.dtpsP = this.getDtpsP(this.skill[4])
         this.dtpsM = this.getDtpsM(this.skill[5])
         this.dtps = (this.dtpsP + this.dtpsM)/2
-        this.speed = (4+this.skill[8])/4.65*heroesConfig[this.characterClass][this.characterSpec].speed
+        this.speed = (4 + this.skill[8]) / 4.65 * heroesConfig[this.characterClass][this.characterSpec].speed
+        this.critFailD = heroesConfig[this.characterClass][this.characterSpec].critFailD
+        this.escapeChance = heroesConfig[this.characterClass][this.characterSpec].escape
     }
 
 
@@ -93,7 +97,6 @@ class Hero extends Character {
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
         return Math.floor((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
-
 
     getDtpsP(skill) {
         let base = 5 + (this.level * 1.5)
