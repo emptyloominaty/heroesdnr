@@ -23,6 +23,8 @@ let tanks = 0
 
 let heroesMax = 0
 
+let logs = {heroes: [], buildings:[]}
+
 
 buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 2))
 

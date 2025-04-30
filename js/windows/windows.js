@@ -56,6 +56,8 @@ let windowsUpdate = function () {
             open_buildinginfo(undefined,true,true)
         } else if (currentWindow[i] === "dungeonlogs") {
             open_dungeonlogs(undefined, true, true)
+        } else if (currentWindow[i] === "logs") {
+            open_logs(undefined, true, false)
         }
 
         

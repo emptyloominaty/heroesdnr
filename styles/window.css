@@ -226,3 +226,12 @@ tr:nth-child(odd) {
     max-height: 150px;
     width: 60%;
 }
+
+#mainlog {
+    padding: 5px;
+    background: var(--color3);
+    overflow: auto;
+    max-height: 400px;
+    min-height: 400px;
+    width: 600px;
+}

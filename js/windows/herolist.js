@@ -182,7 +182,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
         let classColor = colors[heroes[i].characterClass] || "#FFFFFF"
         let bgColor = pSBC(0.55, classColor, "#111111")
         let roleColor = colors.roles[hero.role] || "#FFFFFF"
-        html += "<tr style='background-color: " + bgColor +"' class='heroListRow' onclick='open_heroinfo(undefined,false,false,"+i+")'>"+
+        html += "<tr style='background-color: " + bgColor +"' class='heroListRow' onclick='open_heroinfo(undefined,false,false,"+hero.id+")'>"+
             "<td data-sortkey='roleName' id='hl_role"+i+"' style='color: "+roleColor+"'>" + hero.role + "</td><td data-sortkey='className' id='hl_class"+i+"'>" + hero.characterClass + "</td>"+
             "<td data-sortkey='name' id='hl_name"+i+"'>>" + hero.name + "</td><td data-sortkey='status' id='hl_status"+i+"'>>" + hero.getStatus() + "</td>"+
             "<td data-sortkey='level' id='hl_level"+i+"'>>" + hero.level + "</td><td data-sortkey='dps' id='hl_dps"+i+"'>>" + getNumberString(hero.dps) + "</td>"+

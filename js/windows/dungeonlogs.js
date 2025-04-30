@@ -49,7 +49,7 @@ let open_dungeonlogs = function (btn_el = undefined, reload = false, update = fa
 
 
     let html = ""
-    html += "<div style='display:flex; flex-wrap:wrap;width:100%;'>"
+    html += "<div style='display:flex; flex-wrap:wrap;'>"
     html += `<div style='overflow:auto;width:100%;'><table><tr class='heroListFirstRow'>
         <th class="statsHeaderTh" onclick="sortTable('type',${windowId})" data-sortkey='type'>Name</th>
         <th class="statsHeaderTh" onclick="sortTable('level',${windowId})" data-sortkey='level'>Level</th>    

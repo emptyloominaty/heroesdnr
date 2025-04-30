@@ -7,5 +7,15 @@ let settings = {
     drawHeroNames: false,
     maxLogSize: 50,
     maxLogSizeDungeons: 100,
-    maxLogSizeDeadCharacters: 1000
+    maxLogSizeDeadCharacters: 1000,
+    debugSpeeds: true     //elements.btn_speed50 btn_speed100
 }
+
+let settingsUpdate = function () {
+    if (settings.debugSpeeds) {
+        elements.btn_speed50.style.display = "inline-block"
+        elements.btn_speed100.style.display = "inline-block"
+    }
+}
+
+settingsUpdate()

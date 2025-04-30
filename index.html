@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="styles/window.css">
     <!------------------------------------------------>
     <!--Start-->
+    <script src="js/elements.js" defer></script>
     <script src="js/settings.js" defer></script>
     <script src="data/namesFemale.js" defer></script>
     <script src="data/namesMale.js" defer></script>
@@ -15,7 +16,6 @@
     <script src="js/grid.js" defer></script>
 
     <script src="js/messages.js" defer></script>
-    <script src="js/elements.js" defer></script>
     <script src="js/functions.js" defer></script>
     <script src="js/functionsGame.js" defer></script>
 
@@ -42,6 +42,7 @@
     <script src="js/windows/statistics.js" defer></script>
     <script src="js/windows/statisticsOld.js" defer></script>
     <script src="js/windows/statisticsCharts.js" defer></script>
+    <script src="js/windows/logs.js" defer></script>
 
     <script src="js/input.js" defer></script>
     <script src="js/genHero.js" defer></script>
@@ -103,6 +104,8 @@
                     <button onclick="setGameSpeed(4,this)">4x</button>
                     <button onclick="setGameSpeed(8,this)">8x</button>
                     <button onclick="setGameSpeed(16,this)">16x</button>
+                    <button id="btn_speed50" style="display:none" onclick="setGameSpeed(50,this)">50x</button>
+                    <button id="btn_speed100"style="display:none" onclick="setGameSpeed(100,this)">100x</button>
                 </div>
                 <div id="menu_buttons">
                     <button id="menu_btn1" onclick="open_heroeslist(this)">Heroes List</button>
@@ -110,6 +113,7 @@
                     <button id="menu_btn3" onclick="open_statistics2(this)">Statistics2</button>
                     <button id="menu_btn4" onclick="open_statisticsCharts(this)">Statistics (Charts)</button>
                     <button id="menu_btn5" onclick="open_dungeonlist(this)">Dungeon List</button>
+                    <button id="menu_btn6" onclick="open_logs(this)">Logs</button>
                 </div>
             </div>
             <div id="charactersUi">

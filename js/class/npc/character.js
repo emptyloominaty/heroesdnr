@@ -86,6 +86,7 @@ class Character {
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
         this.addLog(messages.heroLog.joinTown())
+        logs.heroes.push({time: realtime, message: "<span style='color:" + colors.log.success + "'>" + this.name + " joined the town</span>"})
         addToGrid(this)
     }
 
@@ -108,7 +109,7 @@ class Character {
                     this.dungeonGroup[i].isInDungeon = true
                     this.dungeonGroup[i].goingToDungeon = false
                 }
-                console.log(this.dungeonGroup) //TODO: FIX
+                console.log(this.dungeonGroup) //TODO: FIX fixed?
                 dungeonControllers[this.dungeonId].startDungeon(this.dungeonGroup,this)
                 return
             }
@@ -392,6 +393,7 @@ class Character {
                 this.dungeonGroup[i].goingToDungeon = true
                 this.dungeonGroup[i].groupLeader = true
                 this.dungeonGroup[i].dungeonId = dcId
+                this.dungeonGroup[i].dungeonGroup = this.dungeonGroup
                 this.dungeonGroup[i].destination = {x:dungeonControllers[dcId].location.x,y:dungeonControllers[dcId].location.y}
             }
             return true
@@ -403,7 +405,7 @@ class Character {
     updateDay() {
         if (this.age>this.maxAge) {
             if (Math.random()<0.01) {
-                //TODO:DIE
+                this.die(undefined,"Old age")
             }
         }
     }
@@ -432,8 +434,8 @@ class Character {
         }
     }
 
-    die(location = {x: 0, y: 0}) {
-        console.log(this.id + " - " + this.name + " died YIKES")
+    die(location = {x: 0, y: 0},reason) {
+        logs.heroes.push({time: realtime, message: "<span style='color:" + colors.log.failure +"'>"+ this.name+" died ("+reason+")</span>"})
         deadHeroes.push({name: this.name, id: this.id, age: this.age, timeofDeath: realtime, location: location, })
         if (deadHeroes.length > settings.maxLogSizeDeadCharacters) {
             deadHeroes.shift()
@@ -462,7 +464,7 @@ class Character {
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
             if (hero !== this && hero.inTown && hero.canTalk) {
-                if (loop > 0 || (this.friendships[hero.id] && this.friendships[hero.id] >= 0)) {
+                if (loop === 2 || (loop === 1 && (this.friendships[hero.id] && this.friendships[hero.id] === 0)) ||  (this.friendships[hero.id] && this.friendships[hero.id] >= 10)) {
                     if (hero.role==="healer" && !healer) {
                         healer = true
                         group.push(hero)
@@ -480,7 +482,7 @@ class Character {
             if (group.length>=size) {
                 break
             }
-            if (i >= heroes.length-1 && loop<1) {
+            if (i >= heroes.length-1 && loop<2) {
                 i = 0
                 loop++
             }

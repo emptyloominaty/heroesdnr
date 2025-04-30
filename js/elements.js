@@ -39,5 +39,6 @@ let elements = {
     "window8": document.getElementById("window8"),
     "windowHeader8": document.getElementById("windowHeader8"),
     "windowBody8": document.getElementById("windowBody8"),
-
+    "btn_speed50": document.getElementById("btn_speed50"),
+    "btn_speed100": document.getElementById("btn_speed100"),
 }

@@ -22,14 +22,16 @@ class DungeonController {
             c += heroes[i].speed
         }
         dungeonSpeed = c / heroes.length
+        let difficulty = 0.75
         let type
         if (heroes.length>1) {
             type = "group"
+            difficulty = 5
         } else {
             type = "solo"
         }
 
-        this.currentRuns.push({type: type, heroes: heroes, level: level, stage: 0, timeStarted: realtime, timeFinished: 0, dungeon: this.generateDungeon(type, 1, level), log: [], dungeonSpeed: dungeonSpeed})
+        this.currentRuns.push({type: type, heroes: heroes, level: level, stage: 0, timeStarted: realtime, timeFinished: 0, dungeon: this.generateDungeon(difficulty, level), log: [], dungeonSpeed: dungeonSpeed})
         let run = this.currentRuns[this.currentRuns.length - 1]
         this.updateStagesSpeed(run)
         for (let i = 0; i<run.dungeon.stages.length; i++) {
@@ -60,9 +62,9 @@ class DungeonController {
         }
         this.runCount.success++
         for (let i = 0; i < heroes.length; i++) {
-            heroes[i].gainGold(run.dungeon.rewards.gold)
-            heroes[i].gainXp(run.dungeon.rewards.xp)
-            heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints)
+            heroes[i].gainGold(run.dungeon.rewards.gold / heroes.length)
+            heroes[i].gainXp(run.dungeon.rewards.xp / heroes.length)
+            heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / heroes.length)
             if (type === "solo") {
                 heroes[i].statistics.dungeonSoloRuns.success++
                 heroes[i].addLog(messages.heroLog.dungeonSuccess("dungeon"))
@@ -86,10 +88,19 @@ class DungeonController {
         let dtpsP = 0
         let escapeSuccess
         let criticalFailure
-        let _dps, _dtps
-        let _dpsNeeded, _dtpsNeeded
+        let _dps = 0
+        let _dtps = 0
+        let _dpsNeeded = 0
+        let _dtpsNeeded = 0
 
         let stageResult = ""
+
+        if (stage.chances.death > 8 && Math.random() > 0.8 - (stage.chances.death/100)) {
+            stageResult = "Leave"
+            return {
+                escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
+            }
+        }
 
         for (let i = 0; i<run.heroes.length; i++) {
             dpsSt += run.heroes[i].stDps
@@ -137,8 +148,10 @@ class DungeonController {
 
         if ((dpsSuccess || dtpsSuccess)) {
             for (let i = 0; i < run.heroes.length; i++) {
-                run.heroes[i].gainGold(stage.reward.gold)
-                run.heroes[i].gainXp(stage.reward.xp)
+                run.heroes[i].gainGold(stage.reward.gold / run.heroes.length)
+                run.heroes[i].gainXp(stage.reward.xp / run.heroes.length)
+                run.heroes[i].gainRankPoints(stage.reward.rankPoints / run.heroes.length)
+                this.updateFriends(heroes, i, 0.1, 1)
             }
             stageResult = "Success"
         } else {
@@ -162,21 +175,22 @@ class DungeonController {
                 stageResult = "Escape"
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.escape++
-                    run.heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / 10)
+                    this.updateFriends(heroes, i, 0.05, 0.5)
                 }
                 this.runCount.escape++
             } else if (criticalFailure) {
                 stageResult = "Critical failure"
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.criticalFailure++
-                    run.heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / 5)
                     this.reduceSkills(run.heroes[i], 0.02, 0.05)
+                    run.heroes[i].gainRankPoints(-stage.reward.rankPoints / run.heroes.length)
                     if (Math.random() > 1 - 0.25 / Math.pow(Math.max(0.2, run.heroes[i].critFailD), 0.75)) {
-                        if (run.heroes.length===1) {
+                        if (run.heroes.length === 1) {
                             stageResult = "Death"
                         }
-
-                        run.heroes[i].die()
+                        run.heroes[i].die(undefined, "Dungeon - Critical Failure")
+                    } else {
+                        this.updateFriends(heroes, i, 0.1, -0.5)
                     }
                 }
                 this.runCount.criticalFailure++
@@ -185,35 +199,23 @@ class DungeonController {
                 this.runCount.failure++
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.failure++
-                    run.heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / 2)
                     this.reduceSkills(run.heroes[i], 0.01, 0.01)
+                    run.heroes[i].gainRankPoints(-stage.reward.rankPoints / 2 / run.heroes.length)
                     if (Math.random() > 0.995) {
                         if (run.heroes.length===1) {
                             stageResult = "Death"
                         }
-                        run.heroes[i].die()
+                        run.heroes[i].die(undefined, "Dungeon - Failure")
                     }
+                    this.updateFriends(heroes, i, 0.05, -0.25)
+                    
                 }
             }
         }
 
 
         return {
-            escapeChance,
-            criticalFailureChance,
-            dpsSuccess,
-            dtpsSuccess,
-            dpsSt,
-            dpsAoe,
-            dtpsM,
-            dtpsP,
-            escapeSuccess,
-            criticalFailure,
-            _dps,
-            _dtps,
-            _dpsNeeded,
-            _dtpsNeeded,
-            stageResult
+            escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
         }
     }
 
@@ -234,6 +236,9 @@ class DungeonController {
             dtps += dtpsH
             escapeHeroesChance += hero.escapeChance
             heroesCritFailD += hero.critFailD
+            if (run.heroes.length > 1) {
+                dtps += run.heroes[i].aoeHps
+            }
         }
 
         escapeHeroesChance = escapeHeroesChance / run.heroes.length
@@ -293,6 +298,17 @@ class DungeonController {
         }
     }
 
+    updateFriends(heroes, i, chance, val, fixVal = 0) {
+        if (heroes.length > 1) {
+            for (let j = 0; j < heroes.length; j++) {
+                heroes[i].updateFriendship(heroes[j].id, 0)
+                if (heroes[i] !== heroes[j] && Math.random() < chance) {
+                    heroes[i].updateFriendship(heroes[j].id, fixVal + Math.random()*val)
+                }
+            }
+        }
+    }
+
 
     reduceSkills(hero, val, chance) {
         for (let i = 0; i < hero.skill.length; i++) {
@@ -318,9 +334,8 @@ class DungeonController {
                     this.currentRuns[i].log.push(log)
                     this.currentRuns[i].stage++
                     let fail = false
-                    if (log.stageResult === "Escape" || log.stageResult === "Critical failure" || log.stageResult === "Failure" || log.stageResult === "Death") {
+                    if (log.stageResult === "Escape" || log.stageResult === "Critical failure" || log.stageResult === "Failure" || log.stageResult === "Death" || log.stageResult === "Leave") {
                         fail = true
-                        //this.currentRuns[i].stage--
                     }
                     if (stages.length === this.currentRuns[i].stage || fail) {
                         this.endDungeon(this.currentRuns[i].heroes, this.currentRuns[i].type, this.currentRuns[i], fail)
@@ -337,7 +352,7 @@ class DungeonController {
                             let h = this.currentRuns[i].heroes2[k]
                             this.currentRuns[i].heroes.push({name: h.name, characterClass: h.characterClass, role: h.role, spec: h.characterSpec, level: h.level,
                                 dps: h.dps, stDps: h.stDps, aoeDps: h.aoeDps, hps: h.hps, stHps: h.stHps, aoeHps: h.aoeHps, rankPoints: h.rankPoints,
-                                dtps: h.dtps, dtpsP: h.dtpsP, dtpsM: h.dtpsM
+                                dtps: h.dtps, dtpsP: h.dtpsP, dtpsM: h.dtpsM, age:h.age, sex:h.sex
                             })
                         }
                         this.currentRuns[i].heroes2 = null
@@ -354,7 +369,7 @@ class DungeonController {
         }
     }
 
-    generateDungeon(type, difficulty, level) {
+    generateDungeon(difficulty, level) {
         const pickRandom = (arr, weights = null) => {
             if (!weights) return arr[Math.floor(Math.random() * arr.length)]
             const sum = weights.reduce((a, b) => a + b)
@@ -369,7 +384,8 @@ class DungeonController {
 
         const generateStageReward = (difficulty, isBoss = false) => ({
             gold: Math.round((isBoss ? 20 : 10) + Math.random() * 10 * difficulty),
-            xp: Math.round((isBoss ? 20 : 10) + Math.random() * 10 * difficulty)
+            xp: Math.round((isBoss ? 20 : 10) + Math.random() * 10 * difficulty),
+            rankPoints: Math.round(1 * difficulty * (0.5 + (level*0.5))),
         })
 
         let numStages = Math.floor(Math.random() * 6 + 2)
@@ -387,13 +403,14 @@ class DungeonController {
 
             let dpsMultiplier = enemies === "aoe" ? 2 : 1
             let timer = 30 + Math.random() * (isBoss ? 40 : 20)
-
+            let dpsRng = 0.75+(Math.random()/2)
+            let dtpsRng = 0.75 + (Math.random() / 2)
             stages.push({
-                dpsReq: 4 * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1),
-                enemies: pickRandom(["st", "aoe"], isBoss ? [0.8, 0.2] : [0.4, 0.6]),
-                dtpsReq: 2 * difficulty * stageMultiplier * (isBoss ? 1.3 : 1),
+                dpsReq: 8 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
+                enemies: enemies,
+                dtpsReq: 4 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
                 damageType: pickRandom(["physical", "magic"]),
-                aoeDtpsReq: 0, //TODO
+                aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,
                 timer: timer,
                 timerMax: timer,

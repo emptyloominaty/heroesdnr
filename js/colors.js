@@ -36,7 +36,8 @@ let colors = {
     Escape:"#eee044",
     Failure:"#ee9944",
     "Critical failure":"#ff4444",
-    Death:"#b01616",
+    Death: "#b01616",
+    Leave: "#999999",
 
 
 ranks: {
