@@ -111,7 +111,7 @@ function rollSex(className, specName) {
     return roll < maleRatio ? "male" : "female"
 }
 
-function adjustSpawnChances(spawnChances) { //TODO:
+function adjustSpawnChances(spawnChances) {
     const totalCurrent = tanks + healers + damagedealers
     const target = { tank: 1, healer: 1, dps: 3 }
     const totalTarget = target.tank + target.healer + target.dps

@@ -1,6 +1,6 @@
 let lastRender = 0
-let progress = 16.666666666666666666666666666667
-let progressReal = 16
+let progress = 0.016
+let progressReal = 0.016
 let gameSpeed = 1
 let fps = 60
 

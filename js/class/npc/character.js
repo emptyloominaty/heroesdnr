@@ -14,9 +14,15 @@ class Character {
 
     sleepBuildingId = -1
 
-    inventory = {
-        food: 0, weaponLevel: 1, armorLevel: 1, potionHealth: 0, potionMana: 0, other: [], gold: 100
+    inventory = { //TODO:REMOVE wep,armor
+        weaponLevel: 1, weaponQuality: 1, armorLevel: 1, armorQuality: 1, potionHealth: 0, items: [], gold: 100
     }
+
+    slots = {hand: new Item("hand",1,1) , head: new Item("head",1,1), chest: new Item("chest",1,1),legs: new Item("legs",1,1)
+        ,feet: new Item("feet",1,1),weapon: new Item("weapon",1,1)  }
+    ilvl = 1
+    itemsBonus = {dps: {base:1,mul:1}, dtps: {base:1,mul:1}}
+
 
     rankPoints = 0
 
@@ -64,30 +70,34 @@ class Character {
 
     canTalk = true
 
-    constructor(name, age, level, health, characterClass, role, location,characterSpec) {
+    constructor(name, age, level, health, characterClass, role, location,ignore) {
         this.name = name
         this.age = age
-        this.id = globalCharId
-        charactersMap[this.id] = this
-        globalCharId++
         this.level = level
         this.health = health
         this.characterClass = characterClass
         this.role = role
-        this.characterSpec = role //TODO:characterSpec
+        this.characterSpec = role
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
         this.hungerRate = 0.95 + (Math.random() * 0.1)
         this.destination = { x: location.x, y: location.y }
-        this.createUI()
+
         this.xp = Math.floor(100 * (this.level - 1) * Math.pow(this.level - 1, 1.2))
         this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
 
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
-        this.addLog(messages.heroLog.joinTown())
-        logs.heroes.push({time: realtime, message: "<span style='color:" + colors[this.characterClass] + "'>" + this.characterClass + "</span> <span style='color:" + colors.log.success + "'>" + this.name +" joined the town</span>"})
-        addToGrid(this)
+        if (!ignore) {
+            this.id = globalCharId
+            charactersMap[this.id] = this
+            globalCharId++
+            this.addLog(messages.heroLog.joinTown())
+            this.createUI()
+            logs.heroes.push({time: realtime, message: "<span style='color:" + colors[this.characterClass] + "'>" + this.characterClass + "</span> <span style='color:" + colors.log.success + "'>" + this.name +" joined the town</span>"})
+            addToGrid(this)
+        }
+
     }
 
 
@@ -109,7 +119,7 @@ class Character {
                     this.dungeonGroup[i].isInDungeon = true
                     this.dungeonGroup[i].goingToDungeon = false
                 }
-                console.log(this.dungeonGroup) //TODO: FIX fixed?
+                //console.log(this.dungeonGroup) //TODO: FIX fixed?
                 dungeonControllers[this.dungeonId].startDungeon(this.dungeonGroup,this)
                 return
             }
@@ -443,9 +453,15 @@ class Character {
         if (this.hero) {
             heroes = heroes.filter(h => h !== this)
         }
+        if (this instanceof Hero) {
+            this.leaveTown()
+        }
         this.destroyUI()
         characters = characters.filter(c => c !== this)
         delete charactersMap[this.id]
+    }
+
+    leaveTown() {
     }
 
     findGroupForDungeon(size = 5) {

@@ -369,7 +369,11 @@ class DungeonController {
         }
     }
 
-    generateDungeon(difficulty, level) {
+    dungeonTypes = {
+        "Goblin Lair": {damageTypes:[0.95,0.05],goldMul:2,xpMul: 0.5, stAoe:[0.1,0.9], dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3 }
+    }
+
+    generateDungeon(difficulty, level, dungeonType = "Goblin Lair") {
         const pickRandom = (arr, weights = null) => {
             if (!weights) return arr[Math.floor(Math.random() * arr.length)]
             const sum = weights.reduce((a, b) => a + b)

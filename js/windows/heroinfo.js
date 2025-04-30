@@ -180,12 +180,12 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
       <td id="hi_gold" class="heroinfoInv2">${hero.inventory.gold}</td>
     </tr>
     <tr>
-      <td class="heroinfoInv1"><strong>Weapon lvl</strong></td>
-      <td id="hi_weapon" class="heroinfoInv2">${hero.inventory.weaponLevel}</td>
+      <td class="heroinfoInv1"><strong>Weapon base/mul</strong></td>
+      <td id="hi_weapon" class="heroinfoInv2">${getNumberString(hero.itemsBonus.dps.base)}/${getNumberString(hero.itemsBonus.dps.mul)}</td>
     </tr>
     <tr>
-      <td class="heroinfoInv1"><strong>Armor lvl</strong></td>
-      <td id="hi_armor" class="heroinfoInv2">${hero.inventory.armorLevel}</td>
+      <td class="heroinfoInv1"><strong>Armor base/mul</strong></td>
+      <td id="hi_armor" class="heroinfoInv2">${getNumberString(hero.itemsBonus.dtps.base)}/${getNumberString(hero.itemsBonus.dtps.mul)}</td>
     </tr>
 
 `

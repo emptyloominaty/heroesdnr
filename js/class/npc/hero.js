@@ -7,13 +7,23 @@ class Hero extends Character {
     dtps = 0
     critFailD = 1
     escapeChance = 1
-    statistics = {dungeonSoloRuns: {success:0, escape:0, failure:0, criticalFailure:0}, dungeonGroupRuns: {success:0, escape:0, failure:0, criticalFailure:0}, raidRuns: {success:0, escape:0, failure:0, criticalFailure:0}, goldEarned:0 , questsCompleted: 0}
-    constructor(name, age, level, health, characterClass, role, location) {
-        super(name, age, level, health, characterClass, role, location)
-        characters.push(this)
 
-        for (let i = 0; i<this.skill.length; i++) {
-            this.skill[i] = getSkillRandom()
+    statistics = {dungeonSoloRuns: {success:0, escape:0, failure:0, criticalFailure:0}, dungeonGroupRuns: {success:0, escape:0, failure:0, criticalFailure:0}, raidRuns: {success:0, escape:0, failure:0, criticalFailure:0}, goldEarned:0 , questsCompleted: 0}
+    constructor(name, age, level, health, characterClass, role, location, randomSkill = true, ignore = false) {
+        super(name, age, level, health, characterClass, role, location, ignore)
+        if (!ignore) {
+            characters.push(this)
+        }
+
+
+        if (randomSkill) {
+            for (let i = 0; i<this.skill.length; i++) {
+                this.skill[i] = getSkillRandom()
+            }
+        } else {
+            for (let i = 0; i<this.skill.length; i++) {
+                this.skill[i] = 0.65
+            }
         }
 
         this.fatigueRate = this.fatigueRate * heroesConfig[this.characterClass][this.characterSpec].fMul
@@ -21,9 +31,11 @@ class Hero extends Character {
 
         this.updateStats()
         this.hero = true
+
     }
 
     updateStats() {
+        this.updateEquippedItems()
         this.stDps = this.getSTDps(this.skill[0])
         this.aoeDps = this.getAOEDps(this.skill[1])
         this.stHps = this.getSTHps(this.skill[2])
@@ -71,48 +83,72 @@ class Hero extends Character {
     }
 
     getSTDps(skill) {
-        let base = 10 + (this.level * 2)
-        let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
+        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier = rolesConfig[this.role].dpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsSt
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getAOEDps(skill) {
-        let base = 10 + (this.level * 2)
-        let weaponBonus = 1 + ((this.inventory.weaponLevel-1) * 0.1)
+        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].dpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsAoe
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getSTHps(skill) {
-        let base = 10 + (this.level * 2)
-        let weaponBonus = 1
+        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsSt
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getAOEHps(skill) {
-        let base = 10 + (this.level * 2)
-        let weaponBonus = 1
+        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
 
     getDtpsP(skill) {
-        let base = 5 + (this.level * 1.5)
-        let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.5)
+        let base = 5 + (this.level * 1.5) + this.itemsBonus.dtps.base
+        let armorBonus = this.itemsBonus.dtps.mul
         let roleMultiplier = rolesConfig[this.role].dtpsP
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsP
         return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getDtpsM(skill) {
-        let base = 5 + (this.level * 1.5)
-        let armorBonus = 1 + ((this.inventory.armorLevel-1) * 0.1)
+        let base = 5 + (this.level * 1.5) + this.itemsBonus.dtps.base
+        let armorBonus = ((1+this.itemsBonus.dtps.mul)/2)
         let roleMultiplier =  rolesConfig[this.role].dtpsM
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM
         return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
+
+    updateEquippedItems() {
+        let il = 0
+        let base = 0
+        let mul = 0
+        let ia = 0
+        let iw = 0
+        Object.entries(this.slots).forEach(([key, value]) => {
+            il += value.level
+            if (key==="weapon") {
+                iw++
+                this.itemsBonus.dps.base = value.getBase()
+                this.itemsBonus.dps.mul = 1 + value.getMul()
+            } else {
+                ia++
+                base += value.getBase()
+                mul += value.getMul()
+            }
+        })
+        this.ilvl = il / (ia+iw)
+        this.itemsBonus.dtps.base = base / ia
+        this.itemsBonus.dtps.mul = 1 + (mul / ia)
+    }
+
 
     leaveTown() {
         if (this.role === "dps") {

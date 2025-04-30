@@ -165,5 +165,11 @@ let open_dungeonlogs = function (btn_el = undefined, reload = false, update = fa
 
     dungeonLogsLength = dungeonControllers[dungeonLogsId].runsHistory.length
     dungeonLogsLength2 = dungeonControllers[dungeonLogsId].currentRuns.length
+    //sort on update
+    if (currentSort[windowId].key!==null) {
+        setTimeout(() => {
+            sortTable(currentSort[windowId].key,windowId,true)
+        }, progressReal*1000)
+    }
 }
 

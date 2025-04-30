@@ -46,14 +46,14 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_location[i].textContent = getNumberString(hero.rankPoints)
                     elementsWindow.hl_destination[i].textContent = Math.round(hero.speed*100)/100
                 } else if (heroesListTableMode==="inventory") {
-                    elementsWindow.hl_dps[i].textContent = hero.inventory.weaponLevel
-                    elementsWindow.hl_hps[i].textContent = hero.inventory.armorLevel
-                    elementsWindow.hl_dtps[i].textContent = ""
-                    elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
-                    elementsWindow.hl_fatigue[i].textContent = ""
+                    elementsWindow.hl_dps[i].textContent = getNumberString(hero.ilvl)
+                    elementsWindow.hl_hps[i].textContent = "+"+getNumberString(hero.itemsBonus.dps.base)
+                    elementsWindow.hl_dtps[i].textContent = getNumberString(hero.itemsBonus.dps.mul)+"x"
+                    elementsWindow.hl_gold[i].textContent = "+"+getNumberString(hero.itemsBonus.dtps.base)
+                    elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.itemsBonus.dtps.mul)+"x"
                     elementsWindow.hl_hunger[i].textContent = ""
                     elementsWindow.hl_location[i].textContent = ""
-                    elementsWindow.hl_destination[i].textContent = ""
+                    elementsWindow.hl_destination[i].textContent = getNumberString(hero.inventory.gold)
                 } else if (heroesListTableMode === "debug") {
                     elementsWindow.hl_dps[i].textContent = Math.round(hero.talkingTimer * 10) / 10
                     elementsWindow.hl_hps[i].textContent = Math.round(hero.idleTimer * 10) / 10
@@ -112,14 +112,14 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             elementsWindow.hl_header8.textContent = "Speed"
             elementsWindow.hl_btn_statistics.classList.add('button_activated')
         } else if (heroesListTableMode==="inventory") {
-            elementsWindow.hl_header1.textContent = "Weapon Level"
-            elementsWindow.hl_header2.textContent = "Armor Level"
-            elementsWindow.hl_header3.textContent = ""
-            elementsWindow.hl_header4.textContent = "Gold"
-            elementsWindow.hl_header5.textContent = ""
+            elementsWindow.hl_header1.textContent = "Item level"
+            elementsWindow.hl_header2.textContent = "DPS Base"
+            elementsWindow.hl_header3.textContent = "DPS Mul"
+            elementsWindow.hl_header4.textContent = "DTPS Base"
+            elementsWindow.hl_header5.textContent = "DTPS Mul"
             elementsWindow.hl_header6.textContent = ""
             elementsWindow.hl_header7.textContent = ""
-            elementsWindow.hl_header8.textContent = ""
+            elementsWindow.hl_header8.textContent = "Gold"
             elementsWindow.hl_btn_inventory.classList.add('button_activated')
         } else if (heroesListTableMode === "debug") {
             elementsWindow.hl_header1.textContent = "T Timer"
@@ -245,5 +245,11 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
     }
     heroesListLength = heroes.length
     open_heroeslist(undefined,false,false,true)
+    //sort on update
+    if (currentSort[windowId].key!==null) {
+        setTimeout(() => {
+            sortTable(currentSort[windowId].key,windowId,true)
+        }, progressReal*1000)
+    }
 }
 

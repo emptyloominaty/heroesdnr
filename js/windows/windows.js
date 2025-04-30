@@ -5,7 +5,8 @@ let close_window = function (w = 0,el = undefined,header = false, id = "") {
     document.getElementById("window" + w).style.display = "none"
     if (el) {
         el.classList.remove("button_activated")
-    } 
+    }
+    currentSort[w].key = null
     if (header) {
         let div = document.getElementById("menu_buttons") 
         el = div.querySelector("#" + id)
@@ -57,7 +58,7 @@ let windowsUpdate = function () {
         } else if (currentWindow[i] === "dungeonlogs") {
             open_dungeonlogs(undefined, true, true)
         } else if (currentWindow[i] === "logs") {
-            open_logs(undefined, true, false)
+            open_logs(undefined, true, true)
         }
 
         

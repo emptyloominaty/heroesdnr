@@ -82,19 +82,19 @@ let open_statistics = function (btn_el = undefined, reload = false, update = fal
     html += "<div style='overflow:auto'><table>"
     html += `
 <tr class="statsHeader">
-    <th class="statsHeaderTh" onclick="sortTable('className',2)" data-sortkey="className">Class</th>
-    <th class="statsHeaderTh" onclick="sortTable('specName',2)" data-sortkey="specName">Spec</th>
-    <th class="statsHeaderTh" onclick="sortTable('count',2)" data-sortkey="count">Count</th>
-    <th class="statsHeaderTh" onclick="sortTable('dps',2)" data-sortkey="dps">DPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('stDps',2)" data-sortkey="stDps">ST DPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('aoeDps',2)" data-sortkey="aoeDps">AOE DPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('hps',2)" data-sortkey="hps">HPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('stHps',2)" data-sortkey="stHps">ST HPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('aoeHps',2)" data-sortkey="aoeHps">AOE HPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('dtps',2)" data-sortkey="dtps">DTPS</th>
-    <th class="statsHeaderTh" onclick="sortTable('dtpsM',2)" data-sortkey="dtpsM">DTPS (M)</th>
-    <th class="statsHeaderTh" onclick="sortTable('dtpsP',2)" data-sortkey="dtpsP">DTPS (P)</th>
-    <th class="statsHeaderTh" onclick="sortTable('ms',2)" data-sortkey="ms">Speed</th>
+    <th class="statsHeaderTh" onclick="sortTable('className',${windowId})" data-sortkey="className">Class</th>
+    <th class="statsHeaderTh" onclick="sortTable('specName',${windowId})" data-sortkey="specName">Spec</th>
+    <th class="statsHeaderTh" onclick="sortTable('count',${windowId})" data-sortkey="count">Count</th>
+    <th class="statsHeaderTh" onclick="sortTable('dps',${windowId})" data-sortkey="dps">DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('stDps',${windowId})" data-sortkey="stDps">ST DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('aoeDps',${windowId})" data-sortkey="aoeDps">AOE DPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('hps',${windowId})" data-sortkey="hps">HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('stHps',${windowId})" data-sortkey="stHps">ST HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('aoeHps',${windowId})" data-sortkey="aoeHps">AOE HPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtps',${windowId})" data-sortkey="dtps">DTPS</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtpsM',${windowId})" data-sortkey="dtpsM">DTPS (M)</th>
+    <th class="statsHeaderTh" onclick="sortTable('dtpsP',${windowId})" data-sortkey="dtpsP">DTPS (P)</th>
+    <th class="statsHeaderTh" onclick="sortTable('ms',${windowId})" data-sortkey="ms">Speed</th>
 </tr>`
 //----------------
     const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms"]
@@ -123,17 +123,17 @@ let open_statistics = function (btn_el = undefined, reload = false, update = fal
         html += `<tr class="statistics_tr_row" style="background-color:${bgColor}">
         <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
         <td data-sortkey="specName" style="position:relative;color:${roleColor}">${specText}<div class="gradientWow2"></div></td>
-        <td data-sortkey="count" style="background-color:${getHeatColor(data.count, 'count')};position:relative;">${data.count}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dps" style="background-color:${getHeatColor(data.dps / c, 'dps')};position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="stDps" style="background-color:${getHeatColor(data.stDps / c, 'stDps')};position:relative;">${getNumberString(data.stDps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="aoeDps" style="background-color:${getHeatColor(data.aoeDps / c, 'aoeDps')};position:relative;">${getNumberString(data.aoeDps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="hps" style="background-color:${getHeatColor(data.hps / c, 'hps')};position:relative;">${getNumberString(data.hps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="stHps" style="background-color:${getHeatColor(data.stHps / c, 'stHps')};position:relative;">${getNumberString(data.stHps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="aoeHps" style="background-color:${getHeatColor(data.aoeHps / c, 'aoeHps')};position:relative;">${getNumberString(data.aoeHps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dtps" style="background-color:${getHeatColor(data.dtps / c, 'dtps')};position:relative;">${getNumberString(data.dtps / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dtpsM" style="background-color:${getHeatColor(data.dtpsM / c, 'dtpsM')};position:relative;">${getNumberString(data.dtpsM / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dtpsP" style="background-color:${getHeatColor(data.dtpsP / c, 'dtpsP')};position:relative;">${getNumberString(data.dtpsP / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="ms" style="background-color:${getHeatColor(data.ms / c, 'ms')};position:relative;">${Math.round(data.ms / c*100)/100}<div class="gradientWow2"></div></td>
+        <td data-sortkey="count" style="background-color:${getHeatColor(data.count, 'count',statRanges)};position:relative;">${data.count}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dps" style="background-color:${getHeatColor(data.dps / c, 'dps',statRanges)};position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="stDps" style="background-color:${getHeatColor(data.stDps / c, 'stDps',statRanges)};position:relative;">${getNumberString(data.stDps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="aoeDps" style="background-color:${getHeatColor(data.aoeDps / c, 'aoeDps',statRanges)};position:relative;">${getNumberString(data.aoeDps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="hps" style="background-color:${getHeatColor(data.hps / c, 'hps',statRanges)};position:relative;">${getNumberString(data.hps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="stHps" style="background-color:${getHeatColor(data.stHps / c, 'stHps',statRanges)};position:relative;">${getNumberString(data.stHps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="aoeHps" style="background-color:${getHeatColor(data.aoeHps / c, 'aoeHps',statRanges)};position:relative;">${getNumberString(data.aoeHps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtps" style="background-color:${getHeatColor(data.dtps / c, 'dtps',statRanges)};position:relative;">${getNumberString(data.dtps / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtpsM" style="background-color:${getHeatColor(data.dtpsM / c, 'dtpsM',statRanges)};position:relative;">${getNumberString(data.dtpsM / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dtpsP" style="background-color:${getHeatColor(data.dtpsP / c, 'dtpsP',statRanges)};position:relative;">${getNumberString(data.dtpsP / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="ms" style="background-color:${getHeatColor(data.ms / c, 'ms',statRanges)};position:relative;">${Math.round(data.ms / c*100)/100}<div class="gradientWow2"></div></td>
     </tr>`
     })
 
@@ -157,11 +157,12 @@ for (let i = 0; i<16; i++) {
     currentSort.push({key: null,order: 'asc'})
 }
 
-function sortTable(sortKey,id) {
+function sortTable(sortKey,id,refresh = false) {
     const table = elements["windowBody" + id].querySelector("div > div table tbody")
     const rows = Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
 
-    if (currentSort[id].key === sortKey) {
+
+    if (currentSort[id].key === sortKey && !refresh) {
         currentSort[id].order = (currentSort[id].order === 'asc') ? 'desc' : 'asc'
     } else {
         currentSort[id].key = sortKey
@@ -217,16 +218,26 @@ function parseSortableValue(str) {
 
 
 //----------------
-function getHeatColor(value, stat) {
+function getHeatColor(value, stat, statRanges, invertColors = false) {
     let { min, avg, max } = statRanges[stat]
     if (max === min) return "yellow"
 
-    if (value >= avg) {
-        let ratio = (value - avg) / (max - avg)
-        return blendColors("yellow", "green", ratio)
+    if (!invertColors) {
+        if (value >= avg) {
+            let ratio = (value - avg) / (max - avg)
+            return blendColors("yellow", "green", ratio)
+        } else {
+            let ratio = (value - min) / (avg - min)
+            return blendColors("red", "yellow", ratio)
+        }
     } else {
-        let ratio = (value - min) / (avg - min)
-        return blendColors("red", "yellow", ratio)
+        if (value <= avg) {
+            let ratio = (value - min) / (avg - min)
+            return blendColors("green", "yellow", ratio)
+        } else {
+            let ratio = (value - avg) / (max - avg)
+            return blendColors("yellow", "red", ratio)
+        }
     }
 }
 
