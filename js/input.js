@@ -70,7 +70,7 @@ let onMouseUpdate = function(e) {
 
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles)) {
-        let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
+        let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)
         let nearbyObjects = []
         for (const cell of nearbyCells) {
             const key = `${cell.x},${cell.y}`

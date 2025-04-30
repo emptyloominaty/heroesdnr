@@ -104,7 +104,6 @@ let getSkillRandom = function() {
 }
 
 function rollSex(className, specName) {
-    console.log(className+" - "+specName)
     let [maleRatio, femaleRatio] = heroesConfig[className][specName].femaleR
     let total = maleRatio + femaleRatio
     let roll = Math.random() * total

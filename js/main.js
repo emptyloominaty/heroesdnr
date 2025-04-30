@@ -24,7 +24,7 @@ let tanks = 0
 let heroesMax = 0
 
 let logs = {heroes: [], buildings:[], debug:[]}
-
+let incomeLog = []
 
 buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 2))
 
@@ -76,6 +76,10 @@ function update() {
     if (incomeI > 720) {
         goldE = gold
         income = (goldE - goldS)
+        incomeLog.push(income)
+        if (incomeLog.length>100) {
+            incomeLog.shift()
+        }
         goldS = gold
 
         incomeI = 0

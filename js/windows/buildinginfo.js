@@ -12,6 +12,7 @@ let open_buildinginfo = function (btn_el = undefined, reload = false, update = f
     }
     let building = buildingsMap[window_buildingId]
     if (update) {
+        //TODO:
         return
     }
     if (currentWindow[windowId] === "buildinginfo" && !reload && !dontClose) {
@@ -22,24 +23,24 @@ let open_buildinginfo = function (btn_el = undefined, reload = false, update = f
     }
     currentWindow[windowId] = "buildinginfo"
 
-    /*TODO: let html = ""
-    html += "<div class='heroinfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"
+    let html = ""
+    html += "<div class='buildinginfo' style='display:flex;width:70vw; flex-wrap:wrap;'>"
 
 
 
     html += "<div class='heroinfoText'></div>"
-    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Xp</th><th>Next Level</th></tr>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Type</th><th>Level</th></tr>"
     html += `  
     <tr>
-      <td id="hi_xp">${getNumberString2(hero.xp)}</td>
-      <td id="hi_xpNeed">${getNumberString2(hero.xpNeed)}</td>
+      <td id="bi_type">${building.type}</td>
+      <td id="bi_level">${building.level}</td>
     </tr>`
 
     html += "</table></div>"
 
     html += "</div>"
     html += "</div>"
-    elements.windowBody3.innerHTML = html*/
+    elements.windowBody3.innerHTML = html
 }
 
 

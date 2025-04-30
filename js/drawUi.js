@@ -30,7 +30,7 @@ function drawUi() {
     elements["debug1"].textContent = "FPS: "+Math.round(fps)
     elements["debug2"].textContent = "Avg: "+Math.round(avgFPS)
     elements["debug3"].textContent = "Min: "+Math.round( Math.min(...avgFPSA))
-    elements["debug4"].textContent = "x:"+mousePosition2d.x+" y:"+mousePosition2d.y
+    elements["debug4"].textContent = "x:"+mousePosition2d.x+" y:"+mousePosition2d.y+" "
 
     //elements["debug4"].textContent = "sdir"+Math.round(sunDir)+" r: "+Math.round(R)+" g:"+Math.round(G)+" b:"+Math.round(B)+" a"+shadowAlpha
 }
