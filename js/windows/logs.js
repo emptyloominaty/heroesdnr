@@ -20,7 +20,7 @@ let open_logs = function (btn_el = undefined, reload = false, update = false) {
     let html = ""
     html += "<div class='statistics' style='display:flex; flex-wrap:wrap;'>"
 
-    let logText = ""
+    let logText = "" //heroes,buildings, debug
     for (let i = logs.heroes.length - 1; i >= 0; i--) {
         let log = logs.heroes[i]
         logText += "<span style='color:" + colors.logTime + "'>" + getTime2(log.time) + "</span>: " + log.message + "<br>"

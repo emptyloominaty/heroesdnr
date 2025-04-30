@@ -8,7 +8,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     }
     if (!reload) {
         open_window(windowId)
-        drawHeader(heroes[window_heroId].name+" - "+ heroes[window_heroId].role.charAt(0).toUpperCase() + heroes[window_heroId].role.slice(1)+" "+heroes[window_heroId].characterClass+" Level "+heroes[window_heroId].level,1)
+        drawHeader(charactersMap[window_heroId].name + " - " + charactersMap[window_heroId].role.charAt(0).toUpperCase() + charactersMap[window_heroId].role.slice(1) + " " + charactersMap[window_heroId].characterClass + " Level " + charactersMap[window_heroId].level,1)
     }
     let hero = charactersMap[window_heroId]
     if (update) {
@@ -199,6 +199,26 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
         logText += "<span style='color:"+colors.logTime+"'>"+getTime2(hero.log[i].time)+"</span>: "+hero.log[i].message+"<br>"
     }
     html += `<div class="hi_log" id="hi_log">${logText}</div> `
+
+    logText = ""
+
+
+    Object.entries(hero.friendships).forEach(([key, value]) => {
+        if (charactersMap[key]) {
+            let color
+            if (value > 10) {
+                color = colors.log.success
+            } else if (value >= 0) {
+                color = colors.log.levelUp
+            } else {
+                color = colors.log.failure
+            }
+            logText += "<span style='color:" + color + "'>" + charactersMap[key].name + ": " + Math.round(value*10)/10 + "</span><br>"
+        }
+    })
+
+   
+    html += `<div class="hi_log" id="hi_log2">${logText}</div> `
 
 
     //TODO:  statistics,

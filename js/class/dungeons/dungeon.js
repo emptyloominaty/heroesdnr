@@ -151,7 +151,7 @@ class DungeonController {
                 run.heroes[i].gainGold(stage.reward.gold / run.heroes.length)
                 run.heroes[i].gainXp(stage.reward.xp / run.heroes.length)
                 run.heroes[i].gainRankPoints(stage.reward.rankPoints / run.heroes.length)
-                this.updateFriends(heroes, i, 0.1, 1)
+                this.updateFriends(run.heroes, i, 0.1, 1)
             }
             stageResult = "Success"
         } else {
@@ -175,7 +175,7 @@ class DungeonController {
                 stageResult = "Escape"
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.escape++
-                    this.updateFriends(heroes, i, 0.05, 0.5)
+                    this.updateFriends(run.heroes, i, 0.05, 0.5)
                 }
                 this.runCount.escape++
             } else if (criticalFailure) {
@@ -190,7 +190,7 @@ class DungeonController {
                         }
                         run.heroes[i].die(undefined, "Dungeon - Critical Failure")
                     } else {
-                        this.updateFriends(heroes, i, 0.1, -0.5)
+                        this.updateFriends(run.heroes, i, 0.1, -0.5)
                     }
                 }
                 this.runCount.criticalFailure++
@@ -207,7 +207,7 @@ class DungeonController {
                         }
                         run.heroes[i].die(undefined, "Dungeon - Failure")
                     }
-                    this.updateFriends(heroes, i, 0.05, -0.25)
+                    this.updateFriends(run.heroes, i, 0.05, -0.25)
                     
                 }
             }
@@ -298,12 +298,12 @@ class DungeonController {
         }
     }
 
-    updateFriends(heroes, i, chance, val, fixVal = 0) {
-        if (heroes.length > 1) {
-            for (let j = 0; j < heroes.length; j++) {
-                heroes[i].updateFriendship(heroes[j].id, 0)
-                if (heroes[i] !== heroes[j] && Math.random() < chance) {
-                    heroes[i].updateFriendship(heroes[j].id, fixVal + Math.random()*val)
+    updateFriends(runheroes, i, chance, val, fixVal = 0) {
+        if (runheroes.length > 1) {
+            for (let j = 0; j < runheroes.length; j++) {
+                runheroes[i].updateFriendship(runheroes[j].id, 0)
+                if (runheroes[i] !== runheroes[j] && Math.random() < chance) {
+                    runheroes[i].updateFriendship(runheroes[j].id, fixVal + Math.random() * val)
                 }
             }
         }

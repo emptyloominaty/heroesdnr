@@ -86,7 +86,7 @@ class Character {
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
         this.addLog(messages.heroLog.joinTown())
-        logs.heroes.push({time: realtime, message: "<span style='color:" + colors.log.success + "'>" + this.name + " joined the town</span>"})
+        logs.heroes.push({time: realtime, message: "<span style='color:" + colors[this.characterClass] + "'>" + this.characterClass + "</span> <span style='color:" + colors.log.success + "'>" + this.name +" joined the town</span>"})
         addToGrid(this)
     }
 
@@ -435,7 +435,7 @@ class Character {
     }
 
     die(location = {x: 0, y: 0},reason) {
-        logs.heroes.push({time: realtime, message: "<span style='color:" + colors.log.failure +"'>"+ this.name+" died ("+reason+")</span>"})
+        logs.heroes.push({time: realtime, message: "<span style='color:" + colors[this.characterClass] + "'>" + this.characterClass + "</span> <span style='color:" + colors.log.failure +"'>"+ this.name+" died ("+reason+")</span>"})
         deadHeroes.push({name: this.name, id: this.id, age: this.age, timeofDeath: realtime, location: location, })
         if (deadHeroes.length > settings.maxLogSizeDeadCharacters) {
             deadHeroes.shift()
