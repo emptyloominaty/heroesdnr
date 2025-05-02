@@ -8,7 +8,10 @@ let getDirection = function(target1,target2) {
     return 360-(Math.atan2(target2.y - target1.y, target2.x - target1.x)* (180 / Math.PI)+90)
 }
 
-let getNumberString = function(number) {
+let getNumberString = function (number) {
+    if (number === "") {
+        return ""
+    }
     if (number>999999) {
         return Math.round((number/1000000)*10)/10+"M"
         //return (number/1000000).toFixed(1)+"M"

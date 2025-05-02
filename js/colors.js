@@ -32,6 +32,7 @@ let colors = {
         dps: "#ff6161",
     },
 
+    Overwhelming: "#00aeff",
     Success:"#4fef4f",
     Escape:"#eee044",
     Failure:"#ee9944",

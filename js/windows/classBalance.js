@@ -22,7 +22,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
     }
     currentWindow[windowId] = "classBalance"
     let html = ""
-    html += "<div class='classBalance' style='display:flex;width:95vw; flex-wrap:wrap;'>"
+    html += "<div class='classBalance' style='display:flex;width:100%; flex-wrap:wrap;'>"
 
     html += `<button id="btn_heatModeCB" onclick="heatMapcolorModeCB = !heatMapcolorModeCB; open_classBalance(undefined,false,false,true)">HeatMap: ${heatMapcolorModeCB ? 'ON' : 'OFF'}</button>`
 
@@ -85,7 +85,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         combinedData[key].fMul = heroesConfig[h.characterClass][h.characterSpec].fMul
         combinedData[key].hMul = heroesConfig[h.characterClass][h.characterSpec].hMul
         combinedData[key].escape += heroesConfig[h.characterClass][h.characterSpec].escape || 0
-        combinedData[key].critFailD += heroesConfig[h.characterClass][h.characterSpec].critFailD || 0
+        combinedData[key].critFailD += 1 - 0.25 / Math.pow(Math.max(0.2, heroesConfig[h.characterClass][h.characterSpec].critFailD), 0.75)
 
         let fmr = heroesConfig[h.characterClass][h.characterSpec].femaleR
         let total = fmr[0] + fmr[1]
@@ -94,15 +94,18 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
 
         combinedData[key].dungDps = (h.stDps + h.aoeDps)/2
         combinedData[key].dungDtps = ((h.dtpsM + h.dtpsP) / 2) + h.stHps + h.aoeHps
-        let newDtps = h.stHps + (h.aoeHps/2)
+
+        let newDtps = h.stHps + (h.aoeHps/3)
         if (h.role === "tank") {
             newDtps += (h.dtpsM + h.dtpsP) / 2
         }
+        let raidDtps = h.stHps + (h.aoeHps / 1.5)
+        if (h.role === "tank") {
+            raidDtps += (h.dtpsM + h.dtpsP) / 2
+        }
+        combinedData[key].dungValue = ((h.stDps + (h.aoeDps*1.6)) / 2.6) + newDtps //dungeon
 
-        let aoeFixDtps = ((h.dtpsM + h.dtpsP) / 2) + h.stHps + (h.aoeHps/2)
-        combinedData[key].dungValue = combinedData[key].dungDps + combinedData[key].dungDtps
-        combinedData[key].dungValue2 = combinedData[key].dungDps + aoeFixDtps
-        combinedData[key].dungValueNew = combinedData[key].dungDps + newDtps
+        combinedData[key].dungValueNew = h.stDps + raidDtps //raid
 
     })
 
@@ -116,9 +119,8 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
 <tr class="statsHeader">
     <th class="statsHeaderTh" onclick="sortTable('className',${windowId})" data-sortkey="className">Class</th>
     <th class="statsHeaderTh" onclick="sortTable('specName',${windowId})" data-sortkey="specName">Spec</th>
-    <th class="statsHeaderTh" onclick="sortTable('dungValue',${windowId})" data-sortkey="dungValue">DungValue</th>
-    <th class="statsHeaderTh" onclick="sortTable('dungValue2',${windowId})" data-sortkey="dungValue2">DValAoeFix</th>
-    <th class="statsHeaderTh" onclick="sortTable('dungValueNew',${windowId})" data-sortkey="dungValueNew">DungValueNew</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValue',${windowId})" data-sortkey="dungValue">DungVal</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValueNew',${windowId})" data-sortkey="dungValueNew">RaidVal</th>
     <th class="statsHeaderTh" onclick="sortTable('chance',${windowId})" data-sortkey="chance">Spawn chance</th>
     <th class="statsHeaderTh" onclick="sortTable('dps',${windowId})" data-sortkey="dps">DPS</th>
     <th class="statsHeaderTh" onclick="sortTable('stDps',${windowId})" data-sortkey="stDps">ST DPS</th>
@@ -138,7 +140,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
 
 </tr>`
 //----------------
-    const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms", "chance", "fMul", "hMul", "escape", "critFailD", "femaleR", "dungDps", "dungDtps", "dungValue","dungValueNew","dungValue2"]
+    const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms", "chance", "fMul", "hMul", "escape", "critFailD", "femaleR", "dungDps", "dungDtps", "dungValue","dungValueNew"]
     colorStats.forEach(stat => {
         let values = sortedKeys.map(key => {
             let data = combinedData[key]
@@ -165,7 +167,6 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
         <td data-sortkey="specName" style="position:relative;color:${roleColor}">${specText}<div class="gradientWow2"></div></td>
         <td data-sortkey="dungValue" style="background-color:${getHeatColor(data.dungValue / c, 'dungValue', statRangesCB)};position:relative;">${getNumberString(data.dungValue / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dungValue2" style="background-color:${getHeatColor(data.dungValue2 / c, 'dungValue2', statRangesCB)};position:relative;">${getNumberString(data.dungValue2 / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="dungValueNew" style="background-color:${getHeatColor(data.dungValueNew / c, 'dungValueNew', statRangesCB)};position:relative;">${getNumberString(data.dungValueNew / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="chance" style="background-color:${getHeatColor(data.chance, 'chance',statRangesCB)};position:relative;">${data.chance}<div class="gradientWow2"></div></td>
         <td data-sortkey="dps" style="background-color:${getHeatColor(data.dps / c, 'dps',statRangesCB)};position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
@@ -180,8 +181,8 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         <td data-sortkey="ms" style="background-color:${getHeatColor(data.ms / c, 'ms',statRangesCB)};position:relative;">${Math.round(data.ms / c*100)/100}<div class="gradientWow2"></div></td>
         <td data-sortkey="fMul" style="background-color:${getHeatColor(data.fMul / c, 'fMul',statRangesCB,true)};position:relative;">${data.fMul}<div class="gradientWow2"></div></td>
         <td data-sortkey="hMul" style="background-color:${getHeatColor(data.hMul / c, 'hMul',statRangesCB,true)};position:relative;">${data.hMul}<div class="gradientWow2"></div></td>
-        <td data-sortkey="escape" style="background-color:${getHeatColor(data.escape / c, 'escape',statRangesCB)};position:relative;">${data.escape}<div class="gradientWow2"></div></td>
-        <td data-sortkey="critFailD" style="background-color:${getHeatColor(data.critFailD / c, 'critFailD',statRangesCB)};position:relative;">${data.critFailD}<div class="gradientWow2"></div></td>
+        <td data-sortkey="escape" style="background-color:${getHeatColor(data.escape / c, 'escape', statRangesCB)};position:relative;">${Math.round(data.escape * 100)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="critFailD" style="background-color:${getHeatColor(data.critFailD / c, 'critFailD', statRangesCB)};position:relative;">${Math.round((1-data.critFailD)*100)}<div class="gradientWow2"></div></td>
         <td data-sortkey="femaleR" style="background-color:${getHeatColor(data.femaleR / c, 'femaleR',statRangesCB)};position:relative;">${Math.round(data.femaleR*10)/10}<div class="gradientWow2"></div></td>
         </tr>`
     })

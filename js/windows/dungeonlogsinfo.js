@@ -42,7 +42,7 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
     currentWindow[windowId] = "dungeonlogsinfo"
     let html = ""
     html += "<div style='display:flex; flex-wrap:wrap;'><div  style='overflow:auto;width:100%;'>"
-    html += "<div><table >"
+    html += "<div><table style='width-max:700px'>"
     html += "<tr>"
     html += "<th>Hero Name</th>"
     html += "<th></th>"
@@ -106,26 +106,57 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
         //log._dps, log._dpsNeeded, stage.enemies, log._dtps, log._dtpsNeeded, stage.damageType, stage.stageSpeed, log.stageResult, stage.reward.gold, stage.reward.xp
     }
 
-    html += '<div style="padding-top:1vw"><table><thead><tr><th>Stage</th><th>DPS</th><th>DPS Needed</th><th>Enemies</th><th>DTPS</th><th>DTPS Needed</th><th>Damage Type</th><th>Speed</th><th>Result</th><th>Time</th><th>Gold</th><th>XP</th><th>Rank Points</th><th>S/E/F/C (D) %</th></tr></thead><tbody>';
+    html += '<div style="padding-top:1vw"><table><thead><tr><th>Stage</th><th>DPS</th><th>DPS Needed</th><th>Enemies</th><th>DTPS</th><th>DTPS Needed</th><th>Damage Type</th><th>Speed</th><th>Result</th><th>AOE DTPS/Needed</th><th>Time</th><th>Gold</th><th>XP</th><th>Rank Points</th><th>S/E/F/C (D) %</th></tr></thead><tbody>';
 
     for (let i = 0; i < run.dungeon.stages.length; i++) {
         let stage = run.dungeon.stages[i];
         let log = run.log[i];
         if (!log) {
-            log = {_dps: "", _dpsNeeded: "", _dtps: "", _dtpsNeeded:"",stageResult:""}
+            log = {_dps: "", _dpsNeeded: "", _dtps: "", _dtpsNeeded: "", stageResult: "", aoeHpsSum: "", aoeDtpsSum: "", aoeDamageTaken: "", rngDps: "", rngDtps: ""}
         }
 
 
+        let dpsColor
+        if (log._dps >= stage.dpsReq) {
+            if (log._dps >= stage.dpsReq * 1.2) {
+                dpsColor = colors.Overwhelming
+            } else {
+                dpsColor = colors.Success
+            }
+        } else {
+            if (log._dps > stage.dpsReq * 0.7) {
+                dpsColor = colors["Failure"]
+            } else {
+                dpsColor = colors["Critical failure"]
+            }
+
+        }
+        let dtpsColor
+        if (log._dtps >= stage.dtpsReq) {
+            if (log._dtps >= stage.dtpsReq * 1.2) {
+                dtpsColor = colors.Overwhelming
+            } else {
+                dtpsColor = colors.Success
+            }
+        } else {
+            if (log._dtps > stage.dtpsReq * 0.7) {
+                dtpsColor = colors["Failure"]
+            } else {
+                dtpsColor = colors["Critical failure"]
+            }
+        }
+
         html += `<tr>
                 <td>${i + 1}</td>
-                <td>${getNumberString(log._dps)}</td>
-                <td>${getNumberString(log._dpsNeeded)+"/"+getNumberString(stage.dpsReq)}</td>
+                <td style="color:${dpsColor}" >${getNumberString(log._dps)}</td>
+                <td>${getNumberString(log._dpsNeeded * log.rngDps)+"/"+getNumberString(stage.dpsReq)}</td>
                 <td>${stage.enemies}</td>
-                <td>${getNumberString(log._dtps)}</td>
-                <td>${getNumberString(log._dtpsNeeded)+"/"+getNumberString(stage.dtpsReq)}</td>
+                <td style="color:${dtpsColor}">${getNumberString(log._dtps)}</td>
+                <td>${getNumberString(log._dtpsNeeded * log.rngDtps) + "/" + getNumberString(stage.dtpsReq)}</td>
                 <td>${stage.damageType}</td>
                 <td>${Math.round(stage.stageSpeed*100)/100}</td>
                 <td style="color:${colors[log.stageResult]}">${log.stageResult}</td>
+                <td>${getNumberString(log.aoeHpsSum + log.aoeDtpsSum)}/${getNumberString(log.aoeDamageTaken)}</td>
                 <td>${getTime(stage.timerMax/stage.stageSpeed/run.dungeonSpeed)}</td>
                 <td>${Math.round(stage.reward.gold)}</td>
                 <td>${Math.round(stage.reward.xp)}</td>

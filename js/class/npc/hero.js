@@ -101,14 +101,14 @@ class Hero extends Character {
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsSt
-        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
     getAOEHps(skill) {
         let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
-        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
     }
 
     getDtpsP(skill) {

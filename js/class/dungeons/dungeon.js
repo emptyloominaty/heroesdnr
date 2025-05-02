@@ -84,6 +84,7 @@ class DungeonController {
         let dtpsSuccess = false
         let dpsSt = 0
         let dpsAoe = 0
+        let hpsSt = 0
         let dtpsM = 0
         let dtpsP = 0
         let escapeSuccess
@@ -94,28 +95,49 @@ class DungeonController {
         let _dtpsNeeded = 0
 
         let stageResult = ""
+        let aoeHpsSum = 0
+        let aoeDtpsSum = 0
+        let aoeDamageTaken = 0
+        let rngDps
+        let rngDtps
 
         if (stage.chances.death > 8 && Math.random() > 0.8 - (stage.chances.death/100)) {
             stageResult = "Leave"
             return {
-                escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
+                rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
             }
         }
 
-        for (let i = 0; i<run.heroes.length; i++) {
+        let tank
+        for (let i = 0; i < run.heroes.length; i++) {
+            if (run.heroes[i].role === "tank") {
+                tank = run.heroes[i]
+                break
+            }
+        }
+        if (!tank) {
+            tank = run.heroes[0]
+        }
+        /*for (let i = 1; i < run.heroes.length; i++) {
+            const heroDtps = (stage.damageType === "magic" ? run.heroes[i].dtpsM : run.heroes[i].dtpsP)
+            const tankDtps = (stage.damageType === "magic" ? tank.dtpsM : tank.dtpsP)
+            if (heroDtps > tankDtps) tank = run.heroes[i]
+        }*/
+
+        for (let i = 0; i < run.heroes.length; i++) {
             dpsSt += run.heroes[i].stDps
             dpsAoe += run.heroes[i].aoeDps
-            dtpsM += run.heroes[i].dtpsM + run.heroes[i].stHps
-            dtpsP += run.heroes[i].dtpsP + run.heroes[i].stHps
-            if (run.heroes.length>1) {
-                dtpsM += run.heroes[i].aoeHps
-                dtpsP += run.heroes[i].aoeHps
-            }
+            hpsSt += run.heroes[i].stHps
+
+            aoeHpsSum += run.heroes[i].aoeHps / run.heroes.length 
+            aoeDtpsSum += (stage.damageType === "magic" ? run.heroes[i].dtpsM : run.heroes[i].dtpsP)
+            aoeDamageTaken += stage.aoeDtpsReq
         }
 
+        let aoeDtps = Math.max(0,aoeDamageTaken - (aoeHpsSum + aoeDtpsSum))
 
         _dpsNeeded = stage.dpsReq
-        _dtpsNeeded = stage.dtpsReq + (stage.aoeDtpsReq * run.heroes.length)
+        _dtpsNeeded = stage.dtpsReq + aoeDtps
 
         if (stage.enemies === "st") {
             _dps = dpsSt
@@ -123,11 +145,10 @@ class DungeonController {
             _dps = dpsAoe
         }
 
-        if (stage.damageType === "magic") {
-            _dtps = dtpsM
-        } else if (stage.damageType === "physical") {
-            _dtps = dtpsP
-        }
+
+
+        _dtps = (stage.damageType === "magic" ? tank.dtpsM : tank.dtpsP)
+        _dtps += tank.stHps + hpsSt
 
         if (_dps < _dpsNeeded) {
             _dtpsNeeded *= _dpsNeeded / Math.max(_dps, 0.1)
@@ -137,11 +158,11 @@ class DungeonController {
             _dpsNeeded *= _dtpsNeeded / Math.max(_dtps, 0.1)
         }
 
-        let rngDps = 0.7 + (Math.random() / 2)
+        rngDps = 0.7 + (Math.random() / 2)
         if ((_dps / _dpsNeeded) > rngDps) {
             dpsSuccess = true
         }
-        let rngDtps = 0.7 + (Math.random() / 2)
+        rngDtps = 0.7 + (Math.random() / 2)
         if ((_dtps / _dtpsNeeded) > rngDtps) {
             dtpsSuccess = true
         }
@@ -215,7 +236,7 @@ class DungeonController {
 
 
         return {
-            escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
+            rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
         }
     }
 
@@ -225,27 +246,48 @@ class DungeonController {
         let escapeHeroesChance = 0
         let dps = 0
         let dtps = 0
+        let hpsSt = 0
 
+        let aoeHpsSum = 0
+        let aoeDtpsSum = 0
+        let aoeDamageTaken = 0
         let heroesCritFailD = 0
+
+        let tank = run.heroes.find(h => h.role === "tank") || run.heroes[0]
+        /*
+        for (let i = 1; i < run.heroes.length; i++) {
+            const heroDtps = (damageType === "magic" ? run.heroes[i].dtpsM : run.heroes[i].dtpsP)
+            const tankDtps = (damageType === "magic" ? tank.dtpsM : tank.dtpsP)
+            if (heroDtps > tankDtps) tank = run.heroes[i]
+        }
+        */
 
         for (let i = 0; i<run.heroes.length; i++) {
             const hero = run.heroes[i]
             let dpsH = enemies === "st" ? hero.stDps : hero.aoeDps
-            let dtpsH = damageType === "magic" ? hero.dtpsM + hero.stHps : hero.dtpsP + hero.stHps
+            hpsSt += run.heroes[i].stHps
+
+            aoeHpsSum += hero.aoeHps / run.heroes.length
+            aoeDtpsSum += (damageType === "magic" ? hero.dtpsM : hero.dtpsP)
+            aoeDamageTaken += stage.aoeDtpsReq
+
             dps += dpsH
-            dtps += dtpsH
             escapeHeroesChance += hero.escapeChance
             heroesCritFailD += hero.critFailD
             if (run.heroes.length > 1) {
                 dtps += run.heroes[i].aoeHps
             }
         }
+        let aoeDtps = Math.max(0, aoeDamageTaken - (aoeHpsSum + aoeDtpsSum))
+
+        dtps = (stage.damageType === "magic" ? tank.dtpsM : tank.dtpsP)
+        dtps += tank.stHps + hpsSt 
 
         escapeHeroesChance = escapeHeroesChance / run.heroes.length
         heroesCritFailD = heroesCritFailD / run.heroes.length
 
         let _dpsNeeded = dpsReq
-        let _dtpsNeeded = dtpsReq  + (stage.aoeDtpsReq * run.heroes.length)
+        let _dtpsNeeded = dtpsReq + aoeDtps
 
         if (dps < _dpsNeeded) _dtpsNeeded *= _dpsNeeded / Math.max(dps, 0.1)
         if (dtps < _dtpsNeeded) _dpsNeeded *= _dtpsNeeded / Math.max(dtps, 0.1)
@@ -410,7 +452,7 @@ class DungeonController {
             let dpsRng = 0.75+(Math.random()/2)
             let dtpsRng = 0.75 + (Math.random() / 2)
             stages.push({
-                dpsReq: 8 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
+                dpsReq: 12 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
                 enemies: enemies,
                 dtpsReq: 4 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
                 damageType: pickRandom(["physical", "magic"]),
