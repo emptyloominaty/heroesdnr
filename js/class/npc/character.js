@@ -492,21 +492,24 @@ class Character {
                     if (hero.role==="healer" && !healer) {
                         healer = true
                         group.push(hero)
+                        console.log("HEALER:"+loop)
                     }
                     if (hero.role==="tank" && !tank) {
                         tank = true
                         group.push(hero)
+                        console.log("TANK:"+loop)
                     }
                     if (hero.role==="dps" && dpses < size-2) {
                         dpses++
                         group.push(hero)
+                        console.log("DPS:"+loop)
                     }
                 }
             }
             if (group.length>=size) {
                 break
             }
-            if (loop === 2 && Math.random() > 0.7) {
+            if (i >= heroes.length-1 && loop === 2 && Math.random() > 0.7) {
                 i = 0
                 loop++
             }
