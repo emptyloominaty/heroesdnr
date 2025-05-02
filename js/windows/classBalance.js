@@ -22,7 +22,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
     }
     currentWindow[windowId] = "classBalance"
     let html = ""
-    html += "<div class='classBalance' style='display:flex;width:90vw; flex-wrap:wrap;'>"
+    html += "<div class='classBalance' style='display:flex;width:95vw; flex-wrap:wrap;'>"
 
     html += `<button id="btn_heatModeCB" onclick="heatMapcolorModeCB = !heatMapcolorModeCB; open_classBalance(undefined,false,false,true)">HeatMap: ${heatMapcolorModeCB ? 'ON' : 'OFF'}</button>`
 
@@ -60,10 +60,13 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
                 hMul: 0,
                 escape: 0,
                 critFailD: 0,
-                femaleR: 0
+                femaleR: 0,
+                dungDps: 0,
+                dungDtps: 0,
+                dungValue: 0,
             }
         }
-//escape: 0.2, critFailD: 1.3, femaleR:[50,1]
+
         combinedData[key].count++
         combinedData[key].dps += h.dps || 0
         combinedData[key].stDps += h.stDps || 0
@@ -88,6 +91,19 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         let total = fmr[0] + fmr[1]
         let femalePercent = total === 0 ? 0 : (fmr[1] / total) * 100
         combinedData[key].femaleR += femalePercent || 0
+
+        combinedData[key].dungDps = (h.stDps + h.aoeDps)/2
+        combinedData[key].dungDtps = ((h.dtpsM + h.dtpsP) / 2) + h.stHps + h.aoeHps
+        let newDtps = h.stHps + (h.aoeHps/2)
+        if (h.role === "tank") {
+            newDtps += (h.dtpsM + h.dtpsP) / 2
+        }
+
+        let aoeFixDtps = ((h.dtpsM + h.dtpsP) / 2) + h.stHps + (h.aoeHps/2)
+        combinedData[key].dungValue = combinedData[key].dungDps + combinedData[key].dungDtps
+        combinedData[key].dungValue2 = combinedData[key].dungDps + aoeFixDtps
+        combinedData[key].dungValueNew = combinedData[key].dungDps + newDtps
+
     })
 
 
@@ -100,6 +116,9 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
 <tr class="statsHeader">
     <th class="statsHeaderTh" onclick="sortTable('className',${windowId})" data-sortkey="className">Class</th>
     <th class="statsHeaderTh" onclick="sortTable('specName',${windowId})" data-sortkey="specName">Spec</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValue',${windowId})" data-sortkey="dungValue">DungValue</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValue2',${windowId})" data-sortkey="dungValue2">DValAoeFix</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValueNew',${windowId})" data-sortkey="dungValueNew">DungValueNew</th>
     <th class="statsHeaderTh" onclick="sortTable('chance',${windowId})" data-sortkey="chance">Spawn chance</th>
     <th class="statsHeaderTh" onclick="sortTable('dps',${windowId})" data-sortkey="dps">DPS</th>
     <th class="statsHeaderTh" onclick="sortTable('stDps',${windowId})" data-sortkey="stDps">ST DPS</th>
@@ -114,11 +133,12 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
     <th class="statsHeaderTh" onclick="sortTable('fMul',${windowId})" data-sortkey="fMul">fMul</th>
     <th class="statsHeaderTh" onclick="sortTable('hMul',${windowId})" data-sortkey="hMul">hMul</th>
     <th class="statsHeaderTh" onclick="sortTable('escape',${windowId})" data-sortkey="escape">escape</th>
-    <th class="statsHeaderTh" onclick="sortTable('critFailD',${windowId})" data-sortkey="hMul">critFailD</th>
-    <th class="statsHeaderTh" onclick="sortTable('femaleR',${windowId})" data-sortkey="femaleR">femaleR</th>
+    <th class="statsHeaderTh" onclick="sortTable('critFailD',${windowId})" data-sortkey="hMul">cfD</th>
+    <th class="statsHeaderTh" onclick="sortTable('femaleR',${windowId})" data-sortkey="femaleR">female</th>
+
 </tr>`
 //----------------
-    const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms","chance","fMul","hMul","escape","critFailD","femaleR"]
+    const colorStats = ["count", "dps", "stDps", "aoeDps", "hps", "stHps", "aoeHps", "dtps", "dtpsM", "dtpsP", "ms", "chance", "fMul", "hMul", "escape", "critFailD", "femaleR", "dungDps", "dungDtps", "dungValue","dungValueNew","dungValue2"]
     colorStats.forEach(stat => {
         let values = sortedKeys.map(key => {
             let data = combinedData[key]
@@ -144,6 +164,9 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         html += `<tr class="statistics_tr_row" style="background-color:${bgColor}">
         <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
         <td data-sortkey="specName" style="position:relative;color:${roleColor}">${specText}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dungValue" style="background-color:${getHeatColor(data.dungValue / c, 'dungValue', statRangesCB)};position:relative;">${getNumberString(data.dungValue / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dungValue2" style="background-color:${getHeatColor(data.dungValue2 / c, 'dungValue2', statRangesCB)};position:relative;">${getNumberString(data.dungValue2 / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dungValueNew" style="background-color:${getHeatColor(data.dungValueNew / c, 'dungValueNew', statRangesCB)};position:relative;">${getNumberString(data.dungValueNew / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="chance" style="background-color:${getHeatColor(data.chance, 'chance',statRangesCB)};position:relative;">${data.chance}<div class="gradientWow2"></div></td>
         <td data-sortkey="dps" style="background-color:${getHeatColor(data.dps / c, 'dps',statRangesCB)};position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="stDps" style="background-color:${getHeatColor(data.stDps / c, 'stDps',statRangesCB)};position:relative;">${getNumberString(data.stDps / c)}<div class="gradientWow2"></div></td>
@@ -160,7 +183,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         <td data-sortkey="escape" style="background-color:${getHeatColor(data.escape / c, 'escape',statRangesCB)};position:relative;">${data.escape}<div class="gradientWow2"></div></td>
         <td data-sortkey="critFailD" style="background-color:${getHeatColor(data.critFailD / c, 'critFailD',statRangesCB)};position:relative;">${data.critFailD}<div class="gradientWow2"></div></td>
         <td data-sortkey="femaleR" style="background-color:${getHeatColor(data.femaleR / c, 'femaleR',statRangesCB)};position:relative;">${Math.round(data.femaleR*10)/10}<div class="gradientWow2"></div></td>
-    </tr>`
+        </tr>`
     })
 
     html += "</table></div>"
