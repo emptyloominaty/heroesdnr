@@ -483,33 +483,31 @@ class Character {
             dpses++
         }
         let loop = 0
+        const minLevel = Math.min(this.level - 2, this.level * 0.8)
+        const maxLevel = Math.max(this.level + 2, this.level * 1.2)
+        let rngLvl = Math.random()
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
-            const minLevel = Math.min(this.level - 2, this.level * 0.8)
-            const maxLevel = Math.max(this.level + 2, this.level * 1.2)
             if (hero !== this && hero.inTown && hero.canTalk && (loop === 3 || (hero.level >= minLevel && hero.level <= maxLevel))) {
                 if ((loop >= 2) || (loop === 1 && (this.friendships[hero.id]!==undefined && this.friendships[hero.id] >= 0)) ||  (this.friendships[hero.id]!==undefined && this.friendships[hero.id] >= 10)) {
                     if (hero.role==="healer" && !healer) {
                         healer = true
                         group.push(hero)
-                        console.log("HEALER:"+loop)
                     }
                     if (hero.role==="tank" && !tank) {
                         tank = true
                         group.push(hero)
-                        console.log("TANK:"+loop)
                     }
                     if (hero.role==="dps" && dpses < size-2) {
                         dpses++
                         group.push(hero)
-                        console.log("DPS:"+loop)
                     }
                 }
             }
             if (group.length>=size) {
                 break
             }
-            if (i >= heroes.length-1 && loop === 2 && Math.random() > 0.7) {
+            if (i >= heroes.length-1 && loop === 2 && rngLvl > 0.7) {
                 i = 0
                 loop++
             }

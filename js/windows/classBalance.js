@@ -119,8 +119,6 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
 <tr class="statsHeader">
     <th class="statsHeaderTh" onclick="sortTable('className',${windowId})" data-sortkey="className">Class</th>
     <th class="statsHeaderTh" onclick="sortTable('specName',${windowId})" data-sortkey="specName">Spec</th>
-    <th class="statsHeaderTh" onclick="sortTable('dungValue',${windowId})" data-sortkey="dungValue">DungVal</th>
-    <th class="statsHeaderTh" onclick="sortTable('dungValueNew',${windowId})" data-sortkey="dungValueNew">RaidVal</th>
     <th class="statsHeaderTh" onclick="sortTable('chance',${windowId})" data-sortkey="chance">Spawn chance</th>
     <th class="statsHeaderTh" onclick="sortTable('dps',${windowId})" data-sortkey="dps">DPS</th>
     <th class="statsHeaderTh" onclick="sortTable('stDps',${windowId})" data-sortkey="stDps">ST DPS</th>
@@ -137,6 +135,8 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
     <th class="statsHeaderTh" onclick="sortTable('escape',${windowId})" data-sortkey="escape">escape</th>
     <th class="statsHeaderTh" onclick="sortTable('critFailD',${windowId})" data-sortkey="hMul">cfD</th>
     <th class="statsHeaderTh" onclick="sortTable('femaleR',${windowId})" data-sortkey="femaleR">female</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValue',${windowId})" data-sortkey="dungValue">DungVal</th>
+    <th class="statsHeaderTh" onclick="sortTable('dungValueNew',${windowId})" data-sortkey="dungValueNew">RaidVal</th>
 
 </tr>`
 //----------------
@@ -166,8 +166,6 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         html += `<tr class="statistics_tr_row" style="background-color:${bgColor}">
         <td data-sortkey="className" style="position:relative;">${classText}<div class="gradientWow2"></div></td>
         <td data-sortkey="specName" style="position:relative;color:${roleColor}">${specText}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dungValue" style="background-color:${getHeatColor(data.dungValue / c, 'dungValue', statRangesCB)};position:relative;">${getNumberString(data.dungValue / c)}<div class="gradientWow2"></div></td>
-        <td data-sortkey="dungValueNew" style="background-color:${getHeatColor(data.dungValueNew / c, 'dungValueNew', statRangesCB)};position:relative;">${getNumberString(data.dungValueNew / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="chance" style="background-color:${getHeatColor(data.chance, 'chance',statRangesCB)};position:relative;">${data.chance}<div class="gradientWow2"></div></td>
         <td data-sortkey="dps" style="background-color:${getHeatColor(data.dps / c, 'dps',statRangesCB)};position:relative;">${getNumberString(data.dps / c)}<div class="gradientWow2"></div></td>
         <td data-sortkey="stDps" style="background-color:${getHeatColor(data.stDps / c, 'stDps',statRangesCB)};position:relative;">${getNumberString(data.stDps / c)}<div class="gradientWow2"></div></td>
@@ -184,6 +182,8 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         <td data-sortkey="escape" style="background-color:${getHeatColor(data.escape / c, 'escape', statRangesCB)};position:relative;">${Math.round(data.escape * 100)}<div class="gradientWow2"></div></td>
         <td data-sortkey="critFailD" style="background-color:${getHeatColor(data.critFailD / c, 'critFailD', statRangesCB)};position:relative;">${Math.round((1-data.critFailD)*100)}<div class="gradientWow2"></div></td>
         <td data-sortkey="femaleR" style="background-color:${getHeatColor(data.femaleR / c, 'femaleR',statRangesCB)};position:relative;">${Math.round(data.femaleR*10)/10}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dungValue" style="background-color:${getHeatColor(data.dungValue / c, 'dungValue', statRangesCB)};position:relative;">${getNumberString(data.dungValue / c)}<div class="gradientWow2"></div></td>
+        <td data-sortkey="dungValueNew" style="background-color:${getHeatColor(data.dungValueNew / c, 'dungValueNew', statRangesCB)};position:relative;">${getNumberString(data.dungValueNew / c)}<div class="gradientWow2"></div></td>
         </tr>`
     })
 

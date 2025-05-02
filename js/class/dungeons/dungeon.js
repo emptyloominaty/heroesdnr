@@ -424,11 +424,14 @@ class DungeonController {
         }
     }
 
-    dungeonTypes = {
-        "Goblin Lair": {damageTypes:[0.95,0.05],goldMul:2,xpMul: 0.5, stAoe:[0.1,0.9], dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3 }
+    dungeonTypes = { //TODO
+        "Default": {damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Goblin Lair": {damageTypes:[0.95,0.05], stAoe:[0.1,0.9], bossStAoe:[0.8,0.2], stageMulChance:0.95,stageMul:0.1,stagesBase:3,stagesRng:3, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 0.7,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 20, timerRng: 20 },
     }
 
-    generateDungeon(difficulty, level, dungeonType = "Goblin Lair") {
+    generateDungeon(difficulty, level, dungeonType = "Default") {
         const pickRandom = (arr, weights = null) => {
             if (!weights) return arr[Math.floor(Math.random() * arr.length)]
             const sum = weights.reduce((a, b) => a + b)
@@ -462,12 +465,12 @@ class DungeonController {
 
             let dpsMultiplier = enemies === "aoe" ? 2 : 1
             let timer = 30 + Math.random() * (isBoss ? 40 : 20)
-            let dpsRng = 0.75+(Math.random()/2)
+            let dpsRng = 0.75 + (Math.random()/2)
             let dtpsRng = 0.75 + (Math.random() / 2)
             stages.push({
                 dpsReq: 12 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
                 enemies: enemies,
-                dtpsReq: 4 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
+                dtpsReq: 4 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)), //TODO LEVEL ????
                 damageType: pickRandom(["physical", "magic"]),
                 aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,
