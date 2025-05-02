@@ -33,7 +33,7 @@ class Inn extends Building {
 
 
     update() {
-
+        this.heroes = this.heroesList.length
     }
 
     updateDay() {

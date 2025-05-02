@@ -7,20 +7,33 @@ class DungeonController {
     runCount = {success: 0, escape: 0, failure: 0, criticalFailure: 0, total: 0}
 
     minlvl = 1
-    maxlvl = 10
+    maxlvl = 25
 
     startDungeon(heroes,hero = undefined) {
         if (!heroes || heroes.length===0) {
             console.log("FIX ME!!!!!!: "+hero.name+": "+hero.goingToDungeon+" - "+hero.isInDungeon+" "+hero.groupLeader)
             return false
         }
-        //TODO: level
         let level = 1
         let dungeonSpeed = 1
         let c = 0
+        let avgHeroLvl = 0
+        let maxHeroLvl = 0
         for (let i = 0; i < heroes.length; i++) {
             c += heroes[i].speed
+            avgHeroLvl += heroes[i].level
+            if (heroes[i].level > maxHeroLvl) {
+                maxHeroLvl = heroes[i].level
+            }
         }
+        avgHeroLvl = Math.round(avgHeroLvl / heroes.length)
+
+        if (Math.random() > 0.5) {
+            level = avgHeroLvl
+        } else {
+            level = maxHeroLvl
+        }
+
         dungeonSpeed = c / heroes.length
         let difficulty = 0.75
         let type

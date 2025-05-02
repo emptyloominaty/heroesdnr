@@ -282,7 +282,6 @@ class Character {
                 if (buildings[i].type === "inn") {
                     if (buildings[i].heroes < buildings[i].heroesMax) {
                         this.sleepBuildingId = i
-                        buildings[i].heroes++
                         buildings[i].heroesList.push(this)
                         break
                     }
@@ -450,6 +449,13 @@ class Character {
         if (deadHeroes.length > settings.maxLogSizeDeadCharacters) {
             deadHeroes.shift()
         }
+        if (this.sleepBuildingId !== -1) {
+            const heroesList = buildings[this.sleepBuildingId].heroesList
+            const index = heroesList.indexOf(this)
+            if (index !== -1) {
+                heroesList.splice(index, 1)
+            }
+        }
         if (this.hero) {
             heroes = heroes.filter(h => h !== this)
         }
@@ -479,7 +485,8 @@ class Character {
         let loop = 0
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
-            if (hero !== this && hero.inTown && hero.canTalk) {
+            //TODO: FIX LVL
+            if (hero !== this && hero.inTown && hero.canTalk && (loop === 3 || ((this.level >= hero.level - 2 && this.level <= hero.level + 2) || (this.level >= hero.level * 0.8 && this.level <= hero.level * 1.2)))) {
                 if (loop === 2 || (loop === 1 && (this.friendships[hero.id] && this.friendships[hero.id] === 0)) ||  (this.friendships[hero.id] && this.friendships[hero.id] >= 10)) {
                     if (hero.role==="healer" && !healer) {
                         healer = true
@@ -499,6 +506,10 @@ class Character {
                 break
             }
             if (i >= heroes.length-1 && loop<2) {
+                i = 0
+                loop++
+            }
+            if (loop === 2 && Math.random() > 0.7) {
                 i = 0
                 loop++
             }
