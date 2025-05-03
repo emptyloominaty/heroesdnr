@@ -26,6 +26,10 @@ class Building {
     levelUpdate() {
     }
 
+    getVal() {
+        return ""
+    }
+
     upgrade() {
         if (this.level<this.upgradeCost.length && gold>this.upgradeCost[this.level-1]) {
             this.level++

@@ -44,11 +44,14 @@ class DungeonController {
             type = "solo"
         }
 
+        //TODO:dungeontype rng
+        //TODO:normal,heroic,mythic   maxlevel*2 maxlevel*3
+
         this.currentRuns.push({type: type, heroes: heroes, level: level, stage: 0, timeStarted: realtime, timeFinished: 0, dungeon: this.generateDungeon(difficulty, level), log: [], dungeonSpeed: dungeonSpeed})
         let run = this.currentRuns[this.currentRuns.length - 1]
         this.updateStagesSpeed(run)
         for (let i = 0; i<run.dungeon.stages.length; i++) {
-            run.dungeon.stages[i].chances = this.getChances(run,i) //TODO: if crit/fail>x% leavedungeon
+            run.dungeon.stages[i].chances = this.getChances(run,i)
         }
     }
 
@@ -424,11 +427,42 @@ class DungeonController {
         }
     }
 
-    dungeonTypes = { //TODO
-        "Default": {damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+    dungeonTypes = {
+        "Default": {chance: 1, minLvl:1, maxLvl:1000, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
             stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
-        "Goblin Lair": {damageTypes:[0.95,0.05], stAoe:[0.1,0.9], bossStAoe:[0.8,0.2], stageMulChance:0.95,stageMul:0.1,stagesBase:3,stagesRng:3, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 0.7,
+        "Goblin Lair": {chance: 1, minLvl:1, maxLvl:30, damageTypes:[0.95,0.05], stAoe:[0.1,0.9], bossStAoe:[0.8,0.2], stageMulChance:0.95,stageMul:0.1,stagesBase:3,stagesRng:3, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 0.7,
             stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 20, timerRng: 20 },
+        //TODO
+        "Dense Forest": {chance: 1, minLvl:1, maxLvl:15, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Skeleton Crypt": {chance: 1, minLvl:1, maxLvl:45, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Spider Nest": {chance: 1, minLvl:2, maxLvl:50, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Arcane Ruins": {chance: 1, minLvl:10, maxLvl:100, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Dragon Cave": {chance: 1, minLvl:25, maxLvl:100, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Demonic Rift": {chance: 1, minLvl:50, maxLvl:100, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Haunted Manor": {chance: 1, minLvl:3, maxLvl:35, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Bandit Hideout": {chance: 1, minLvl:1, maxLvl:50, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Abandoned Mine": {chance: 1, minLvl:3, maxLvl:40, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Beast Den": {chance: 1, minLvl:5, maxLvl:20, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Forgotten Shrine": {chance: 1, minLvl:17, maxLvl:45, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Cave System": {chance: 1, minLvl:20, maxLvl:32, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Ruined Fort": {chance: 1, minLvl:12, maxLvl:60, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Volcanic Cavern": {chance: 1, minLvl:33, maxLvl:60, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
+        "Vampire Keep": {chance: 1, minLvl:38, maxLvl:85, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,
+            stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
     }
 
     generateDungeon(difficulty, level, dungeonType = "Default") {

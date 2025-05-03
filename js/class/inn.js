@@ -5,6 +5,7 @@ class Inn extends Building {
     upgradeCost = [0, 500, 1000, 2000, 3000]
     dailyCost = [10,30,50,80,120]
     prices = { eat: 2, sleep: 5 }
+    heroesMaxatLvl = [10,20,30,40,50]
 
     constructor(location, name, level = 1) {
         super(location, name, level)
@@ -31,6 +32,9 @@ class Inn extends Building {
         }
     }
 
+    getVal(i) {
+        return this.heroesMaxatLvl[i]+""
+    }
 
     update() {
         this.heroes = this.heroesList.length
