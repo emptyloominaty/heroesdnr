@@ -11,6 +11,7 @@ let elements = {
     "debug3": document.getElementById("debug3"),
     "debug4": document.getElementById("debug4"),
     "debug5": document.getElementById("debug5"),
+    "tooltip": document.getElementById("tooltip"),
     "window0": document.getElementById("window0"),
     "windowHeader0": document.getElementById("windowHeader0"),
     "windowBody0": document.getElementById("windowBody0"),

@@ -64,7 +64,7 @@ function update() {
     if (hourTimer > 30) {
         hourTimer = 0
         if (heroesMax > heroes.length) {
-            if (Math.random() > 1 * (heroes.length / heroesMax)) {
+            if (Math.random() > (heroes.length / heroesMax)) {
                 spawnHeroRandom()
             }
             

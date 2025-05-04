@@ -53,3 +53,59 @@ function generateRankRanges() {
 function isMythicPlusNumber(str) {
 	return /^Mythic \+\d+$/.test(str)
 }
+
+function heroLeave(hero, banish = false) {
+	logs.heroes.push({time: realtime, message: "<span style='color:" + colors[hero.characterClass] + "'>" + hero.characterClass + "</span> <span style='color:" + colors.log.levelUp +"'>"+ hero.name+" left the town</span>"})
+	if (hero.sleepBuildingId !== -1) {
+		const heroesList = buildings[hero.sleepBuildingId].heroesList
+		const index = heroesList.indexOf(hero)
+		if (index !== -1) {
+			heroesList.splice(index, 1)
+		}
+	}
+
+	if (hero.hero) {
+		heroes = heroes.filter(h => h !== hero)
+	}
+
+	if (hero instanceof Hero) {
+		hero.leaveTown()
+	}
+
+	hero.destroyUI()
+	characters = characters.filter(c => c !== hero)
+	delete charactersMap[hero.id]
+
+	let heroNewObj = {
+		banished: banish,
+		id: hero.id,
+		sex: hero.sex,
+		race: hero.race,
+		role: hero.role,
+		xp: hero.xp,
+		level: hero.level,
+		maxAge: hero.maxAge,
+		rankPoints: hero.rankPoints,
+		age: hero.age,
+		name: hero.name,
+		characterClass: hero.characterClass,
+		characterSpec: hero.characterSpec,
+		sociability: hero.sociability,
+		skill: [...hero.skill],
+		statistics: {
+			dungeonSoloRuns: JSON.parse(JSON.stringify(hero.statistics.dungeonSoloRuns)),
+			dungeonGroupRuns: JSON.parse(JSON.stringify(hero.statistics.dungeonGroupRuns)),
+			raidRuns: JSON.parse(JSON.stringify(hero.statistics.raidRuns)),
+			goldEarned: hero.statistics.goldEarned,
+			questsCompleted: hero.statistics.questsCompleted
+		}
+	}
+	inactiveHeroes.push(heroNewObj)
+	if (inactiveHeroes.length>settings.maxSizeInactiveHeroes) {
+		let del = Math.ceil(settings.maxSizeInactiveHeroes/100)
+		inactiveHeroes.splice(0, del)
+	}
+
+
+
+}

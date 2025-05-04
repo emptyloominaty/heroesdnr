@@ -89,6 +89,11 @@ canvas {
     left:0;
 }
 
+#tooltip {
+    display: none;
+    position: fixed;
+}
+
 
 
 button {
@@ -108,4 +113,31 @@ button {
 
 button:hover {
     background-color: #444144;
+}
+
+select {
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 0.72vw;
+    padding: 2px 5px;
+    margin: 0 3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    color: #FFF;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select:hover {
+    background-color: #444144;
+}
+
+select:focus {
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+option {
+    background-color: #222;
+    color: #fff;
 }

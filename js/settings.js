@@ -8,7 +8,9 @@ let settings = {
     maxLogSize: 50,
     maxLogSizeDungeons: 100,
     maxLogSizeDeadCharacters: 1000,
-    debugSpeeds: true     //elements.btn_speed50 btn_speed100
+    maxSizeInactiveHeroes: 1000,
+    debugSpeeds: true,     //elements.btn_speed50 btn_speed100
+    skipMenu: true,
 }
 
 let settingsUpdate = function () {

@@ -1,11 +1,18 @@
 let heroesListLength = 0
 let heroesListTableMode = "default"
+let heroesListselectedHeroClass = ""
+
 let open_heroeslist = function (btn_el = undefined, reload = false, update = false,renameTableHeader = false) {
+    let filteredHeroes = heroes
+    if (heroesListselectedHeroClass!=="") {
+        filteredHeroes = heroes.filter(h => h.characterClass === heroesListselectedHeroClass)
+    }
+
     let windowId = 0
     if (update) {
-        if (heroes.length===heroesListLength) {
-            for (let i = 0; i < heroes.length; i++) {
-                let hero = heroes[i]
+        if (filteredHeroes.length===heroesListLength) {
+            for (let i = 0; i < filteredHeroes.length; i++) {
+                let hero = filteredHeroes[i]
                 elementsWindow.hl_role[i].textContent = hero.role
                 elementsWindow.hl_class[i].textContent = hero.characterClass
                 elementsWindow.hl_name[i].textContent = hero.name
@@ -158,6 +165,13 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
     html += `<button id="hl_btn_inventory" onclick="heroesListTableMode = 'inventory'; open_heroeslist(undefined,false,false,true)">Inventory</button>`
     html += `<button id="hl_btn_debug" onclick="heroesListTableMode = 'debug'; open_heroeslist(undefined,false,false,true)">Debug</button>`
 
+    html += `<span style="top:2px;position:relative;margin-left:40px;">Filter:</span>`
+    html += `<select id="heroClassSelect" onchange="heroesListselectedHeroClass = this.value || ''; open_heroeslist(undefined,true,false,false)">`
+    html += `<option value="" ${heroesListselectedHeroClass === "" ? 'selected' : ''}>All Classes</option>`
+    for (let className of Object.keys(heroesConfig)) {
+        html += `<option value="${className}"  ${heroesListselectedHeroClass === className ? 'selected' : ''}>${className}</option>`
+    }
+    html += `</select>`
     html += "<span style='width:100%;'></span>" //next row
 
     html += `<div style='overflow:auto;width:100%;'><table><tr class='heroListFirstRow'><th class="statsHeaderTh" onclick="sortTable('roleName',${windowId})" data-sortkey='roleName'>Role</th>
@@ -177,9 +191,9 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
         
         <th class="statsHeaderTh" onclick="sortTable('sex',${windowId})" data-sortkey='sex'>Sex</th>
         <th class="statsHeaderTh" onclick="sortTable('age',${windowId})" data-sortkey='age'>Age</th></tr>`
-    for (let i = 0; i < heroes.length; i++) {
-        let hero = heroes[i]
-        let classColor = colors[heroes[i].characterClass] || "#FFFFFF"
+    for (let i = 0; i < filteredHeroes.length; i++) {
+        let hero = filteredHeroes[i]
+        let classColor = colors[filteredHeroes[i].characterClass] || "#FFFFFF"
         let bgColor = pSBC(0.55, classColor, "#111111")
         let roleColor = colors.roles[hero.role] || "#FFFFFF"
         html += "<tr style='background-color: " + bgColor +"' class='heroListRow' onclick='open_heroinfo(undefined,false,false,"+hero.id+")'>"+
@@ -227,7 +241,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
     elementsWindow.hl_fatigue = []
     elementsWindow.hl_location = []
     elementsWindow.hl_destination = []
-    for (let i = 0; i < heroes.length; i++) {
+    for (let i = 0; i < filteredHeroes.length; i++) {
         elementsWindow.hl_role.push(document.getElementById("hl_role"+i))
         elementsWindow.hl_class.push(document.getElementById("hl_class"+i))
         elementsWindow.hl_name.push(document.getElementById("hl_name"+i))
@@ -243,7 +257,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
         elementsWindow.hl_location.push(document.getElementById("hl_location"+i))
         elementsWindow.hl_destination.push(document.getElementById("hl_destination"+i))
     }
-    heroesListLength = heroes.length
+    heroesListLength = filteredHeroes.length
     open_heroeslist(undefined,false,false,true)
     //sort on update
     if (currentSort[windowId].key!==null) {

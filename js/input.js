@@ -68,6 +68,8 @@ let onMouseUpdate = function(e) {
     mousePosition2d.x = ((x+((e.pageX)-(game2d.canvasW/2))/zoom))
     mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
 
+    updateTooltipLocation(mousePosition.x, mousePosition.y)
+
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles)) {
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)
