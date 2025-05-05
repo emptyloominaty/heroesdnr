@@ -82,14 +82,15 @@ let onMouseUpdate = function(e) {
         for (let obj of nearbyObjects) {
             if (isMouseOverObject(obj)) {
                 if (obj instanceof Character ) {
-                    console.log("Hero:", obj.name)
+                    showTooltip(obj,"hero")
                 } else if (obj instanceof Building) {
-                    console.log("Building:", obj.type)
+                    showTooltip(obj, "building")
                 }
                 return
             }
         }
     }
+    hideTooltip()
 }
 
 setTimeout( ()=> {

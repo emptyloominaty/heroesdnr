@@ -17,6 +17,8 @@ function drawUi() {
 
     windowsUpdate()
 
+    updateTooltip()
+
     //debug
     avgFPSA.push(fps)
     if (avgFPSA.length>30) {

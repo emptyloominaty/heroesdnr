@@ -13,7 +13,10 @@ let colors = {
     "error":"#ff7d66",
     "textRed":"#ff3331",
     "text":"#d1d1d1",
-    "absorb":"#a4e9ff",
+    "absorb": "#a4e9ff",
+
+    background: "#3d3b30",
+    text: "#d1d1d1",
 
     logTime: "#959511",
     log: {

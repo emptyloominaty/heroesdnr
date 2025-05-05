@@ -54,7 +54,8 @@ function isMythicPlusNumber(str) {
 	return /^Mythic \+\d+$/.test(str)
 }
 
-function heroLeave(hero, banish = false) {
+function heroLeave(id, banish = false) {
+	let hero = charactersMap[id]
 	logs.heroes.push({time: realtime, message: "<span style='color:" + colors[hero.characterClass] + "'>" + hero.characterClass + "</span> <span style='color:" + colors.log.levelUp +"'>"+ hero.name+" left the town</span>"})
 	if (hero.sleepBuildingId !== -1) {
 		const heroesList = buildings[hero.sleepBuildingId].heroesList

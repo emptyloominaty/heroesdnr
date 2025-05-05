@@ -92,8 +92,24 @@ canvas {
 #tooltip {
     display: none;
     position: fixed;
+    background-color: #3d3b30;
+    padding: 0.4vh 0.2vw 0.4vh 0.2vw;
+    min-height: 6vh;
+    min-width: 7vw;
 }
-
+#tooltip h3 {
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    font-size: 1.6vh;
+}
+#tooltip span {
+    font-size: 1.2vh;
+}
+#tooltip hr {
+    padding: 0;
+    margin: 2px;
+}
 
 
 button {
