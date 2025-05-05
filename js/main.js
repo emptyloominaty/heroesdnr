@@ -1,6 +1,7 @@
 let time = 0
 let day = 0
 
+let renown = 20
 let gold = 1000
 let gold2 = 1000
 let goldS = gold
@@ -26,7 +27,8 @@ let heroesMax = 0
 let logs = {heroes: [], buildings:[], debug:[]}
 let incomeLog = []
 
-buildings.push(new Inn({ x: 50, y: 45 }, "Inn 1", 2))
+buildings.push(new Inn({x: 50, y: 45}, "Inn 1", 2))
+buildings.push(new RecruitmentHall({x: 0, y: -125}, "Recruitment Hall 1", 2))
 
 //TEST
 for (let i = 0; i<5; i++) {
@@ -39,7 +41,7 @@ let hourTimer = 0
 function update() {
     //input
     updateCamera()
-
+    mouseUpdate()
     //
 
 
@@ -64,7 +66,7 @@ function update() {
     if (hourTimer > 30) {
         hourTimer = 0
         if (heroesMax > heroes.length) {
-            if (Math.random() > (heroes.length / heroesMax)) {
+            if (Math.random() > (heroes.length / heroesMax)) { //TODO renown
                 spawnHeroRandom()
             }
             

@@ -70,7 +70,7 @@ canvas {
     position: absolute; /*fixed;*/
     /*transform: translate(-50%, -100%);*/
     color: white;
-    font-size: 9px;
+    font-size: 6px;
     pointer-events: none;
     user-select: none;
     /*filter: drop-shadow(-0.16px -0.16px 0 #000) drop-shadow(0.16px -0.16px 0 #000) drop-shadow(-0.16px 0.16px 0 #000) drop-shadow(0.16px 0.16px 0 #000);*/
@@ -113,13 +113,13 @@ canvas {
 
 
 button {
-    background-color: rgba(255, 255, 255, 0);
-    font-size:0.72vw;
-    padding:2px 5px 2px 5px;
-    margin:0 3px 0 3px;
-    border:1px solid rgba(255,255,255,0.2);
+    background-color: #343434;
+    font-size: 0.72vw;
+    padding: 2px 5px 2px 5px;
+    margin: 0 3px 0 3px;
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 2px;
-    color:#FFF;
+    color: #FFF;
 }
 
 .button_activated {

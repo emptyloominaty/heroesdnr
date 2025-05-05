@@ -219,17 +219,16 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
 
    
     html += `<div class="hi_log" id="hi_log2">${logText}</div> `
-    html += "<span style='width:100%;'></span>" //next row
-    html += "<div class='heroinfoText'>Group</div>"
 
     let groupHtml = ""
     for (let i = 0; i < hero.dungeonGroup.length; i++) {
         groupHtml += `<span style="color:${colors[hero.dungeonGroup[i].characterClass]}">${hero.dungeonGroup[i].name} </span>`
     }
-    if (hero.dungeonGroup.length <= 1) {
-        groupHtml = ""
+    if (hero.dungeonGroup.length > 1) {
+        html += "<span style='width:100%;'></span>" //next row
+        html += "<div class='heroinfoText'>Group</div>"
+        html += `<div class="hi_log" id="hi_group">${groupHtml}</div> `
     }
-    html += `<div class="hi_log" id="hi_group">${groupHtml}</div> `
 
     //TODO:  statistics,
 
@@ -237,7 +236,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     html += "<div class='heroinfoText'></div>"
 
     html += `<button onclick="heroLeave(${hero.id},true);open_heroinfo(undefined,false,false)">Banish</button>`
-
+    
     html += "</div>"
     html += "</div>"
     elements["windowBody" + windowId].innerHTML = html

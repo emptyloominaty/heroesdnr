@@ -6,8 +6,8 @@ let zoomScroll = function (event) {
         zoom += val
         if (zoom < 1.0) {
             zoom = 1.0
-        } else if (zoom > 6.25) {
-            zoom = 6.25
+        } else if (zoom > 9) { //6.25
+            zoom = 9
         }
     }
 }
@@ -58,6 +58,7 @@ function updateCamera() {
     y = Math.max(minY, Math.min(maxY, y))
 }
 
+let showNamesMouse = []
 
 let mousePosition = {x:0,y:0}
 let mousePosition2d = {x:0,y:0}
@@ -69,9 +70,13 @@ let onMouseUpdate = function(e) {
     mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
 
     updateTooltipLocation(mousePosition.x, mousePosition.y)
+   
+}
 
+function mouseUpdate() {
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles)) {
+        //TODO: 0.1-0.15ms? yikes
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)
         let nearbyObjects = []
         for (const cell of nearbyCells) {
@@ -79,10 +84,31 @@ let onMouseUpdate = function(e) {
             const objects = grid[key] || []
             nearbyObjects.push(...objects)
         }
+        if (!settings.drawHeroNames && keys['v']) {
+            let newArr = []
+
+            for (let obj of showNamesMouse) {
+                obj.drawName = false
+            }
+
+            for (let obj of nearbyObjects) {
+                if (obj instanceof Character) {
+                    newArr.push(obj)
+                    obj.drawName = true
+                }
+            }
+
+            showNamesMouse.push(...newArr)
+        } else {
+            for (let obj of showNamesMouse) {
+                obj.drawName = false
+            }
+            showNamesMouse = []
+        }
         for (let obj of nearbyObjects) {
             if (isMouseOverObject(obj)) {
-                if (obj instanceof Character ) {
-                    showTooltip(obj,"hero")
+                if (obj instanceof Character) {
+                    showTooltip(obj, "hero")
                 } else if (obj instanceof Building) {
                     showTooltip(obj, "building")
                 }
@@ -92,6 +118,7 @@ let onMouseUpdate = function(e) {
     }
     hideTooltip()
 }
+
 
 setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)

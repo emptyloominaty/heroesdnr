@@ -5,7 +5,7 @@ let settings = {
     lights: false,
     particleTimer: 0.025,
     drawHeroNames: false,
-    maxLogSize: 50,
+    maxLogSize: 50, //hero
     maxLogSizeDungeons: 100,
     maxLogSizeDeadCharacters: 1000,
     maxSizeInactiveHeroes: 1000,

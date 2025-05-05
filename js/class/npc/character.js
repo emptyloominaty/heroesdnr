@@ -1,5 +1,6 @@
 class Character {
     uiElements
+    drawName = false
     id = 0
     name = ""
     location = {x:0, y:0}
@@ -9,7 +10,7 @@ class Character {
     sex = "male"
     race = "human"
     maxAge = 100
-    size = [10, 10]
+    size = [3, 3]
     hero = false
 
     sleepBuildingId = -1
@@ -530,7 +531,6 @@ class Character {
         
         this.uiElements.style.color = colors[this.characterClass]
         this.uiElements.textContent = `${this.name}`
-
         document.getElementById('charactersUi').appendChild(this.uiElements)
 
     }

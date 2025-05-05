@@ -26,7 +26,7 @@ let open_dungeonlogsinfo = function (btn_el = undefined, reload = false, update 
 
     if (!reload) {
         open_window(windowId, btn_el)
-        drawHeader("Dungeon run", windowId,btn_el)
+        drawHeader("Dungeon run: " + dungeonLogsId + "-"  + dungeonLogsInfoId, windowId,btn_el)
     }
     if (currentWindow[windowId] === "dungeonlogsinfo" && !reload && !dontClose) {
         close_window(windowId, btn_el)

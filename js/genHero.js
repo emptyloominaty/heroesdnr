@@ -84,6 +84,57 @@ function rollClassSpec() {
     return { class: "Warrior", spec: "dps" }
 }
 
+function rollClassSpec2() {
+    const flatChances = []
+    let totalWeight = 0
+    for (const className in spawnChances) {
+        const specs = spawnChances[className]
+        for (const spec in specs) {
+            const weight = specs[spec]
+            if (weight > 0) {
+                flatChances.push({class: className, spec, weight: 1 / weight})
+                totalWeight += 1 / weight
+            }
+        }
+    }
+
+    const roll = Math.random() * totalWeight
+
+    let cumulative = 0
+    for (const entry of flatChances) {
+        cumulative += entry.weight
+        if (roll < cumulative) {
+            return {class: entry.class, spec: entry.spec, totalWeight: totalWeight}
+        }
+    }
+    return {class: "Warrior", spec: "dps"}
+}
+
+function getClassSpecPercentage(className, spec) {
+    let totalWeight = 0
+    let classSpecWeight = 0
+
+    for (const classKey in spawnChances) {
+        const specs = spawnChances[classKey]
+        for (const specKey in specs) {
+            const weight = specs[specKey]
+            totalWeight += weight
+
+            if (classKey === className && specKey === spec) {
+                classSpecWeight = weight
+            }
+        }
+    }
+
+    if (classSpecWeight === 0) {
+        return 0.01
+    }
+
+    const percentage = (classSpecWeight / totalWeight) * 100
+    return percentage
+}
+
+
 
 let getSkillRandom = function() {
     const rand = Math.random()

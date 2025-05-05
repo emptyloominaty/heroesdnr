@@ -58,13 +58,16 @@ let getTime2 = function (number) {
 }
 
 function isMouseOverObject(obj) {
-    let xx = obj.location.x - obj.size[0]/2
-    let yy = obj.location.y - obj.size[1]/2
+    let size0 = obj.size[0]
+    let size1 = obj.size[1]
+
+    let xx = obj.location.x - size0/2
+    let yy = obj.location.y - size1/2
     return (
         mousePosition2d.x >= xx &&
-        mousePosition2d.x <= xx + obj.size[0] &&
+        mousePosition2d.x <= xx + size0 &&
         mousePosition2d.y >= yy &&
-        mousePosition2d.y <= yy + obj.size[1]
+        mousePosition2d.y <= yy + size1
     )
 }
 

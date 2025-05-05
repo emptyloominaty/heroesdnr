@@ -14,20 +14,16 @@ class Inn extends Building {
     }
 
     levelUpdate() {
+        this.heroesMax = this.heroesMaxatLvl[this.level - 1]
         if (this.level === 1) {
             this.size = [40,20]
-            this.heroesMax = 10
         } else if (this.level === 2) {
             this.size = [40,30]
-            this.heroesMax = 20
         } else if (this.level === 3) {
             this.size = [50,30]
-            this.heroesMax = 30
         } else if (this.level === 4) {
             this.size = [50,40]
-            this.heroesMax = 40
         } else if (this.level === 5) {
-            this.heroesMax = 50
             this.size = [60,40]
         }
     }

@@ -114,10 +114,10 @@ class DungeonController {
         let aoeHpsSum = 0
         let aoeDtpsSum = 0
         let aoeDamageTaken = 0
-        let rngDps
-        let rngDtps
+        let rngDps = 1
+        let rngDtps = 1
 
-        if (stage.chances.death > 8 && Math.random() > 0.8 - (stage.chances.death/100)) {
+        if (Math.random() > (1.2 - (Math.pow(stage.chances.death / 100, 0.4)))) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult

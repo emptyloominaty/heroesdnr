@@ -7,7 +7,7 @@ function draw() {
     game2d.reset()
 
     for (let i = 0; i < characters.length; i++) {
-        let size = 4 * zoom
+        let size = characters[i].size[0] / 2 * zoom 
         let worldX = characters[i].location.x
         let worldY = characters[i].location.y
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom
@@ -15,7 +15,7 @@ function draw() {
         let color = colors[characters[i].characterClass]
         game2d.drawCircle(x2d, y2d, size, color)
 
-        if (settings.drawHeroNames) {
+        if (settings.drawHeroNames || characters[i].drawName) {
             characters[i].uiElements.style.display = "block"
             if (settings.lights) {
                 characters[i].uiElements.style.color = darkenColor(color, shadowAlpha)
