@@ -2,7 +2,7 @@ let avgFPSA = []
 let avgFPS
 function drawUi() {
     //header
-    elements["gold"].textContent = Math.round(gold2)
+    elements["gold"].textContent = getNumberString(gold2)
     if (income >= 0) {
         elements["income"].textContent = "+"+Math.round(income * 10) / 10
         elements["income"].style.color = "#c6f5b0"
@@ -13,7 +13,7 @@ function drawUi() {
     elements["heroes"].textContent = heroes.length + "/" + heroesMax
 
     realtime = time + 240
-    elements["time"].textContent = `${String(Math.floor((realtime % 720) / 30)).padStart(2, '0')}:${String(Math.floor((realtime % 30) * 2)).padStart(2, '0')} ${Math.floor(realtime / 720)}d`;
+    elements["time"].textContent = getTime2(realtime)
 
     windowsUpdate()
 

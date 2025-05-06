@@ -53,8 +53,6 @@ let windowsUpdate = function () {
             open_heroinfo(undefined,true,true)
         } else if (currentWindow[i] === "dungeonlist") {
             open_dungeonlist(undefined,true,true)
-        } else if (currentWindow[i] === "buildinginfo") {
-            open_buildinginfo(undefined,true,true)
         } else if (currentWindow[i] === "dungeonlogs") {
             open_dungeonlogs(undefined, true, true)
         } else if (currentWindow[i] === "logs") {

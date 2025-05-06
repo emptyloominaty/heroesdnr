@@ -42,6 +42,8 @@ class Character {
     entertainment = 100
 
     sociability = 0.1 + Math.random() * 0.9
+    competitiveness = 0
+    adventurousness = 0.1 + Math.random() * 0.9
 
     speed = 4
     role = "dps"
@@ -69,6 +71,9 @@ class Character {
     dungeonGroup = []
     groupLeader = false
 
+    inGuild = false
+    guildId = -1
+
     canTalk = true
 
     constructor(name, age, level, health, characterClass, role, location,ignore) {
@@ -82,7 +87,13 @@ class Character {
         this.location = location
         this.fatigueRate = 0.7 + (Math.random() * 0.6)
         this.hungerRate = 0.95 + (Math.random() * 0.1)
-        this.destination = { x: location.x, y: location.y }
+        this.destination = {x: location.x, y: location.y}
+
+        if (Math.random() > 0.99) {
+            this.competitiveness = Math.random() * 0.9
+        } else if (Math.random() > 0.97) {
+            this.competitiveness = Math.random() * 0.2
+        }
 
         this.xp = Math.floor(100 * (this.level - 1) * Math.pow(this.level - 1, 1.2))
         this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
@@ -163,6 +174,9 @@ class Character {
                     this.idleTimer -= progress
                     if (this.idleTimer <= 0) {
                         if (this.decideToGoToDungeon()) {
+                            return
+                        }
+                        if (!this.inGuild && this.formGuild()) {
                             return
                         }
                         let rng = Math.random()
@@ -384,15 +398,20 @@ class Character {
 
     decideToGoToDungeon() {
         let rng = Math.random()
-        let dcId = Math.floor(Math.random()*dungeonControllers.length)
-        if (rng < 0.03) { // SOLO DUNGEON
+        let rng2 = Math.random()
+        let dcId = Math.floor(Math.random() * dungeonControllers.length)
+
+        let soloChance = 0.1 * this.adventurousness
+        let groupChance = 0.1 * this.adventurousness
+
+        if (rng < soloChance) { // SOLO DUNGEON
             this.goingToDungeon = true
             this.destination = {x:dungeonControllers[dcId].location.x,y:dungeonControllers[dcId].location.y}
             this.dungeonGroup = [this]
             this.groupLeader = true
             this.dungeonId = dcId
             return true
-        } else if (rng < 0.06) { // GROUP DUNGEON
+        } else if (rng2 < groupChance) { // GROUP DUNGEON
             let group = this.findGroupForDungeon()
             if (!this.dungeonGroup) {
                 return false
@@ -520,6 +539,33 @@ class Character {
         }
         if (tank && healer && group.length===size)  {
             return group
+        }
+        return false
+    }
+
+    formGuild() {
+        if (Math.random() > 0.9) {
+            return false
+        }
+        let a = 0
+        let heroes = []
+        let rngStop = 10 + (Math.random()*20)
+        Object.keys(this.friendships).forEach(key => {
+            if (!(this.friendships[key] in charactersMap)) {
+                return
+            }
+            if (this.friendships[key] > 1) {
+                a++
+            } else if (this.friendships[key] >= 0 && Math.random() > 0.9) {
+                a++
+            }
+            if (a < rngStop) {
+                heroes.push(charactersMap[this.friendships[key]])
+            }
+        })
+        if (a >= 5) {
+            let guild = new Guild(heroes, this)
+            return true
         }
         return false
     }

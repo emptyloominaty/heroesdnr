@@ -59,6 +59,11 @@ class RecruitmentHall extends Building {
             let hero = this.heroesList[i]
             let classColor = colors[hero.characterClass] || "#FFFFFF"
             let bgColor = pSBC(0.55, classColor, "#111111")
+            /*let name = ""
+            if (hero.hero !== undefined) {
+                name = hero.hero.name
+            }*/
+
             html += `
         <tr class='heroListRow'  style='background-color: ${bgColor}' >
         <td>${hero.characterClass}</td>
@@ -67,7 +72,7 @@ class RecruitmentHall extends Building {
         <td>${hero.level}</td>
         <td>${Math.round(hero.avgSkill*100)/100}</td>
         <td>${Math.round(hero.price)}</td>
-        <td class='btn_recruit' onclick='recruitHero(${this.id},${i},${hero.price});open_buildinginfo(undefined,true)' >Recruit</td>
+        <td class='btn_recruit' onclick='recruitHero(${this.id},${i},${hero.price});open_buildinginfo(undefined,true,false)' >Recruit</td>
         <td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div style='border:0; bottom: 0px;right: 0px;margin: 0px;' class='gradientWow2'></div></td>
         </tr>
         `
@@ -96,27 +101,61 @@ class RecruitmentHall extends Building {
     
 
     generateRandomHero() {
-        let age = generateAge()
-        let roll 
-        if (Math.random > 0.7) {
-            roll = rollClassSpec2()
-        } else {
-            roll = rollClassSpec()
-        }
-
-        let characterClass = roll.class
-        let spec = roll.spec
-        let role = spec
-        let sex = rollSex(characterClass, spec)
-        let skill = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        let hero = undefined
+        let ih = false
+        /*if (inactiveHeroes.length > 0) {
+            if (Math.random() > 99) {
+                ih = true
+                hero = Math.ceil(Math.random() * inactiveHeroes.length)
+            }
+        }*/
+        let age
+        let roll
+        let characterClass
+        let spec
+        let role
+        let sex
+        let skill
         let avgSkill = 0
+        let level
 
-        for (let i = 0; i < skill.length; i++) {
-            skill[i] = getSkillRandom()
+        if (!ih) {
+            age = generateAge()
+            if (Math.random > 0.7) {
+                roll = rollClassSpec2()
+            } else {
+                roll = rollClassSpec()
+            }
+
+            characterClass = roll.class
+            spec = roll.spec
+            role = spec
+            sex = rollSex(characterClass, spec)
+            skill = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+            level = Math.max(1, Math.ceil(Math.random() * this.maxLvl))
+
+            for (let i = 0; i < skill.length; i++) {
+                skill[i] = getSkillRandom()
+                skill[i] -= ((30 - age) / 100) * Math.random()
+                skill[i] += (level / 300) * Math.random()
+            }
+        } else {
+            let timeDays = (((realtime - hero.realtime) / 720) * (1 / 365))
+            age = hero.age + timeDays
+            characterClass = hero.characterClass
+            spec = hero.characterSpec
+            role = spec
+            sex = hero.sex
+            skill = [...hero.skill]
+            let addlvl = hero.level + Math.min(10, Math.ceil((timeDays / 100) / hero.level))
+            level = hero.level + addlvl
+
+            for (let i = 0; i < skill.length; i++) {
+                skill[i] += (addlvl / 100) * Math.random()
+            }
         }
 
         for (let i = 0; i < skill.length; i++) {
-            skill[i] -= ((30 - age) / 100) * Math.random()
             if (skill[i] < 0.1) {
                 skill[i] = 0.1
             } else if (skill[i] > 0.9) {
@@ -125,10 +164,6 @@ class RecruitmentHall extends Building {
             avgSkill += skill[i]
         }
         avgSkill = avgSkill / skill.length
-        let level = Math.max(1,Math.ceil(Math.random()*this.maxLvl)) 
-
-        let priceClassMul = 10 / (getClassSpecPercentage(characterClass,spec))
-
         let priceSkillMul = 1
         if (role === "dps") {
             priceSkillMul = (this.getSkillPrice(skill[0]) + this.getSkillPrice(skill[1])) * 5
@@ -152,10 +187,11 @@ class RecruitmentHall extends Building {
                 + this.getSkillPrice(skill[8])
         }
         priceSkillMul = priceSkillMul / 19
+        let priceClassMul = 10 / (getClassSpecPercentage(characterClass, spec))
         let price = 125 * level * priceSkillMul  * priceClassMul
 
         return {
-            price, priceSkillMul, priceClassMul, characterClass, spec, avgSkill, age, roll, level, role, sex, skill
+            price, priceSkillMul, priceClassMul, characterClass, spec, avgSkill, age, roll, level, role, sex, skill, hero
             }
     }
 

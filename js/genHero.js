@@ -7,7 +7,6 @@ let recruitHero = function (buildingId, heroId, price = 0) {
     }
     gold -= price
     let h = buildingsMap[buildingId].heroesList[heroId]
-
     let name = "Hero " + globalCharId
 
     let location = {x: buildingsMap[buildingId].location.x - 15 + Math.random() * 30, y: buildingsMap[buildingId].location.y - 15 + Math.random() * 30}

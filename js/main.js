@@ -95,5 +95,9 @@ function update() {
         for (let i = 0; i < buildings.length; i++) {
             buildings[i].updateDay()
         }
+        for (let i = 0; i < guilds.length; i++) {
+            guilds[i].updateDay()
+        }
+        
     }
 }

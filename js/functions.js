@@ -54,7 +54,7 @@ let getTime = function(number) {
 }
 
 let getTime2 = function (number) {
-    return `${Math.floor(number / 720)}d ${String(Math.floor((number % 720) / 30)).padStart(2, '0')}:${String(Math.floor((number % 30) * 2)).padStart(2, '0')}`
+    return `${Math.floor(number / 262800)}y ${Math.floor((number % 262800 )/ 720)}d ${String(Math.floor((number % 720) / 30)).padStart(2, '0')}:${String(Math.floor((number % 30) * 2)).padStart(2, '0')}`
 }
 
 function isMouseOverObject(obj) {

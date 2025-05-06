@@ -78,6 +78,7 @@ function heroLeave(id, banish = false) {
 	delete charactersMap[hero.id]
 
 	let heroNewObj = {
+		time: realtime,
 		banished: banish,
 		id: hero.id,
 		sex: hero.sex,

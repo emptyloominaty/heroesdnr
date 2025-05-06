@@ -226,7 +226,8 @@ class DungeonController {
                             stageResult = "Death"
                         }
                         run.heroes[i].die(undefined, "Dungeon - Critical Failure")
-                    } else {
+                    }
+                    if (Math.random() > (0.97 - (run.heroes[i].competitiveness))) {
                         this.updateFriends(run.heroes, i, 0.1, -0.5)
                     }
                 }
@@ -244,8 +245,9 @@ class DungeonController {
                         }
                         run.heroes[i].die(undefined, "Dungeon - Failure")
                     }
-                    this.updateFriends(run.heroes, i, 0.05, -0.25)
-                    
+                    if (Math.random() > (0.99 - (run.heroes[i].competitiveness))) {
+                        this.updateFriends(run.heroes, i, 0.05, -0.25)
+                    }
                 }
             }
         }
