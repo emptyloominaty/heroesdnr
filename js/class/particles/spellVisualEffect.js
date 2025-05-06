@@ -43,7 +43,7 @@ class SpellVisualEffect {
                     if (this.data.onRun.name==="fire") {
                         let life = this.data.onRun.life
                         let zSize = this.data.size * zoom
-                        for (let i = 0; i<(settings.particleVisuals-1)*gameSpeed; i++) {
+                        for (let i = 0; i<(settings.particleVisuals-1)*gameSpeedP; i++) {
                             addSpellParticle(this.x-(zSize/4)+(Math.random()*(zSize/2)), this.y-(zSize/2)+(Math.random()*(zSize)), (this.direction-(182-(Math.random()*4))),
                                 "fire", {size:this.data.size/4,speed:-this.data.speed,life:life,color:Math.random(),color1:this.data.onRun.color1, color2:this.data.onRun.color2})
                         }
@@ -58,7 +58,7 @@ class SpellVisualEffect {
                 let tt = performance.now()
                 this.x = x
                 this.y = y
-                for (let i = 0; i<settings.particleVisuals*3*gameSpeed*(this.data.size/80); i++) {
+                for (let i = 0; i<settings.particleVisuals*3*gameSpeedP*(this.data.size/80); i++) {
                     let radius = this.data.size
                     let pt_angle = Math.random() * 2 * Math.PI
                     let pt_radius_sq = Math.random() * radius * radius

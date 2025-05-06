@@ -28,21 +28,72 @@ class RecruitmentHall extends Building {
         } else if (this.level === 5) {
             this.size = [40, 35]
         }
+        this.heroesList = []
+        for (let i = 0; i < this.maxNum; i++) {
+            this.heroesList.push(this.generateRandomHero())
+        }
     }
 
     getVal(i) {
-        return this.maxNum[i] + " lvl:" + this.maxLvl
+        return this.heroesNumLvl[i] + " lvl:" + this.heroesMaxLvl[i]
     }
 
     update() {
 
     }
 
-    updateDay() {
-        //TODO: new heroes
+    getUi() {
+        let html = "<table>"
+        html += `
+        <tr class='heroListFirstRow' >
+        <th>Class</th>
+        <th>Spec</th>
+        <th></th>
+        <th>Level</th>
+        <th>Avg Skill</th>
+        <th>Price</th>
+        </tr>
+        `
 
+        for (let i = 0; i < this.heroesList.length; i++) {
+            let hero = this.heroesList[i]
+            let classColor = colors[hero.characterClass] || "#FFFFFF"
+            let bgColor = pSBC(0.55, classColor, "#111111")
+            html += `
+        <tr class='heroListRow'  style='background-color: ${bgColor}' >
+        <td>${hero.characterClass}</td>
+        <td>${hero.spec}</td>
+        <td>${hero.sex.charAt(0).toUpperCase() + Math.ceil(hero.age)}</td>
+        <td>${hero.level}</td>
+        <td>${Math.round(hero.avgSkill*100)/100}</td>
+        <td>${Math.round(hero.price)}</td>
+        <td class='btn_recruit' onclick='recruitHero(${this.id},${i},${hero.price});open_buildinginfo(undefined,true)' >Recruit</td>
+        <td colspan='12' style='width: 0;padding:0;margin:0;border:0;'><div style='border:0; bottom: 0px;right: 0px;margin: 0px;' class='gradientWow2'></div></td>
+        </tr>
+        `
+        }
+
+
+        html += "</table>"
+        return html
+    }
+
+
+
+    updateDay() {
+        this.heroesList = []
+        for (let i = 0; i < this.maxNum; i++) {
+            this.heroesList.push(this.generateRandomHero())
+        }
+
+        if (currentWindow[3] ==="buildinginfo") {
+            open_buildinginfo(undefined, true, true)
+        }
+        
         gold -= this.dailyCost[this.level-1]
     }
+
+    
 
     generateRandomHero() {
         let age = generateAge()
@@ -52,7 +103,6 @@ class RecruitmentHall extends Building {
         } else {
             roll = rollClassSpec()
         }
-
 
         let characterClass = roll.class
         let spec = roll.spec
@@ -76,7 +126,6 @@ class RecruitmentHall extends Building {
         }
         avgSkill = avgSkill / skill.length
         let level = Math.max(1,Math.ceil(Math.random()*this.maxLvl)) 
-
 
         let priceClassMul = 10 / (getClassSpecPercentage(characterClass,spec))
 

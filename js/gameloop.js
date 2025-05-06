@@ -4,21 +4,39 @@ let progressReal = 0.016
 let gameSpeed = 1
 let fps = 60
 
-
 function loop(timestamp) {
+    let gameSpeedMode = settings.gameSpeedMode
     progress = timestamp - lastRender
     if (progress > 100) { //ms
         progress = 100
     } 
     fps = Math.round(1000 / progress * 10)/10
-    progressReal = progress /1000
-    progress = progressReal * gameSpeed
-    time += progress
+    progressReal = progress / 1000
 
-    day = Math.floor(time / 720)
+    if (gameSpeedMode === "Performance") {
+        progress = progressReal * gameSpeed
+        gameSpeedP = gameSpeed
+    } else {
+        progress = progressReal
+        gameSpeedP = 1
+    }
+
+    if (!gamePaused) {
+        time += progress * gameSpeed
+        day = Math.floor(time / 720)
+    }
 
     let startTime = performance.now()
-    update(progress)
+    //input
+    updateCamera()
+    mouseUpdate()
+    if (gameSpeedMode === "Performance") {
+        update(progress)
+    } else {
+        for (let i = 0; i < gameSpeed; i++) {
+            update(progress)
+        }
+    }
     let endTime0 = performance.now()
     drawUi(progress)
     let endTime = performance.now()

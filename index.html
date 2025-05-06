@@ -102,6 +102,7 @@
                     <span id="time">00:00 0d</span>
                 </div>
                 <div>
+                    <button onclick="pauseGame(0,this)">❚❚</button>
                     <button class="button_activated" onclick="setGameSpeed(1,this)">1x</button>
                     <button onclick="setGameSpeed(2,this)">2x</button>
                     <button onclick="setGameSpeed(3,this)">3x</button>
@@ -109,7 +110,7 @@
                     <button onclick="setGameSpeed(8,this)">8x</button>
                     <button onclick="setGameSpeed(16,this)">16x</button>
                     <button id="btn_speed50" style="display:none" onclick="setGameSpeed(50,this)">50x</button>
-                    <button id="btn_speed100"style="display:none" onclick="setGameSpeed(100,this)">100x</button>
+                    <button id="btn_speed100" style="display:none" onclick="setGameSpeed(100,this)">100x</button>
                 </div>
                 <div id="menu_buttons">
                     <button id="menu_btn1" onclick="open_heroeslist(this)">Heroes List</button>

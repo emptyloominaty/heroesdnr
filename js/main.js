@@ -1,5 +1,6 @@
 let time = 0
 let day = 0
+let gamePaused = false
 
 let renown = 20
 let gold = 1000
@@ -39,12 +40,9 @@ for (let i = 0; i<5; i++) {
 let hourTimer = 0
 
 function update() {
-    //input
-    updateCamera()
-    mouseUpdate()
-    //
-
-
+    if (gamePaused) {
+        return
+    }
     heroesMax = 0
     for (let i = 0; i < buildings.length; i++) {
         buildings[i].update()

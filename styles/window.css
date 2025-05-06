@@ -235,3 +235,7 @@ tr:nth-child(odd) {
     min-height: 400px;
     width: 600px;
 }
+
+.btn_recruit:hover {
+    background-color: var(--color4);
+}

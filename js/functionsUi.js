@@ -10,6 +10,15 @@ function btnActivate(element, targetClass) {
 
 
 function setGameSpeed(val, el) {
+    if (gamePaused) {
+        gamePaused = false
+    }
     gameSpeed = val
     btnActivate(el,"button_activated")   
+}
+
+
+function pauseGame(val, el) {
+    gamePaused = !gamePaused 
+    btnActivate(el, "button_activated")
 }

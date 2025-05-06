@@ -1,5 +1,37 @@
 let globalCharId = 0
 
+
+let recruitHero = function (buildingId, heroId, price = 0) {
+    if (price > gold) {
+        return false
+    }
+    gold -= price
+    let h = buildingsMap[buildingId].heroesList[heroId]
+
+    let name = "Hero " + globalCharId
+
+    let location = {x: buildingsMap[buildingId].location.x - 15 + Math.random() * 30, y: buildingsMap[buildingId].location.y - 15 + Math.random() * 30}
+
+    let hero = new Hero(name, h.age, h.level, 100, h.characterClass, h.role, location)
+    hero.sex = h.sex
+    for (let i = 0; i < hero.skill.length; i++) {
+        hero.skill[i] = h.skill[i]
+    }
+    if (h.role === "tank") {
+        tanks++
+    } else if (h.role === "healer") {
+        healers++
+    } else if (h.role === "dps") {
+        damagedealers++
+    }
+    hero.updateStats()
+    heroes.push(hero)
+    buildingsMap[buildingId].heroesList.splice(heroId, 1)
+
+    return hero
+}
+
+
 let spawnHeroRandom = function(level = 1) {
 
 

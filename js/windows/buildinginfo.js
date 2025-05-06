@@ -12,7 +12,7 @@ let open_buildinginfo = function (btn_el = undefined, reload = false, update = f
     }
     let building = buildingsMap[window_buildingId]
     if (update) {
-        //TODO:
+        elementsWindow.buildingHtml.innerHTML = building.getUi()
         return
     }
     if (currentWindow[windowId] === "buildinginfo" && !reload && !dontClose) {
@@ -60,11 +60,15 @@ let open_buildinginfo = function (btn_el = undefined, reload = false, update = f
     }
 
     html += "</table></div>"
+    html += "<span style='width:100%;'></span>" //next row
 
+    html += "<div id='buildingHtml'>"+building.getUi()+"</div>"
 
     html += "</div>"
     html += "</div>"
-    elements.windowBody3.innerHTML = html
+    elements["windowBody" + windowId].innerHTML = html
+
+    elementsWindow.buildingHtml = document.getElementById("buildingHtml")
 }
 
 

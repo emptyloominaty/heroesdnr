@@ -8,6 +8,7 @@ class Building {
     dailyCost = [0,0,0,0,0]
     size = [30, 30]
     name = ""
+    id = 0
     constructor(location, name, level = 1) {
         this.location = location
         this.level = level
@@ -26,6 +27,10 @@ class Building {
     levelUpdate() {
     }
 
+    getUi() {
+        return ""
+    }
+
     getVal() {
         return ""
     }
@@ -33,9 +38,8 @@ class Building {
     upgrade() {
         if (this.level<this.upgradeCost.length && gold>this.upgradeCost[this.level-1]) {
             this.level++
-            gold -= this.upgradeCost[this.level-1]
+            gold -= this.upgradeCost[this.level - 1]
+            this.levelUpdate()
         }
-
-        this.levelUpdate()
     }
 }

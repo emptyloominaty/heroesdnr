@@ -11,6 +11,7 @@ let settings = {
     maxSizeInactiveHeroes: 1000,
     debugSpeeds: true,     //elements.btn_speed50 btn_speed100
     skipMenu: true,
+    gameSpeedMode: "Precise",  //["Performance","Precise"]
 }
 
 let settingsUpdate = function () {
