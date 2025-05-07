@@ -83,43 +83,43 @@ class Hero extends Character {
     }
 
     getSTDps(skill) {
-        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let base = 10 + (Math.pow(this.level,1.8)) + this.itemsBonus.dps.base
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier = rolesConfig[this.role].dpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsSt
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getAOEDps(skill) {
-        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let base = 10 + (Math.pow(this.level,1.8)) + this.itemsBonus.dps.base
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].dpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dpsAoe
         return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getSTHps(skill) {
-        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let base = 10 + (Math.pow(this.level,1.8)) + this.itemsBonus.dps.base
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsSt
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsSt
-        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)*2
     }
     getAOEHps(skill) {
-        let base = 10 + (this.level * 2) + this.itemsBonus.dps.base
+        let base = 10 + (Math.pow(this.level,1.8)) + this.itemsBonus.dps.base
         let weaponBonus = this.itemsBonus.dps.mul
         let roleMultiplier =  rolesConfig[this.role].hpsAoe
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].hpsAoe
-        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)
+        return Math.round((base * weaponBonus) * roleMultiplier * specMultiplier * skill)*2
     }
 
     getDtpsP(skill) {
-        let base = 5 + (this.level * 1.5) + this.itemsBonus.dtps.base
+        let base = 5 + (Math.pow(this.level,1.8)) + this.itemsBonus.dtps.base
         let armorBonus = this.itemsBonus.dtps.mul
         let roleMultiplier = rolesConfig[this.role].dtpsP
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsP
         return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
     getDtpsM(skill) {
-        let base = 5 + (this.level * 1.5) + this.itemsBonus.dtps.base
+        let base = 5 + (Math.pow(this.level,1.8)) + this.itemsBonus.dtps.base
         let armorBonus = ((1+this.itemsBonus.dtps.mul)/2)
         let roleMultiplier =  rolesConfig[this.role].dtpsM
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM

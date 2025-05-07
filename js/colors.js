@@ -9,6 +9,12 @@ let colors = {
     "Shaman":"#0070DD",
     "Warlock":"#8788EE",
     "Warrior":"#C69B6D",
+
+    "Rune Knight":"#C41E3A",
+    "test2":"#A330C9",
+    "test3":"#228B22",
+    "Chronomancer":"#708090",
+
     "":"#b900a5",
     "error":"#ff7d66",
     "textRed":"#ff3331",

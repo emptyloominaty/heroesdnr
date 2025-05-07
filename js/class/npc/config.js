@@ -109,7 +109,7 @@ let rolesConfig = {
 
 let heroesConfig = {
     Warrior: {
-        dps:   {dpsSt: 1.6, dpsAoe: 2.2, hpsSt:0.0, hpsAoe:0.0, dtpsP:1.0, dtpsM:0.45, speed: 1.1, hMul: 1.25, fMul: 1.2, escape: 0.28, critFailD: 1.3, femaleR:[50,1]},
+        dps:   {dpsSt: 1.8, dpsAoe: 2.2, hpsSt:0.0, hpsAoe:0.0, dtpsP:1.0, dtpsM:0.45, speed: 1.1, hMul: 1.25, fMul: 1.2, escape: 0.28, critFailD: 1.3, femaleR:[50,1]},
         tank:  {dpsSt: 0.5, dpsAoe: 0.65, hpsSt: 0.0, hpsAoe: 0.0, dtpsP: 5.3, dtpsM: 3, speed: 0.9, hMul: 1.3, fMul: 1.2, escape: 0.18, critFailD: 1.3, femaleR:[100,1]}},
     Rogue: {
         dps:   {dpsSt: 2.85, dpsAoe: 1.5, hpsSt: 0.0, hpsAoe: 0.0, dtpsP: 0.7, dtpsM: 0.8, speed: 1.2, hMul: 1.0, fMul: 1.0, escape: 0.5, critFailD: 0.8, femaleR:[5,1]}},
@@ -138,7 +138,7 @@ let heroesConfig = {
         healer:{dpsSt: 0.1, dpsAoe: 0.3, hpsSt: 1.1, hpsAoe: 1.5, dtpsP: 0.6, dtpsM: 1.1, speed: 1.0, hMul: 1.0, fMul: 0.95, escape: 0.2, critFailD: 1, femaleR: [1, 1]}},
 
 
-    /*RuneKnight: {
+    /*"Rune Knight": {
         dps: {dpsSt: 2.65, dpsAoe: 2.2, hpsSt: 0.0, hpsAoe: 0.0, dtpsP: 1.4, dtpsM: 1.6, speed: 0.8, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[50,1]},
         tank: {dpsSt: 1.0, dpsAoe: 0.65, hpsSt: 0, hpsAoe: 0.0, dtpsP: 5, dtpsM: 4.5, speed: 0.75, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[100,1]}},*/
 }

@@ -32,7 +32,7 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
     let testHeroes = []
     for (let heroClass in heroesConfig) {
         for (let role in heroesConfig[heroClass]) {
-            testHeroes.push(new Hero("", 20, 10, 100, heroClass, role, { x: 0, y: 0 },false,true))
+            testHeroes.push(new Hero("", 20, 5, 100, heroClass, role, { x: 0, y: 0 },false,true))
         }
     }
 
@@ -95,13 +95,15 @@ let open_classBalance = function (btn_el = undefined, reload = false, update = f
         combinedData[key].dungDps = (h.stDps + h.aoeDps)/2
         combinedData[key].dungDtps = ((h.dtpsM + h.dtpsP) / 2) + h.stHps + h.aoeHps
 
-        let newDtps = h.stHps + (h.aoeHps/3)
+        let newDtps = h.stHps + (h.aoeHps/5)
         if (h.role === "tank") {
             newDtps += (h.dtpsM + h.dtpsP) / 2
         }
-        let raidDtps = h.stHps + (h.aoeHps / 1.5)
+        let raidDtps = h.stHps + (h.aoeHps / 2)
         if (h.role === "tank") {
             raidDtps += (h.dtpsM + h.dtpsP) / 2
+        } else {
+            raidDtps += (h.dtpsM + h.dtpsP) / 4
         }
         combinedData[key].dungValue = ((h.stDps + (h.aoeDps*1.6)) / 2.6) + newDtps //dungeon
 
