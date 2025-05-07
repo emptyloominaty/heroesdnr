@@ -16,7 +16,9 @@ class Character {
     sleepBuildingId = -1
 
     inventory = { //TODO:REMOVE wep,armor
-        weaponLevel: 1, weaponQuality: 1, armorLevel: 1, armorQuality: 1, potionHealth: 0, items: [], gold: 100
+        weaponLevel: 1, weaponQuality: 1, armorLevel: 1, armorQuality: 1, items: [], gold: 100,
+        potions: {
+            "Health": 0, "Mana": 0, "Agility": 0, "Strength": 0, "Resurrection":0}
     }
 
     slots = {hand: new Item("hand",1,1) , head: new Item("head",1,1), chest: new Item("chest",1,1),legs: new Item("legs",1,1)
@@ -36,6 +38,8 @@ class Character {
     hungerRate = 8.0
     eatSpeed = 1.5
 
+    arrivalTime = 0
+
     mood = 100
     satisfaction = 100
     loyalty = 100
@@ -54,6 +58,11 @@ class Character {
     waitTimer = 0
     wandering = false
     goingToInn = false
+    goingToPotionShop = false
+    potionsNeeded = []
+    potionsCount = []
+    buildingId = 0
+    buyingTimer = 0
 
     isTalking = false
     talkingTimer = 0
@@ -95,6 +104,8 @@ class Character {
             this.competitiveness = Math.random() * 0.2
         }
 
+        this.arrivalTime = realtime
+
         this.xp = Math.floor(100 * (this.level - 1) * Math.pow(this.level - 1, 1.2))
         this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
 
@@ -115,7 +126,7 @@ class Character {
 
 
     update() {
-        this.canTalk = !this.goingToDungeon && !this.isInDungeon && !this.goingToInn && this.status !== "Eating" && this.status !== "Sleeping"
+        this.canTalk = !this.goingToDungeon && !this.isInDungeon && !this.goingToInn && !this.goingToPotionShop && this.status !== "Eating" && this.status !== "Sleeping" && this.status !== "Buying" 
         if (this.isInDungeon) {
             this.status = "In Dungeon"
             return
@@ -141,8 +152,15 @@ class Character {
                 if (this.talkingTimer <= 0) {
                     this.status = ""
                     this.isTalking = false
-                    if (this.talkingTargetId !== -1) {
-                        this.updateFriendship(this.talkingTargetId,0) //add to list
+                    if (this.talkingTargetId !== -1 && charactersMap[this.talkingTargetId]!== undefined) {
+                        this.updateFriendship(this.talkingTargetId, 0) //add to list
+                        if (this.inGuild && !charactersMap[this.talkingTargetId].inGuild && Math.random() < 0.2) {
+                            guilds[this.guildId].inviteHero(charactersMap[this.talkingTargetId])
+                        }
+                        if (this.inGuild && charactersMap[this.talkingTargetId].inGuild && Math.random() < 0.01) {
+                            guilds[charactersMap[this.talkingTargetId].guildId].kickHero(charactersMap[this.talkingTargetId])
+                            guilds[this.guildId].inviteHero(charactersMap[this.talkingTargetId])
+                        }
                         if (Math.random() < 0.05) {
                             this.updateFriendship(this.talkingTargetId, Math.random()*10)
                         }
@@ -154,6 +172,17 @@ class Character {
                 this.wandering = false
                 this.findInn()
             }
+
+            if (this.goingToPotionShop) {
+                this.goingToPotionShop = false
+                this.status = "Buying"
+                this.buyingTimer += 1 + (Math.random()*2)
+                for (let i = 0; i < this.potionsNeeded.length; i++) {
+                    buildings[this.buildingId].buyPotion(this.potionsNeeded[i], this, this.potionsCount[i])
+                    this.buyingTimer += 1 + (Math.random() * 1)
+                }
+            }
+
 
             if (this.wandering) {
                 this.status = "Waiting"
@@ -177,6 +206,9 @@ class Character {
                             return
                         }
                         if (!this.inGuild && this.formGuild()) {
+                            return
+                        }
+                        if (gold>100 && Math.random() > 0.6 && this.checkPotions()) {
                             return
                         }
                         let rng = Math.random()
@@ -260,7 +292,7 @@ class Character {
                                     this.talkInc = 0
                                 }
                             }
-
+                            
                         } else {
                             let dx = this.location.x - 15 + Math.random() * 30
                             let dy = this.location.y - 15 + Math.random() * 30
@@ -281,6 +313,12 @@ class Character {
                 case "Talking":
                     this.talkingTimer -= progress
 
+                    break
+                case "Buying":
+                    this.buyingTimer -= progress
+                    if (this.buyingTimer <= 0) {
+                        this.status = ""
+                    }
                     break
                 default: 
                     break
@@ -319,15 +357,13 @@ class Character {
         }
         if (this.location.x === this.destination.x && this.location.y === this.destination.y && this.status!=="Eating" && this.status!=="Sleeping") {
             if (this.isHungry()) {
-                this.inventory.gold -= buildings[this.sleepBuildingId].prices.eat
-                gold += buildings[this.sleepBuildingId].prices.eat
+                buildings[this.sleepBuildingId].buy(buildings[this.sleepBuildingId].prices.eat, this)
                 this.status = "Eating"
                 return true
             }
             
             if (this.needsSleep()) {
-                this.inventory.gold -= buildings[this.sleepBuildingId].prices.sleep
-                gold += buildings[this.sleepBuildingId].prices.sleep
+                buildings[this.sleepBuildingId].buy(buildings[this.sleepBuildingId].prices.sleep, this)
                 this.status = "Sleeping"
                 return true
             }
@@ -355,6 +391,88 @@ class Character {
                 }
             }
         }
+    }
+
+    checkPotions() {
+        let budget = this.inventory.gold / 2
+        let buildingId = -1
+        for (let i = 0; i < buildings.length; i++) {
+            if (buildings[i].type === "potionShop") {
+                buildingId = i
+                break
+            }
+        }
+        if (buildingId === -1) {
+            return false
+        }
+        let p = 0
+        let potionsNeeded = []
+        if (this.inventory.potions.health <= 0) {
+            potionsNeeded.push("Health")
+            budget -= buildings[buildingId].prices["Health"]
+            p++
+        }
+        if (this.characterClass === "Mage" || this.characterClass === "Shaman" || this.characterClass === "Warlock" || this.characterClass === "Druid" || this.characterClass === "Priest" || this.role === "healer") {
+            if (budget > 0 && this.inventory.potions["Mana"] <= 0) {
+                potionsNeeded.push("Mana")
+                budget -= buildings[buildingId].prices["Mana"]
+                p++
+            }
+        } else {
+            if (budget > 0 && this.inventory.potions["Agility"] <= 0 && buildings[buildingId].level > 0) {
+                potionsNeeded.push("Agility")
+                budget -= buildings[buildingId].prices["Agility"]
+                p++
+            }
+            if (budget > 0 && this.inventory.potions["Strength"] <= 0 && buildings[buildingId].level > 0) {
+                potionsNeeded.push("Strength")
+                budget -= buildings[buildingId].prices["Strength"]
+                p++
+            }
+        }
+        if (budget > 0 && this.inventory.potions["Resurrection"] <= 0 && buildings[buildingId].level > 1 && this.inventory.gold > buildings[buildingId].prices["Resurrection"] *1.2) {
+            potionsNeeded.push("Resurrection")
+            budget -= buildings[buildingId].prices["Resurrection"]
+            p++
+        }
+        if (p === 0) {
+            return false
+        }
+        let building = buildings[buildingId]
+        this.potionsCount = []
+        let budget2 = budget - Math.min(500, this.inventory.gold / 5)
+        for (let i = 0; i < potionsNeeded.length; i++) {
+            if (budget2 <= 0) {
+                this.potionsCount.push(1)
+            }
+            if (potionsNeeded[i] !== "Resurrection") {
+                let potPrice = building.prices[potionsNeeded[i]]
+                let potsCount = Math.min(5,budget2 / potPrice)
+                budget2 -= potsCount * potPrice
+                this.potionsCount.push(Math.round(Math.max(potsCount,1)))                
+            } else {
+                this.potionsCount.push(1)
+            }
+        }
+
+        if (potionsNeeded.length === 0) {
+            return false
+        }
+
+      
+        let bsize = [building.size[0] - 1, building.size[1] - 1]
+        let xx = building.location.x - (bsize[0] / 2) + (Math.random() * bsize[0])
+        let yy = building.location.y - (bsize[1] / 2) + (Math.random() * bsize[1]) - 1
+        this.destination = {x: xx, y: yy}
+        this.goingToPotionShop = true
+
+        this.potionsNeeded = potionsNeeded
+        this.buildingId = buildingId
+
+        return true
+
+        
+      
     }
 
     move() { //TODO: PATH
@@ -508,8 +626,12 @@ class Character {
         let rngLvl = Math.random()
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
-            if (hero !== this && hero.inTown && hero.canTalk && (loop === 3 || (hero.level >= minLevel && hero.level <= maxLevel))) {
-                if ((loop >= 2) || (loop === 1 && (this.friendships[hero.id]!==undefined && this.friendships[hero.id] >= 0)) ||  (this.friendships[hero.id]!==undefined && this.friendships[hero.id] >= 10)) {
+            if (hero !== this && hero.inTown && hero.canTalk && (loop === 4 || (hero.level >= minLevel && hero.level <= maxLevel))) {
+                let guildGroup = false
+                if (this.inGuild && this.guildId === hero.guildId) {
+                    guildGroup = true
+                }
+                if ((loop >= 3) || (loop === 2 && (this.friendships[hero.id] !== undefined && this.friendships[hero.id] >= 0)) || (loop === 1 && this.friendships[hero.id]!==undefined && this.friendships[hero.id] >= 10) || (loop === 0 && guildGroup)) {
                     if (hero.role==="healer" && !healer) {
                         healer = true
                         group.push(hero)
@@ -523,11 +645,16 @@ class Character {
                         group.push(hero)
                     }
                 }
+                
             }
             if (group.length>=size) {
                 break
             }
-            if (i >= heroes.length-1 && loop === 2 && rngLvl > 0.7) {
+            if (i >= heroes.length-1 && loop === 3 && rngLvl > 0.7) {
+                i = 0
+                loop++
+            }
+            if (i >= heroes.length-1 && loop === 2) {
                 i = 0
                 loop++
             }
@@ -551,7 +678,10 @@ class Character {
         let heroes = []
         let rngStop = 10 + (Math.random()*20)
         Object.keys(this.friendships).forEach(key => {
-            if (!(this.friendships[key] in charactersMap)) {
+            if (charactersMap[key] === undefined) {
+                return
+            }
+            if (charactersMap[key].inGuild) {
                 return
             }
             if (this.friendships[key] > 1) {
@@ -560,7 +690,7 @@ class Character {
                 a++
             }
             if (a < rngStop) {
-                heroes.push(charactersMap[this.friendships[key]])
+                heroes.push(charactersMap[key])
             }
         })
         if (a >= 5) {

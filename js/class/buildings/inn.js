@@ -4,7 +4,7 @@ class Inn extends Building {
     heroesList = []
     upgradeCost = [0, 500, 1000, 2000, 3000]
     dailyCost = [10,30,50,80,120]
-    prices = { eat: 2, sleep: 5 }
+    prices = { eat: 5, sleep: 10 }
     heroesMaxatLvl = [10,20,30,40,50]
 
     constructor(location, name, level = 1) {

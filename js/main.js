@@ -29,6 +29,9 @@ let logs = {heroes: [], buildings:[], debug:[]}
 let incomeLog = []
 
 buildings.push(new Inn({x: 50, y: 45}, "Inn 1", 2))
+buildings.push(new Inn({x: -200, y: -85}, "Inn 2", 1))
+buildings.push(new Inn({x: -250, y: 100}, "Inn 3", 1))
+buildings.push(new PotionShop({x: -400, y: -100}, "Potion Shop 1", 1))
 buildings.push(new RecruitmentHall({x: 0, y: -125}, "Recruitment Hall 1", 2))
 
 //TEST
@@ -89,7 +92,7 @@ function update() {
         }
         for (let i = 0; i < heroes.length; i++) {
             if (heroes[i].rankPoints > 0) {
-                heroes[i].rankPoints -= Math.min(8.5,heroes[i].rankPoints/1000)
+                heroes[i].rankPoints -= Math.min(8.5, heroes[i].rankPoints/1000)
             }
         }
         for (let i = 0; i < buildings.length; i++) {
@@ -97,6 +100,7 @@ function update() {
         }
         for (let i = 0; i < guilds.length; i++) {
             guilds[i].updateDay()
+            guilds[i].rankPoints -= Math.min(8.5, guilds[i].rankPoints / 1000)
         }
         
     }

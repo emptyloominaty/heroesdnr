@@ -120,7 +120,7 @@ let heroesConfig = {
     Druid: {
         dps:   {dpsSt: 1.2, dpsAoe: 2.85, hpsSt: 0.1, hpsAoe: 0.2, dtpsP: 0.6, dtpsM: 1.35, speed: 1.35, hMul: 0.85, fMul: 0.9, escape: 0.35, critFailD: 1, femaleR: [1.2, 1]},
         healer:{dpsSt: 0.1, dpsAoe: 0.45, hpsSt: 1.15, hpsAoe: 1.4, dtpsP: 0.6, dtpsM: 0.9, speed: 1.35, hMul: 0.85, fMul: 0.9, escape: 0.35, critFailD: 1, femaleR: [1, 3.5]},
-        tank:  {dpsSt: 0.7, dpsAoe: 0.9, hpsSt: 0.1, hpsAoe: 0.2, dtpsP: 3.5, dtpsM: 4.0, speed: 1.35, hMul: 0.95, fMul: 0.9, escape: 0.35, critFailD: 1, femaleR: [1.8, 1]}},
+        tank:  {dpsSt: 0.8, dpsAoe: 1.1, hpsSt: 0.1, hpsAoe: 0.2, dtpsP: 3.5, dtpsM: 4.0, speed: 1.35, hMul: 0.95, fMul: 0.9, escape: 0.35, critFailD: 1, femaleR: [1.8, 1]}},
     Monk: {
         dps:   {dpsSt: 1.8, dpsAoe: 2.33, hpsSt: 0.15, hpsAoe: 0.0, dtpsP: 0.7, dtpsM: 1.0, speed: 1.25, hMul: 0.75, fMul: 0.75, escape: 0.35, critFailD: 1, femaleR: [120, 1]},
         healer:{dpsSt: 0.55, dpsAoe: 0.9, hpsSt: 1.05, hpsAoe: 1.2, dtpsP: 0.7, dtpsM: 1.0, speed: 1.25, hMul: 0.75, fMul: 0.75, escape: 0.35, critFailD: 1, femaleR: [80, 1]}},
@@ -139,6 +139,6 @@ let heroesConfig = {
 
 
     /*RuneKnight: {
-        dps: {dpsSt: 1.8, dpsAoe: 1.3, hpsSt: 0.0, hpsAoe: 0.0, dtpsP: 2, dtpsM: 2, speed: 0.8, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[50,1]},
-        tank: {dpsSt: 0.9, dpsAoe: 0.6, hpsSt: 0, hpsAoe: 0.0, dtpsP: 5, dtpsM: 4.5, speed: 0.75, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[100,1]}},*/
+        dps: {dpsSt: 2.65, dpsAoe: 2.2, hpsSt: 0.0, hpsAoe: 0.0, dtpsP: 1.4, dtpsM: 1.6, speed: 0.8, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[50,1]},
+        tank: {dpsSt: 1.0, dpsAoe: 0.65, hpsSt: 0, hpsAoe: 0.0, dtpsP: 5, dtpsM: 4.5, speed: 0.75, hMul: 0.5, fMul: 0.5, escape: 0.1, critFailD: 1.5, femaleR:[100,1]}},*/
 }

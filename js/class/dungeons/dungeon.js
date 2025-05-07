@@ -34,6 +34,9 @@ class DungeonController {
             level = maxHeroLvl
         }
 
+        //TODO:
+        level = 1
+
         dungeonSpeed = c / heroes.length
         let difficulty = 0.75
         let type
@@ -184,6 +187,10 @@ class DungeonController {
         }
 
         if ((dpsSuccess || dtpsSuccess)) {
+            let guildId = this.guildRun(run.heroes)
+            if (guildId !== -1) {
+                guilds[guildId].gainRankPoints(stage.reward.rankPoints / 2) 
+            }
             for (let i = 0; i < run.heroes.length; i++) {
                 run.heroes[i].gainGold(stage.reward.gold / run.heroes.length)
                 run.heroes[i].gainXp(stage.reward.xp / run.heroes.length)
@@ -428,6 +435,30 @@ class DungeonController {
             }
         }
     }
+
+    guildRun(arrIn) {
+        let arr = []
+        for (let i = 0; i < arrIn.length; i++) {
+            arr.push(arrIn[i].guildId)
+        }
+
+        const filtered = arr.filter(x => x !== -1)
+        if (filtered.length === 0) return -1
+
+        const counts = {}
+        for (const num of filtered) {
+            counts[num] = (counts[num] || 0) + 1
+        }
+        const half = Math.floor(filtered.length / 2)
+        for (const [num, count] of Object.entries(counts)) {
+            if (count > half) {
+                return Number(num)
+            }
+        }
+
+        return -1
+    }
+
 
     dungeonTypes = {
         "Default": {chance: 1, minLvl:1, maxLvl:1000, damageTypes:[0.5,0.5], stAoe:[0.4,0.6], bossStAoe:[0.8,0.2], stageMulChance:0.5,stageMul:0.2,stagesBase:2,stagesRng:6, goldBase:10, goldRng:100, xpMul: 0.5, rankMul: 1,

@@ -42,4 +42,10 @@ class Building {
             this.levelUpdate()
         }
     }
+
+    buy(val, hero) {
+        hero.inventory.gold -= val
+        gold += val/2
+    }
+
 }

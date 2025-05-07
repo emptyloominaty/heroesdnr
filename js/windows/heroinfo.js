@@ -34,7 +34,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
         elementsWindow.sk7.textContent = Math.round(hero.skill[7]*100)/100
         elementsWindow.sk8.textContent = Math.round(hero.skill[8]*100)/100
 
-        elementsWindow.gold.textContent = hero.inventory.gold
+        elementsWindow.gold.textContent = getNumberString(hero.inventory.gold)
         elementsWindow.weapon.textContent = hero.inventory.weaponLevel
         elementsWindow.armor.textContent = hero.inventory.armorLevel
 
@@ -177,7 +177,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     html += `  
      <tr>
       <td class="heroinfoInv1"><strong>Gold</strong></td>
-      <td id="hi_gold" class="heroinfoInv2">${hero.inventory.gold}</td>
+      <td id="hi_gold" class="heroinfoInv2">${getNumberString(hero.inventory.gold)}</td>
     </tr>
     <tr>
       <td class="heroinfoInv1"><strong>Weapon base/mul</strong></td>

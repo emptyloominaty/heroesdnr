@@ -4,7 +4,7 @@ class RecruitmentHall extends Building {
     maxLvl = 1
     maxNum = 3
     upgradeCost = [0, 500, 1000, 2000, 3000]
-    dailyCost = [10,30,50,80,120]
+    dailyCost = [10,20,50,70,100]
     heroesNumLvl = [3, 4, 5, 6, 7]
     heroesMaxLvl = [1, 5, 10, 25, 50]
 
