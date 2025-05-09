@@ -160,6 +160,7 @@ function mouseUpdate() {
     hideTooltip()
 }
 
+let idBBB = 0
 
 setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)
@@ -175,6 +176,10 @@ setTimeout( ()=> {
 
         const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
         if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
+
+            placeBuilding(mousePosition2d.x / buildingCellSize, mousePosition2d.y / buildingCellSize, ...ghostBuilding.size, {name: "Test"+idBBB})
+            idBBB++
+
             let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
             let nearbyObjects = []
             for (const cell of nearbyCells) {

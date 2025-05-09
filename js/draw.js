@@ -6,6 +6,10 @@ function draw() {
     const dpr = window.devicePixelRatio || 1
     game2d.reset()
 
+    //drawGrid() //DONT
+    const [gx, gy] = mouseToGrid(mousePosition2d)
+    drawGhost(gx, gy, ghostBuilding)
+
     for (let i = 0; i < characters.length; i++) {
         let size = characters[i].size[0] / 2 * zoom 
         let worldX = characters[i].location.x
