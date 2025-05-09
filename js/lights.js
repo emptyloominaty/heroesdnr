@@ -22,7 +22,10 @@ class Light {
     }
     update() {
         if (this.life>0) {
-                this.life -= progress
+            this.life -= progress
+            if (this.life < 0.2) {
+                this.color = decreaseAlpha(this.color,progress*5)
+            }
             if (this.life<=0) {
                 lights[this.id] = undefined
             }
@@ -32,9 +35,7 @@ class Light {
 
 //add test light
 addLight(50,45,100,'rgba(255, 160, 80, 1)',-1)
-addLight(200,200,100,'rgba(255,191,109,1)',-1)
-addLight(50,200,100,'rgb(255,216,164)',-1)
-addLight(200,45,100,'rgb(255,171,62)',-1)
+
 
 let R = 255, G = 255, B = 255
 let shadowAlpha = 0.1

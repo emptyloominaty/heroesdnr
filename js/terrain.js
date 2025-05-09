@@ -37,11 +37,10 @@ function drawTerrain(firstFrame = false) {
     if (firstFrame) {
         initPatterns()
     }
+    terrain2d.reset()
     if (settings.terrain===0) {
         return
     }
-
-    terrain2d.reset()
 
     const ctx = terrain2d.canvas
     ctx.resetTransform()

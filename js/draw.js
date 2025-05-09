@@ -81,8 +81,11 @@ function drawLights() {
     lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
 
     lights2d.canvas.globalCompositeOperation = "screen"
-    for (let i = 0; i<lights.length; i++) {
+    for (let i = 0; i < lights.length; i++) {
         let light = lights[i]
+        if (light === undefined) {
+            continue
+        }
         drawLightSource(light.x, light.y, light.radius, light.color)
         light.update()
     }

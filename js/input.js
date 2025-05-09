@@ -75,7 +75,7 @@ let onMouseUpdate = function(e) {
 
 function mouseUpdate() {
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
-    if (el && (el === document.body || el === elements.canvasParticles)) {
+    if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
         //TODO: 0.1-0.15ms? yikes
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)
         let nearbyObjects = []
@@ -122,9 +122,18 @@ function mouseUpdate() {
 
 setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)
-    document.addEventListener("mousedown", function(e) {
+    document.addEventListener("mousedown", function (e) {
+
+      /*  if (keys['f']) {
+            addSpellVisualEffects(mousePosition2d.x, mousePosition2d.y, 90, "fire", {duration: 0.1, size: 0, speed: 0, target: {x: mousePosition2d.x, y: mousePosition2d.y}, color: "#84e7ff", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: true,ignoreLifeSize: true, name: "fire", size: 0.2, life: 0.5, speed: 8, area: 2, texture: textures.particle_fire4, color1: "#84e7ff", color2: "#84e7ff", color3: "rgba(118, 139, 255, 0.1)"}})
+            addLight(mousePosition2d.x, mousePosition2d.y, 20, "rgba(118, 139, 255, 1)", 0.6)
+        } else {
+            addSpellVisualEffects(mousePosition2d.x, mousePosition2d.y, 90, "fire", {duration: 0.1, size: 0, speed: 0, target: {x: mousePosition2d.x, y: mousePosition2d.y}, color: "#84e7ff", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: false,ignoreLifeSize: true, name: "fire", size: 0.2, life: 0.5, speed: 8, area: 2, texture: textures.particle_fire4, color1: "#84e7ff", color2: "#84e7ff", color3: "rgba(118, 139, 255, 0.1)"}})
+            addLight(mousePosition2d.x, mousePosition2d.y, 20, "rgba(118, 139, 255, 1)", 0.6)
+        }*/
+
         const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
-        if (el && (el === document.body || el === elements.canvasParticles)) {
+        if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
             let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
             let nearbyObjects = []
             for (const cell of nearbyCells) {

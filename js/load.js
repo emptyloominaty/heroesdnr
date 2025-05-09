@@ -14,6 +14,7 @@ function loadFiles() {
         particle_fire: 'textures/particles/fire.png',
         particle_fire2: 'textures/particles/fire2.png',
         particle_fire3: 'textures/particles/fire3.png',
+        particle_fire4: 'textures/particles/fire4.png',
     }
 
     const promises = Object.entries(imageMap).map(([key, path]) =>

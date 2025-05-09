@@ -12,13 +12,18 @@ class SpellParticle {
         }
         this.wait = true
         this.fireSize = 0
+        this.texture = textures.particle_fire
+        if (this.data.texture) {
+            this.texture = this.data.texture
+        }
+        this.alpha = 1
     }
 
 
     update() {
         let size = this.data.size * zoom
         let color
-        if (this.type==="fire") {
+        if (this.type === "fire") {
             color = this.data.color1
             if (this.data.color > 0.5) {
                 color = this.data.color2
@@ -29,7 +34,7 @@ class SpellParticle {
             size = (this.data.life*10)*zoom
         }
 
-        if (!this.wait && this.data.speed>0) {
+        if (!this.wait && (this.data.speed>0 || this.data.speed<0)) {
             this.move()
         }
 
@@ -42,17 +47,21 @@ class SpellParticle {
 
             size += (this.data.size*0.25 * zoom)
             //opacity
-            if (this.data.life<0.4) {
+            if (this.data.life<0.4 && !this.data.ignoreLifeSize) {
                 color = pSBC( 1-(this.data.life*2.5), color, this.data.color3, true )
                 //color = pSBC( 1-(this.data.life*2.5), "rgba(0,0,0,1)", "rgba(0,0,0,0)", true )
                 size = size * (this.data.life*2.5)
             } else {
                 this.fireSize += 8 * progressReal
             }
+            if (this.data.life < 0.2) {
+                this.alpha = this.data.life * 5
+            }
+
             if (!this.wait) {
                 //particles2d.setParticleGlow(2,color)
                 //particles2d.drawCircle(x2d, y2d, size, color)
-                particles2d.drawImage(x2d, y2d, size, color, textures.particle_fire)
+                particles2d.drawImage(x2d, y2d, size, color, this.texture,undefined,this.alpha)
                 this.data.speed -= (this.data.speed*6) * progressReal
             }
         } else {
@@ -68,10 +77,13 @@ class SpellParticle {
         }
     }
 
-    move() {
+    move(val = 0) {
         let speed = this.data.speed * progressReal
-        let angleInRadian = (this.direction-180) / 180 * Math.PI
+        if (val > 0 || val < 0) {
+            speed = val
+        }
 
+        let angleInRadian = (this.direction-180) / 180 * Math.PI
 
         let vx = Math.sin(angleInRadian) * speed
         let vy = Math.cos(angleInRadian) * speed
@@ -88,8 +100,9 @@ let addSpellParticle = function(x,y,direction,type,data) {
     for (let i = 0; i < spellParticles.length; i++) {
         if (spellParticles[i] === undefined) {
             spellParticles[i] = new SpellParticle(i,x,y,direction,type,data)
-            return true
+            return spellParticles[i]
         }
     }
-    spellParticles.push(new SpellParticle(spellParticles.length,x,y,direction,type,data))
+    spellParticles.push(new SpellParticle(spellParticles.length, x, y, direction, type, data))
+    return spellParticles[spellParticles.length-1]
 }

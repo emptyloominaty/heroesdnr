@@ -28,6 +28,11 @@ let elements = {
     "windowHeader4": document.getElementById("windowHeader4"),
     "windowBody4": document.getElementById("windowBody4"),
     "canvasParticles": document.getElementById("canvasParticles"),
+    "canvasLights": document.getElementById("canvasLights"),
+    "canvasTerrain": document.getElementById("canvasTerrain"),
+    "canvasGame": document.getElementById("canvasGame"),
+
+    
     "window5": document.getElementById("window5"),
     "windowHeader5": document.getElementById("windowHeader5"),
     "windowBody5": document.getElementById("windowBody5"),

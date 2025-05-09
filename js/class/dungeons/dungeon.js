@@ -9,6 +9,25 @@ class DungeonController {
     minlvl = 1
     maxlvl = 25
 
+    constructor () {
+        addLight(this.location.x - 25, this.location.y - 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x - 25, this.location.y - 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x - 25, y: this.location.y - 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x - 25, this.location.y + 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x - 25, this.location.y + 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x - 25, y: this.location.y + 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x + 25, this.location.y - 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x + 25, this.location.y - 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x + 25, y: this.location.y - 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x + 25, this.location.y + 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x + 25, this.location.y + 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x + 25, y: this.location.y + 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+
+
+
+
+    }
+
     startDungeon(heroes,hero = undefined) {
         if (!heroes || heroes.length===0) {
             console.log("FIX ME!!!!!!: "+hero.name+": "+hero.goingToDungeon+" - "+hero.isInDungeon+" "+hero.groupLeader)

@@ -71,6 +71,19 @@ function isMouseOverObject(obj) {
     )
 }
 
+function decreaseAlpha(rgbaString, step = 0.01) {
+    if (!rgbaString.startsWith("rgba")) return rgbaString
+
+    let values = rgbaString.slice(5, -1).split(",").map(v => v.trim())
+
+    if (values.length !== 4) return rgbaString
+
+    let [r, g, b, a] = values
+    let newAlpha = Math.max(0, parseFloat(a) - step)
+    return `rgba(${r}, ${g}, ${b}, ${newAlpha})`
+}
+
+
 //https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
 const pSBC=(p,c0,c1,l)=>{
     let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";
