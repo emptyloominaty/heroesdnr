@@ -197,6 +197,18 @@ function updateHeaderSort(sortKey) {
 
 function parseSortableValue(str) {
     str = str.trim().toLowerCase()
+
+    const durationMatch = str.match(/^(\d+)y\s+(\d+)d\s+(\d{1,2}):(\d{2})$/)
+    if (durationMatch) {
+        const years = parseInt(durationMatch[1], 10)
+        const days = parseInt(durationMatch[2], 10)
+        const hours = parseInt(durationMatch[3], 10)
+        const minutes = parseInt(durationMatch[4], 10)
+
+        return (years * 365 * 24 * 60) + (days * 24 * 60) + (hours * 60) + minutes
+    }
+
+   
     if (/^\d+\s*h$/.test(str) || /^\d+h$/.test(str)) {
         const hours = parseInt(str.replace(/[^\d]/g, '').trim())
         return hours

@@ -9,6 +9,25 @@ class DungeonController {
     minlvl = 1
     maxlvl = 25
 
+    constructor () {
+        addLight(this.location.x - 25, this.location.y - 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x - 25, this.location.y - 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x - 25, y: this.location.y - 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x - 25, this.location.y + 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x - 25, this.location.y + 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x - 25, y: this.location.y + 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x + 25, this.location.y - 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x + 25, this.location.y - 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x + 25, y: this.location.y - 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+        addLight(this.location.x + 25, this.location.y + 25, 100, 'rgba(255, 160, 80, 1)', -1)
+        addSpellVisualEffects(this.location.x + 25, this.location.y + 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x + 25, y: this.location.y + 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+
+
+
+
+
+    }
+
     startDungeon(heroes,hero = undefined) {
         if (!heroes || heroes.length===0) {
             console.log("FIX ME!!!!!!: "+hero.name+": "+hero.goingToDungeon+" - "+hero.isInDungeon+" "+hero.groupLeader)
@@ -189,7 +208,7 @@ class DungeonController {
         if ((dpsSuccess || dtpsSuccess)) {
             let guildId = this.guildRun(run.heroes)
             if (guildId !== -1) {
-                guilds[guildId].gainRankPoints(stage.reward.rankPoints / 2) 
+                guilds[guildId].gainRankPoints(stage.reward.rankPoints / 5) 
             }
             for (let i = 0; i < run.heroes.length; i++) {
                 run.heroes[i].gainGold(stage.reward.gold / run.heroes.length)

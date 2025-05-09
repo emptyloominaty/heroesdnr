@@ -27,8 +27,28 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_gold[i].textContent = getNumberString(hero.inventory.gold)
                     elementsWindow.hl_fatigue[i].textContent = Math.round(hero.fatigue)
                     elementsWindow.hl_hunger[i].textContent = Math.round(hero.hunger)
-                    elementsWindow.hl_location[i].textContent = Math.round(hero.location.x) + " - " + Math.round(hero.location.y)
-                    elementsWindow.hl_destination[i].textContent = Math.round(hero.destination.x) + " - " + Math.round(hero.destination.y)
+                    let guildName = ""
+                    let guildRank = ""
+                    if (hero.inGuild) {
+                        let guild = guilds[hero.guildId]
+                        guildName = guild.name
+                        guildRank = "Member"
+                        for (let i = 0; i < guild.officers.length; i++) {
+                            if (guild.officers[i] === hero.id) {
+                                guildRank = "Officer"
+                            }
+                        }
+                        if (guild.guildmaster === hero.id) {
+                            guildRank = "Guildmaster"
+                        }
+                        guildRank = " (" +guildRank.charAt(0).toUpperCase() + ")" 
+                    }
+
+
+
+                    elementsWindow.hl_location[i].textContent = guildName + guildRank
+
+                    elementsWindow.hl_destination[i].textContent = getTime2(realtime-hero.arrivalTime)
                 } else if (heroesListTableMode==="throughput") {
                     elementsWindow.hl_dps[i].textContent = getNumberString(hero.dps)
                     elementsWindow.hl_hps[i].textContent = getNumberString(hero.stDps)
@@ -58,7 +78,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_dtps[i].textContent = getNumberString(hero.itemsBonus.dps.mul)+"x"
                     elementsWindow.hl_gold[i].textContent = "+"+getNumberString(hero.itemsBonus.dtps.base)
                     elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.itemsBonus.dtps.mul)+"x"
-                    elementsWindow.hl_hunger[i].textContent = ""
+                    elementsWindow.hl_hunger[i].textContent = hero.inventory.potions["Health"] + "/" + hero.inventory.potions["Mana"] + "/" + hero.inventory.potions["Strength"] + "/" + hero.inventory.potions["Agility"] + "/" + hero.inventory.potions["Resurrection"]
                     elementsWindow.hl_location[i].textContent = ""
                     elementsWindow.hl_destination[i].textContent = getNumberString(hero.inventory.gold)
                 } else if (heroesListTableMode === "debug") {
@@ -95,8 +115,8 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             elementsWindow.hl_header4.textContent = "Gold"
             elementsWindow.hl_header5.textContent = "Fatigue"
             elementsWindow.hl_header6.textContent = "Hunger"
-            elementsWindow.hl_header7.textContent = "Location"
-            elementsWindow.hl_header8.textContent = "Destination"
+            elementsWindow.hl_header7.textContent = "Guild"
+            elementsWindow.hl_header8.textContent = "Time Since Arrival"
             elementsWindow.hl_btn_default.classList.add('button_activated')
         } else if (heroesListTableMode==="throughput") {
             elementsWindow.hl_header1.textContent = "DPS"
@@ -124,7 +144,7 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
             elementsWindow.hl_header3.textContent = "DPS Mul"
             elementsWindow.hl_header4.textContent = "DTPS Base"
             elementsWindow.hl_header5.textContent = "DTPS Mul"
-            elementsWindow.hl_header6.textContent = ""
+            elementsWindow.hl_header6.textContent = "Potions"
             elementsWindow.hl_header7.textContent = ""
             elementsWindow.hl_header8.textContent = "Gold"
             elementsWindow.hl_btn_inventory.classList.add('button_activated')

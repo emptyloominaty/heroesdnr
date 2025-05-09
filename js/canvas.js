@@ -77,13 +77,15 @@ class Canvas {
         this.canvas.closePath()
     }
 
-    drawImage(x,y,size,color,image, gco = "lighter") {
+    drawImage(x, y, size, color, image, gco = "lighter", alpha = 1.0) {
         size = size*10
         let xx = size/2
-        let yy = size/2
+        let yy = size / 2
+        this.canvas.globalAlpha = alpha
         this.canvas.globalCompositeOperation = gco
         this.canvas.drawImage(image, x-xx, y-yy, size, size)
         this.canvas.globalCompositeOperation = "source-over"
+        this.canvas.globalAlpha = 1.0
     }
 
     setParticleGlow(blurSize,blurColor) {

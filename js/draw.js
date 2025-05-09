@@ -6,6 +6,10 @@ function draw() {
     const dpr = window.devicePixelRatio || 1
     game2d.reset()
 
+    //drawGrid() //DONT
+    const [gx, gy] = mouseToGrid(mousePosition2d)
+    drawGhost(gx, gy, ghostBuilding)
+
     for (let i = 0; i < characters.length; i++) {
         let size = characters[i].size[0] / 2 * zoom 
         let worldX = characters[i].location.x
@@ -81,8 +85,11 @@ function drawLights() {
     lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
 
     lights2d.canvas.globalCompositeOperation = "screen"
-    for (let i = 0; i<lights.length; i++) {
+    for (let i = 0; i < lights.length; i++) {
         let light = lights[i]
+        if (light === undefined) {
+            continue
+        }
         drawLightSource(light.x, light.y, light.radius, light.color)
         light.update()
     }

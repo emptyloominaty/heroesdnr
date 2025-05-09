@@ -124,6 +124,31 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
       <td id="hi_rank">${getRank(hero.rankPoints)}</td>
     </tr>`
     html += "</table></div>"
+
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Guild</th><th>Rank</th></tr>"
+    let guildName = ""
+    let guildRank = ""
+    if (hero.inGuild) {
+        let guild = guilds[hero.guildId]
+        guildName = guild.name
+        guildRank = "Member"
+        for (let i = 0; i < guild.officers.length; i++) {
+            if (guild.officers[i] === hero.id) {
+                guildRank = "Officer"
+            }
+        }
+        if (guild.guildmaster === hero.id) {
+            guildRank = "Guildmaster"
+        }
+    }
+
+    html += `  
+    <tr>
+      <td id="hi_rankPoints">${guildName}</td>
+      <td id="hi_rank">${guildRank}</td>
+    </tr>`
+    html += "</table></div>"
+
     html += "<span style='width:100%;'></span>" //next row
 
     html += "<div class='heroinfoText'>Throughput</div>"
