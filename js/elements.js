@@ -47,6 +47,11 @@ let elements = {
     "window8": document.getElementById("window8"),
     "windowHeader8": document.getElementById("windowHeader8"),
     "windowBody8": document.getElementById("windowBody8"),
+    "window9": document.getElementById("window9"),
+    "windowHeader9": document.getElementById("windowHeader9"),
+    "windowBody9": document.getElementById("windowBody9"),
+
     "btn_speed50": document.getElementById("btn_speed50"),
     "btn_speed100": document.getElementById("btn_speed100"),
+
 }

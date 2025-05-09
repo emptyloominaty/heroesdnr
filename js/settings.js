@@ -18,6 +18,9 @@ let settingsUpdate = function () {
     if (settings.debugSpeeds) {
         elements.btn_speed50.style.display = "inline-block"
         elements.btn_speed100.style.display = "inline-block"
+    } else {
+        elements.btn_speed50.style.display = "none"
+        elements.btn_speed100.style.display = "none"
     }
 }
 

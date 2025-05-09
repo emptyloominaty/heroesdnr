@@ -42,9 +42,6 @@ function drawTerrain(firstFrame = false) {
         return
     }
 
-
-
-    
     const viewWidth = terrain2d.canvasElement.width / zoom
     const viewHeight = terrain2d.canvasElement.height / zoom
     const viewLeft = x - viewWidth / 2
@@ -52,14 +49,10 @@ function drawTerrain(firstFrame = false) {
 
     const tileSize = 128
 
-
     const startX = Math.floor(viewLeft / tileSize) * tileSize
     const startY = Math.floor(viewTop / tileSize) * tileSize
     const endX = viewLeft + viewWidth
     const endY = viewTop + viewHeight
-
-
-
 
     const ctx = terrain2d.canvas
     ctx.resetTransform()

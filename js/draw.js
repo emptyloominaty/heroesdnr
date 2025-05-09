@@ -26,12 +26,11 @@ function draw() {
             } else {
                 characters[i].uiElements.style.color = color
             }
-            //characters[i].uiElements.style.fontSize = `${9 * zoom}px`
-            //characters[i].uiElements.style.left = `${x2d/dpr}px`
-            //characters[i].uiElements.style.top = `${y2d/dpr - 5 * zoom}px`
-            //characters[i].uiElements.style.transform = `scale(${zoom})`
-            //characters[i].uiElements.style.transform = `translate(${x2d}px, ${y2d - 5 * zoom}px)`;
-            characters[i].uiElements.style.transform = `translate(-50%, -100%) translate(${x2d}px, ${y2d - 5 * zoom}px) scale(${zoom})`
+            let cssX = x2d / dpr;
+            let cssY = y2d / dpr;
+            let cssZoom = zoom / dpr;
+            characters[i].uiElements.style.transform = `translate(-50%, -100%) translate(${cssX}px, ${cssY - 5 * cssZoom}px) scale(${cssZoom})`
+            //characters[i].uiElements.style.transform = `translate(-50%, -100%) translate(${x2d}px, ${y2d - 5 * zoom}px) scale(${zoom})`
         } else {
             characters[i].uiElements.style.display = "none"
         }

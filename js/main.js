@@ -2,9 +2,9 @@ let time = 0
 let day = 0
 let gamePaused = false
 
-let renown = 20
-let gold = 1000
-let gold2 = 1000
+let renown = 20 //TODO:
+let gold = 5000
+let gold2 = gold
 let goldS = gold
 let goldE = gold
 let income = 0

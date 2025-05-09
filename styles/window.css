@@ -11,7 +11,7 @@
 
 
 
-#window0, #window1, #window2, #window3, #window4, #window5, #window6, #window7, #window8 {
+#window0, #window1, #window2, #window3, #window4, #window5, #window6, #window7, #window8, #window9 {
     position: fixed;
     background-color: var(--color1);
     color: #FFF;
@@ -19,57 +19,62 @@
     display: none;
 }
 
-#windowbody0, #windowbody1, #windowbody2, #windowbody3, #windowbody4, #windowbody5, #windowbody6, #windowbody7, #windowbody8 {
+#windowbody0, #windowbody1, #windowbody2, #windowbody3, #windowbody4, #windowbody5, #windowbody6, #windowbody7, #windowbody8, #windowbody9 {
     overflow: auto;
     max-height: 92vh;
 }
 
 #window0 {
-    top: 4.62vh;
-    left: 2.6vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 100;
 }
 
 #window1 {
-    top: 10vh;
-    left: 5vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 101;
 }
 
 #window2 {
-    top: 14vh;
-    left: 8vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 102;
 }
 #window3 {
-    top: 5vh;
-    left: 10vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 103;
 }
 #window4 {
     top: 1vh;
-    left: 2vw;
+    left: 1vw;
     z-index: 104;
 }
 #window5 {
-    top: 2vh;
-    left: 3vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 105;
 }
 #window6 {
-    top: 3vh;
-    left: 4vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 106;
 }
 #window7 {
-    top: 4vh;
-    left: 5vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 107;
 }
 #window8 {
-    top: 6vh;
-    left: 7vw;
+    top: 1vh;
+    left: 1vw;
     z-index: 108;
+}
+#window9 {
+    top: 1vh;
+    left: 1vw;
+    z-index: 109;
 }
 .windowHeader {
     font-size: 1.3vw;
@@ -99,7 +104,7 @@
     border-bottom-right-radius: 3px;
 }
 
-.windowSettings_button {
+.window_settings_button {
     background-color: rgba(255, 255, 255, 0);
     font-size: 0.72vw;
     padding: 2px 5px 2px 5px;
@@ -109,26 +114,32 @@
     color: #FFF;
 }
 
-.windowSettings_button_true {
+.window_settings_button_true {
     border: 1px solid rgba(255,255,255,1);
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.windowSettings_button:hover {
+.window_settings_button:hover {
     background-color: #444144;
 }
 
-.windowSettings_flex {
+.window_settings_flex {
     display: flex;
     justify-content: space-between;
     padding-top: 0.2vw;
     padding-bottom: 0.2vw;
 }
 
-.windowSettings_category {
-    padding-top: 1vw;
-    padding-bottom: 0.2vw;
+.window_settings_category {
+    margin-top: 0.8vw;
+    margin-bottom: 0.2vw;
+    padding: 0.2vw 0.2vh 0.2vw 0.2vh;
     font-size: 1vw;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.window_settings_category_first {
+    margin-top: 0!important;
 }
 
 table {

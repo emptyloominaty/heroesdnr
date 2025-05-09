@@ -52,8 +52,9 @@
     <script src="js/windows/statisticsOld.js" defer></script>
     <script src="js/windows/statisticsCharts.js" defer></script>
     <script src="js/windows/classBalance.js" defer></script>
-    <script src="js/windows/guildList.js" defer></script>
+    <script src="js/windows/guildlist.js" defer></script>
     <script src="js/windows/logs.js" defer></script>
+    <script src="js/windows/settings.js" defer></script>
 
     <script src="js/input.js" defer></script>
     <script src="js/genHero.js" defer></script>
@@ -125,6 +126,7 @@
                     <button id="menu_btn6" onclick="open_logs(this)">Logs</button>
                     <button id="menu_btn7" onclick="open_classBalance(this)">Class Balance</button>
                     <button id="menu_btn8" onclick="open_guildList(this)">Guild List</button>
+                    <button id="menu_btn9" onclick="open_settings(this)">Settings</button>
                 </div>
                 <div>
                    <button onclick="buildRoad()">Build Road</button>
@@ -198,7 +200,13 @@
                 </div>
                 <div class="resizer"></div>
             </div>
-
+            <div id="window9">
+                <div id="windowHeader9">
+                </div>
+                <div class="windowBody" id="windowBody9">
+                </div>
+                <div class="resizer"></div>
+            </div>
         </div>
         <canvas width="100%" height="100%" id="canvasParticles">
         </canvas>

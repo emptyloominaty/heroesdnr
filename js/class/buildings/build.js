@@ -26,10 +26,13 @@ function isAreaFree(x, y, w, h) {
 function placeBuilding(x, y, w, h) {
     if (!isAreaFree(x, y, w, h)) return false
     if (gold<ghostBuilding.price) {
+        //TODO:MESSAGE
         return false
     }
     gold -= ghostBuilding.price
-    ghostBuilding.enabled = false
+    if (!keys['control']) {
+        ghostBuilding.enabled = false
+    }
     let bGrid = []
     for (let dx = 0; dx < w; dx++) {
         for (let dy = 0; dy < h; dy++) {
@@ -38,7 +41,6 @@ function placeBuilding(x, y, w, h) {
         }
     }
     if (ghostBuilding.type === "inn") {
-        console.log(bGrid)
         buildings.push(new Inn({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Inn", 1))
         gridCellAddObj(bGrid,buildings[buildings.length-1])
     }
@@ -47,7 +49,7 @@ function placeBuilding(x, y, w, h) {
 
 function gridCellAddObj(bGrid,obj) {
     for (let i = 0; i<bGrid.length; i++) {
-        bGrid.obj = obj
+        bGrid[i].obj = obj
     }
 }
 
@@ -69,6 +71,10 @@ function gridToWorld(gx, gy) {
 }
 
 function screenToWorld(mx, my) {
+    /*return [
+        x + (mx) / zoom,
+        y + (my) / zoom,
+    ]*/
     return [
         x + (mx) ,
         y + (my) ,
@@ -95,7 +101,6 @@ function drawGrid() {
 
     ctx.strokeStyle = "rgba(128,128,128,0.3)"
     ctx.lineWidth = 1
-
     for (let gx = offsetX; gx < offsetX + cols; gx++) {
         for (let gy = offsetY; gy < offsetY + rows; gy++) {
             const [wx, wy] = gridToWorld(gx, gy)
@@ -119,13 +124,18 @@ function drawGhost(gridX, gridY, building) {
     for (let dx = 0; dx < building.size[0]; dx++) {
         for (let dy = 0; dy < building.size[1]; dy++) {
             const [wx, wy] = gridToWorld(gridX + dx, gridY + dy)
-            const sx = (wx - x) * zoom + canvas.width / 2
-            const sy = (wy - y) * zoom + canvas.height / 2
-
+            //TODO: SEND HELP
+            const sx = ((wx-x) * zoom + canvas.width / 2)
+            const sy = ((wy-y) * zoom + canvas.height / 2)
+            if (dx === 0 && dy === 0) {
+                //console.log("World:", screenToWorld(mousePosition2d.x, mousePosition2d.y), "Camera:", x, y)
+               // console.log("CAM: x:", x ," y:", y, "TILE WORLD:", wx, wy, "SCREEN:", sx, sy)
+            }
             ctx.fillStyle = color
             ctx.fillRect(sx, sy, cellScreenSize, cellScreenSize)
         }
     }
+
 }
 
 
