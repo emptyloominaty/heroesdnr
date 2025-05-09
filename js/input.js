@@ -104,11 +104,17 @@ let showNamesMouse = []
 let mousePosition = {x:0,y:0}
 let mousePosition2d = {x:0,y:0}
 let onMouseUpdate = function(e) {
-    mousePosition.x = e.pageX
-    mousePosition.y = e.pageY
+    const rect = game2d.canvasElement.getBoundingClientRect()
+    const dpr = window.devicePixelRatio || 1
 
-    mousePosition2d.x = ((x+((e.pageX)-(game2d.canvasW/2))/zoom))
-    mousePosition2d.y = ((y+((e.pageY)-(game2d.canvasH/2))/zoom))
+    mousePosition.x = e.clientX
+    mousePosition.y = e.clientY
+
+    const canvasX = (e.clientX - rect.left) * dpr
+    const canvasY = (e.clientY - rect.top) * dpr
+
+    mousePosition2d.x = x + (canvasX - game2d.canvasW / 2) / zoom
+    mousePosition2d.y = y + (canvasY - game2d.canvasH / 2) / zoom
 
     updateTooltipLocation(mousePosition.x, mousePosition.y)
    
@@ -160,12 +166,17 @@ function mouseUpdate() {
     hideTooltip()
 }
 
-let idBBB = 0
+document.addEventListener("contextmenu", function (e) {
+    e.preventDefault()
+})
+
 
 setTimeout( ()=> {
     document.addEventListener('mousemove', onMouseUpdate)
     document.addEventListener("mousedown", function (e) {
-
+        if (e.button !== 0 ) {
+            e.preventDefault()
+        }
       /*  if (keys['f']) {
             addSpellVisualEffects(mousePosition2d.x, mousePosition2d.y, 90, "fire", {duration: 0.1, size: 0, speed: 0, target: {x: mousePosition2d.x, y: mousePosition2d.y}, color: "#84e7ff", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: true,ignoreLifeSize: true, name: "fire", size: 0.2, life: 0.5, speed: 8, area: 2, texture: textures.particle_fire4, color1: "#84e7ff", color2: "#84e7ff", color3: "rgba(118, 139, 255, 0.1)"}})
             addLight(mousePosition2d.x, mousePosition2d.y, 20, "rgba(118, 139, 255, 1)", 0.6)
@@ -177,8 +188,15 @@ setTimeout( ()=> {
         const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
         if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
 
-            placeBuilding(mousePosition2d.x / buildingCellSize, mousePosition2d.y / buildingCellSize, ...ghostBuilding.size, {name: "Test"+idBBB})
-            idBBB++
+            if (ghostBuilding.enabled) {
+                if (e.button === 0) {
+                    placeBuilding(Math.floor(mousePosition2d.x / buildingCellSize), Math.floor(mousePosition2d.y / buildingCellSize), ...ghostBuilding.size)
+                } else {
+                    ghostBuilding.enabled = false
+                }
+
+            }
+
 
             let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 1)
             let nearbyObjects = []

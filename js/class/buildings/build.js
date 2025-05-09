@@ -1,11 +1,11 @@
-let buildingGrid = new Map()
+let buildingGrid = {}
 let buildingCellSize = 5
-const gridCellsX = 200
-const gridCellsY = 200
 
 let ghostBuilding = {
-    size: [2, 2], 
-    color: "rgba(0, 200, 0, 0.4)",
+    enabled: false,
+    size: [2, 2],
+    type: "road",
+    price: 0,
 }
 
 function getCellKey(x, y) {
@@ -15,7 +15,7 @@ function getCellKey(x, y) {
 function isAreaFree(x, y, w, h) {
     for (let dx = 0; dx < w; dx++) {
         for (let dy = 0; dy < h; dy++) {
-            if (buildingGrid.has(getCellKey(x + dx, y + dy))) {
+            if (buildingGrid[getCellKey(x + dx, y + dy)] !== undefined) {
                 return false
             }
         }
@@ -23,14 +23,32 @@ function isAreaFree(x, y, w, h) {
     return true
 }
 
-function placeBuilding(x, y, w, h, building) {
-    if (!isAreaFree(x, y, w, h)) return false;
+function placeBuilding(x, y, w, h) {
+    if (!isAreaFree(x, y, w, h)) return false
+    if (gold<ghostBuilding.price) {
+        return false
+    }
+    gold -= ghostBuilding.price
+    ghostBuilding.enabled = false
+    let bGrid = []
     for (let dx = 0; dx < w; dx++) {
         for (let dy = 0; dy < h; dy++) {
-            buildingGrid.set(getCellKey(x + dx, y + dy), building)
+            buildingGrid[getCellKey(x + dx, y + dy)] = {type:ghostBuilding.type, obj:undefined}
+            bGrid.push(buildingGrid[getCellKey(x + dx, y + dy)])
         }
     }
+    if (ghostBuilding.type === "inn") {
+        console.log(bGrid)
+        buildings.push(new Inn({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Inn", 1))
+        gridCellAddObj(bGrid,buildings[buildings.length-1])
+    }
     return true
+}
+
+function gridCellAddObj(bGrid,obj) {
+    for (let i = 0; i<bGrid.length; i++) {
+        bGrid.obj = obj
+    }
 }
 
 const canvas = elements.canvasGame
@@ -90,6 +108,9 @@ function drawGrid() {
 }
 
 function drawGhost(gridX, gridY, building) {
+    if (!ghostBuilding.enabled) {
+        return false
+    }
     const isFree = isAreaFree(gridX, gridY, ...building.size)
     const color = isFree ? "rgba(0,255,0,0.4)" : "rgba(255,0,0,0.4)"
 
@@ -107,3 +128,34 @@ function drawGhost(gridX, gridY, building) {
     }
 }
 
+
+function buildRoad(x = 2, y = 2) {
+    ghostBuilding = {
+        enabled: true,
+        size: [x, y],
+        type: "road",
+        price: x*y*4,
+    }
+}
+
+function buildInn() {
+    if (!countBuildings("inn",10)) {
+        return false
+    }
+    ghostBuilding = {
+        enabled: true,
+        size: [12, 8],
+        type: "inn",
+        price: 500,
+    }
+}
+
+function countBuildings(type,max = 1) {
+    let a = 0
+    for (let i = 0; i<buildings.length; i++) {
+        if (buildings[i].type === type) {
+            a++
+        }
+    }
+    return a < max
+}

@@ -42,6 +42,25 @@ function drawTerrain(firstFrame = false) {
         return
     }
 
+
+
+    
+    const viewWidth = terrain2d.canvasElement.width / zoom
+    const viewHeight = terrain2d.canvasElement.height / zoom
+    const viewLeft = x - viewWidth / 2
+    const viewTop = y - viewHeight / 2
+
+    const tileSize = 128
+
+
+    const startX = Math.floor(viewLeft / tileSize) * tileSize
+    const startY = Math.floor(viewTop / tileSize) * tileSize
+    const endX = viewLeft + viewWidth
+    const endY = viewTop + viewHeight
+
+
+
+
     const ctx = terrain2d.canvas
     ctx.resetTransform()
     ctx.clearRect(0, 0, terrain2d.canvasElement.width, terrain2d.canvasElement.height)
@@ -54,14 +73,30 @@ function drawTerrain(firstFrame = false) {
 
 
     ctx.fillStyle = grassPattern
-    ctx.fillRect(-2000, -2000, 4000, 4000)
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = "high"
+
+    ctx.beginPath()
+    for (let gx = startX; gx < endX; gx += tileSize) {
+        for (let gy = startY; gy < endY; gy += tileSize) {
+            ctx.rect(gx, gy, tileSize, tileSize)
+        }
+    }
+    ctx.fill()
+    //ctx.fillRect(-2000, -2000, 4000, 4000)
 
 
+    ctx.beginPath()
     ctx.fillStyle = roadPattern
-    ctx.fillRect(100, 100, 50, 200)
+    for (let key in buildingGrid) {
+        if (buildingGrid[key].type === 'road') {
+            let [x, y] = key.split(',').map(Number)
+            ctx.rect(x*buildingCellSize, y*buildingCellSize, 5, 5)
+        }
+    }
+    ctx.fill()
 
-    ctx.fillStyle = roadPattern
-    ctx.fillRect(0, 0, 50, 50)
+
 }
 
 
