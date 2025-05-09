@@ -30,6 +30,7 @@ function loop(timestamp) {
     //input
     updateCamera()
     mouseUpdate()
+    updateInput()
     if (gameSpeedMode === "Performance") {
         update(progress)
     } else {

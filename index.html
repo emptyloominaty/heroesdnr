@@ -51,6 +51,7 @@
     <script src="js/windows/statisticsOld.js" defer></script>
     <script src="js/windows/statisticsCharts.js" defer></script>
     <script src="js/windows/classBalance.js" defer></script>
+    <script src="js/windows/guildList.js" defer></script>
     <script src="js/windows/logs.js" defer></script>
 
     <script src="js/input.js" defer></script>
@@ -104,8 +105,8 @@
                     <span id="time">00:00 0d</span>
                 </div>
                 <div>
-                    <button onclick="pauseGame(0,this)">❚❚</button>
-                    <button class="button_activated" onclick="setGameSpeed(1,this)">1x</button>
+                    <button id="pauseBtn" onclick="pauseGame(0,this)">❚❚</button>
+                    <button id="playBtn" class="button_activated" onclick="setGameSpeed(1,this)">1x</button>
                     <button onclick="setGameSpeed(2,this)">2x</button>
                     <button onclick="setGameSpeed(3,this)">3x</button>
                     <button onclick="setGameSpeed(4,this)">4x</button>
@@ -122,6 +123,7 @@
                     <button id="menu_btn5" onclick="open_dungeonlist(this)">Dungeon List</button>
                     <button id="menu_btn6" onclick="open_logs(this)">Logs</button>
                     <button id="menu_btn7" onclick="open_classBalance(this)">Class Balance</button>
+                    <button id="menu_btn7" onclick="open_guildList(this)">Guild List</button>
                 </div>
             </div>
             <div id="charactersUi">

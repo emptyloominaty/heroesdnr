@@ -17,8 +17,11 @@ let close_window = function (w = 0,el = undefined,header = false, id = "") {
 }
 
 
-let open_window = function (w = 0,el = undefined) {
+let open_window = function (w = 0, el = undefined) {
+    
     document.getElementById("window" + w).style.display = "block"
+    bringToTop("window" + w)
+    
     if (el !== undefined) {
         el.classList.add("button_activated")
     }
@@ -63,9 +66,9 @@ let windowsUpdate = function () {
     }
 }
 
-let offsetX = [0,0,0]
-let offsetY = [0,0,0]
-let isDragging = [false,false,false]
+let offsetX = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+let offsetY = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+let isDragging = [false, false, false, false, false, false, false, false, false]
 for (let i = 0; i<currentWindow.length; i++) {
     elements["windowHeader" + i].addEventListener("mousedown", (e) => {
         isDragging[i] = true
@@ -105,6 +108,18 @@ for (let i = 0; i<currentWindow.length; i++) {
 }
 
 let zOrder = ["window0", "window1", "window2", "window3", "window4", "window5", "window6", "window7", "window8"]
+
+function closeTopWindow() {
+    let el = elements[zOrder[zOrder.length - 1]]
+    const clickTarget = el.querySelector(".windowHeader > div[onclick]");
+    if (clickTarget) {
+        clickTarget.click()
+    }
+    const last = zOrder.pop()
+    zOrder.unshift(last)
+}
+
+
 
 function bringToTop(targetId) {
     zOrder = zOrder.filter(id => id !== targetId)

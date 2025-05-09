@@ -208,7 +208,7 @@ class DungeonController {
         if ((dpsSuccess || dtpsSuccess)) {
             let guildId = this.guildRun(run.heroes)
             if (guildId !== -1) {
-                guilds[guildId].gainRankPoints(stage.reward.rankPoints / 2) 
+                guilds[guildId].gainRankPoints(stage.reward.rankPoints / 5) 
             }
             for (let i = 0; i < run.heroes.length; i++) {
                 run.heroes[i].gainGold(stage.reward.gold / run.heroes.length)

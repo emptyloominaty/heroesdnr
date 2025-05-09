@@ -1,3 +1,28 @@
+let pauseReset = [true]
+
+let updateInput = function () {
+    if (keys[" "]) {
+        if (pauseReset[0]) {
+            pauseReset[0] = false
+            if (!gamePaused) {
+                const btn = elements.pauseBtn
+                pauseGame(0, btn)
+                
+            } else {
+                const btn = elements.playBtn
+                pauseGame(0, btn) 
+                setGameSpeed(1, btn)
+            }
+
+        }
+    } else {
+        pauseReset[0] = true
+    }
+
+}
+
+
+
 let zoomScroll = function (event) {
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles)) {
@@ -6,17 +31,33 @@ let zoomScroll = function (event) {
         zoom += val
         if (zoom < 1.0) {
             zoom = 1.0
-        } else if (zoom > 9) { //6.25
+        } else if (zoom > 9) {
             zoom = 9
         }
     }
 }
 let keys = {}
-
 document.body.onwheel = zoomScroll
 
-window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true)
-window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false)
+
+
+window.addEventListener("keydown", e => {
+    const key = e.key.toLowerCase()
+    keys[key] = true
+  
+    if (key === "escape") {
+        closeTopWindow()
+    } else if (key === " ") {
+        e.preventDefault()
+
+    }
+
+})
+
+window.addEventListener("keyup", e => {
+    const key = e.key.toLowerCase()
+    keys[key] = false
+})
 
 let viewWidth = 2000 / 2
 let viewHeight = 1000 / 2

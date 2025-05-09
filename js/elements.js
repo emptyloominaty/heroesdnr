@@ -32,6 +32,8 @@ let elements = {
     "canvasTerrain": document.getElementById("canvasTerrain"),
     "canvasGame": document.getElementById("canvasGame"),
 
+    "pauseBtn": document.getElementById("pauseBtn"),
+    "playBtn": document.getElementById("playBtn"),
     
     "window5": document.getElementById("window5"),
     "windowHeader5": document.getElementById("windowHeader5"),

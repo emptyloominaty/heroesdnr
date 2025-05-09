@@ -8,11 +8,19 @@ class Guild {
     guildmaster
     officers = []
     rankPoints = 0 // guild run
+    dead = false
+
+    statistics = []
+    
 
     constructor (heroes, guildmaster) {
+        this.created = realtime
+        let replaced = false
         this.id = guildIdx
         guildIdx++
         guilds.push(this)
+
+        this.name = "Guild "+this.id
         this.guildmaster = guildmaster.id
         const top5 = Object.entries(guildmaster.friendships)
             .filter(([id, _]) => id in charactersMap)
@@ -36,6 +44,9 @@ class Guild {
     }
 
     updateDay() {
+        if (this.heroes.length === 0) {
+            this.dead = true
+        }
         for (let i = 0; i < this.heroes.length; i++) {
             if (charactersMap[this.heroes[i]] === undefined) {
                 this.heroes.splice(i, 1)
@@ -46,13 +57,22 @@ class Guild {
             if (charactersMap[this.officers[i]] === undefined) {
                 this.officers.splice(i, 1) 
             } else {
-                o++
+                if (charactersMap[this.officers[i]].guildId !== this.id) {
+                    this.officers.splice(i, 1) 
+                } else {
+                    o++
+                } 
             }
         }
-        if (charactersMap[this.guildmaster] === undefined) {
+        if (charactersMap[this.guildmaster] === undefined && this.officers.length > 0) {
             this.guildmaster = this.officers[0]
             this.officers.splice(0, 1) 
         }
+        if (charactersMap[this.guildmaster] !== undefined && charactersMap[this.guildmaster].guildId !== this.id && this.officers.length > 0) {
+            this.guildmaster = this.officers[0]
+            this.officers.splice(0, 1) 
+        }
+
         if (o < 5) {
             const needed = 5 - o
             const available = this.heroes.filter(h => !this.officers.includes(h))
@@ -63,7 +83,7 @@ class Guild {
             }
         }
 
-
+        this.statistics.push({heroes:this.heroes.length,rankPoints:this.rankPoints,guildmaster: this.guildmaster,time: realtime})
     }
 
     inviteHero(hero) {
