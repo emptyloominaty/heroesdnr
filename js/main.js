@@ -28,11 +28,17 @@ let heroesMax = 0
 let logs = {heroes: [], buildings:[], debug:[]}
 let incomeLog = []
 
-buildings.push(new Inn({x: 50, y: 45}, "Inn 1", 2))
-buildings.push(new Inn({x: -200, y: -85}, "Inn 2", 1))
-buildings.push(new Inn({x: -250, y: 100}, "Inn 3", 1))
-buildings.push(new PotionShop({x: -400, y: -100}, "Potion Shop 1", 1))
-buildings.push(new RecruitmentHall({x: 0, y: -125}, "Recruitment Hall 1", 2))
+
+
+
+buildBuilding("inn",{x: 50, y: 45})
+buildBuilding("inn",{x: -220, y: -105})
+buildBuilding("inn",{x: -350, y: -150})
+buildBuilding("potionShop",{x: -280, y: -80})
+buildBuilding("recruitmentHall",{x: 0, y: -125})
+
+
+buildBuilding("dungeonController",{x: -530, y: 0}) //+30 +30
 
 //TEST
 for (let i = 0; i<5; i++) {

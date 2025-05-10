@@ -31,7 +31,7 @@ let open_settings = function (btn_el = undefined, reload = false, update = false
         {name:"Particle Visuals",settingKey:"particleVisuals",options:[{name:"Off",val:0},{name:"Low",val:2},{name:"Medium",val:3},{name:"High",val:4},{name:"Ultra",val:5}]},
         //particleGlow
         //particleTimer???
-        {name:"Terrain",settingKey:"terrain",options:[{name:"Off",val:0},{name:"Low",val:1},{name:"High",val:2}]},
+        {name:"Terrain",settingKey:"terrain",options:[{name:"Off",val:0},{name:"Very Low",val:1},{name:"Low",val:2},{name:"High",val:3}]},
         {name:"Lights",settingKey:"lights",options:[{name:"Off",val:false},{name:"On",val:true}]},
 
     ]

@@ -141,9 +141,9 @@ class Character {
                 for (let i = 0; i<this.dungeonGroup.length; i++) {
                     this.dungeonGroup[i].isInDungeon = true
                     this.dungeonGroup[i].goingToDungeon = false
-                    if (this.dungeonGroup[i] !== this && getDistance({x: this.dungeonGroup[i].location.x, y: this.dungeonGroup[i].location.y}, {x: this.location.x, y: this.location.y}) > 5) {
-                        let xxg = this.location.x - 5 + Math.random() * 10
-                        let yyg = this.location.y - 5 + Math.random() * 10
+                    if (this.dungeonGroup[i] !== this && getDistance({x: this.dungeonGroup[i].location.x, y: this.dungeonGroup[i].location.y}, {x: this.location.x, y: this.location.y}) > 36) {
+                        let xxg = this.location.x - 18 + Math.random() * 36
+                        let yyg = this.location.y - 18 + Math.random() * 36
                         addSpellVisualEffects(this.dungeonGroup[i].location.x, this.dungeonGroup[i].location.y, 90, "fire", { duration: 0.1, size: 0, speed: 0, target: {x: this.dungeonGroup[i].location.x, y: this.dungeonGroup[i].location.y}, color: "#84e7ff", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: true, name: "fire", size: 0.2, life: 0.2, speed: 4, area: 2, texture: textures.particle_fire4, color1: "#84e7ff", color2: "#84e7ff", color3: "rgba(118, 139, 255, 0.1)"}})
                         addLight(this.dungeonGroup[i].location.x, this.dungeonGroup[i].location.y, 20, "rgba(118, 139, 255, 1)", 0.3)
 

@@ -1,5 +1,5 @@
 class SpellVisualEffect {
-    constructor(id,xx,yy,direction,type,data) {
+    constructor(id,xx,yy,direction,type,data,light = undefined) {
         this.x = xx
         this.y = yy
 
@@ -12,6 +12,10 @@ class SpellVisualEffect {
             this.duration = data.duration
         }
         this.timer = 0
+
+        if (light !== undefined) {
+            this.light = addLight(xx,yy,light.radius,light.color,light.duration,light.decTimer)
+        }
 
         this.particleTimer = 0.025
     }
@@ -134,6 +138,7 @@ class SpellVisualEffect {
     }
 
     end() {
+        lights[this.light.id] = undefined
         //if (settings.spellVisuals>1) {
             //if (this.data.onEnd==="explode") {
 
@@ -157,18 +162,22 @@ class SpellVisualEffect {
 
 let spellVisualEffects = []
 
-let addSpellVisualEffects = function(x,y,direction,type,data) {
+let addSpellVisualEffects = function(x,y,direction,type,data,light = undefined) {
     for (let i = 0; i < spellVisualEffects.length; i++) {
         if (spellVisualEffects[i] === undefined) {
-            spellVisualEffects[i] = new SpellVisualEffect(i,x,y,direction,type,data)
+            spellVisualEffects[i] = new SpellVisualEffect(i,x,y,direction,type,data,light)
             return true
         }
     }
-    spellVisualEffects.push(new SpellVisualEffect(spellVisualEffects.length,x,y,direction,type,data))
+    spellVisualEffects.push(new SpellVisualEffect(spellVisualEffects.length,x,y,direction,type,data,light))
 }
 
 //rain test
 //addSpellVisualEffects(0,0,0,"rain",{size:1000,speed:100,target:{x:0, y:0},color:"rgba(144,158,161,0.52)",onEnd:{name:"",size:1},onRun:{name:"",size:1}})
 
 
-addSpellVisualEffects(50, 45, 90, "fire", {size: 0, speed: 0, target: {x: 50, y: -85}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: false,ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}})
+/*addSpellVisualEffects(0, 0, 90, "fire", {size: 0, speed: 0, target: {x: 50, y: -85}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: false,ignoreLifeSize: false, name: "fire", size: 0.1, life: 0.6, speed: 3, area: 0.01, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}},
+{radius:100,color:'rgba(255, 160, 80, 1)',duration:-1,decTimer:0.2})*/
+
+
+//addLight(0,0,100,'rgba(255, 160, 80, 1)',-1)

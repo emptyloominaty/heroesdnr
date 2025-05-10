@@ -17,6 +17,8 @@ class Building {
         buildingsMap[this.id] = this
         globalBuildingId++
         addToGrid(this)
+        this.fire = addSpellVisualEffects(this.location.x, this.location.y, 90, "fire", {size: 0, speed: 0, target: {x: 50, y: -85}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: false,ignoreLifeSize: false, name: "fire", size: 0.1, life: 0.8, speed: 3, area: 0.01, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}},
+            {radius:100,color:'rgba(255, 160, 80, 1)',duration:-1,decTimer:0.2})
     }
 
     update() {

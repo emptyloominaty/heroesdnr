@@ -47,9 +47,8 @@ window.addEventListener("keydown", e => {
   
     if (key === "escape") {
         closeTopWindow()
-    } else if (key === " ") {
+    } else if (key === " " || key === "control") {
         e.preventDefault()
-
     }
 
 })
@@ -123,7 +122,6 @@ let onMouseUpdate = function(e) {
 function mouseUpdate() {
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
-        //TODO: 0.1-0.15ms? yikes
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)
         let nearbyObjects = []
         for (const cell of nearbyCells) {

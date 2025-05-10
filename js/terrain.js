@@ -32,13 +32,12 @@ function initPatterns() {
     roadPattern.setTransform(roadPatternTransform)
 }
 
-
 function drawTerrain(firstFrame = false) {
     if (firstFrame) {
         initPatterns()
     }
     terrain2d.reset()
-    if (settings.terrain===0) {
+    if (settings.terrain === 0) {
         return
     }
 
@@ -58,36 +57,55 @@ function drawTerrain(firstFrame = false) {
     ctx.resetTransform()
     ctx.clearRect(0, 0, terrain2d.canvasElement.width, terrain2d.canvasElement.height)
 
-
     ctx.setTransform(zoom, 0, 0, zoom,
         (terrain2d.canvasElement.width / 2) - x * zoom,
         (terrain2d.canvasElement.height / 2) - y * zoom)
 
 
+    if (settings.terrain>2) {
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = "high"
+    }
 
-    ctx.fillStyle = grassPattern
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = "high"
+    if (settings.terrain>1) {
+        ctx.fillStyle = grassPattern
+        ctx.beginPath()
+        for (let gx = startX; gx < endX; gx += tileSize) {
+            for (let gy = startY; gy < endY; gy += tileSize) {
+                ctx.rect(gx, gy, tileSize, tileSize)
+            }
+        }
+        ctx.fill()
 
-    ctx.beginPath()
-    for (let gx = startX; gx < endX; gx += tileSize) {
-        for (let gy = startY; gy < endY; gy += tileSize) {
-            ctx.rect(gx, gy, tileSize, tileSize)
+        ctx.beginPath()
+        ctx.fillStyle = roadPattern
+        for (let key in buildingGrid) {
+            if (buildingGrid[key].type === 'road') {
+                let [x, y] = key.split(',').map(Number)
+                ctx.rect(x*buildingCellSize, y*buildingCellSize, 5, 5)
+            }
+        }
+        ctx.fill()
+    } else {
+        ctx.fillStyle = "green"
+        for (let gx = startX; gx < endX; gx += tileSize) {
+            for (let gy = startY; gy < endY; gy += tileSize) {
+                ctx.fillRect(gx, gy, tileSize+1, tileSize+1)
+            }
+        }
+        ctx.fillStyle = "rgb(150,150,150)"
+        for (let key in buildingGrid) {
+            if (buildingGrid[key].type === 'road') {
+                let [x, y] = key.split(',').map(Number)
+                ctx.fillRect(x*buildingCellSize, y*buildingCellSize, buildingCellSize+1, buildingCellSize+1)
+            }
         }
     }
-    ctx.fill()
-    //ctx.fillRect(-2000, -2000, 4000, 4000)
 
 
-    ctx.beginPath()
-    ctx.fillStyle = roadPattern
-    for (let key in buildingGrid) {
-        if (buildingGrid[key].type === 'road') {
-            let [x, y] = key.split(',').map(Number)
-            ctx.rect(x*buildingCellSize, y*buildingCellSize, 5, 5)
-        }
-    }
-    ctx.fill()
+
+
+
 
 
 }

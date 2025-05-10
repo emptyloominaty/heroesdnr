@@ -134,6 +134,10 @@ button:hover {
     background-color: #444144;
 }
 
+button:focus {
+    outline: none;
+}
+
 select {
     background-color: rgba(255, 255, 255, 0);
     font-size: clamp(0.65rem, 0.5vw + 0.35rem, 0.85rem);

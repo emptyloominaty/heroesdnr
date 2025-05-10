@@ -24,6 +24,11 @@ function isAreaFree(x, y, w, h) {
 }
 
 function placeBuilding(x, y, w, h, ignorePrice = false) {
+    if (ghostBuilding.type === "removeRoad") {
+        removeRoadArea(x,y,w,h)
+        return true
+    }
+
     if (!isAreaFree(x, y, w, h)) return false
     if (gold<ghostBuilding.price && !ignorePrice) {
         //TODO:MESSAGE
@@ -32,7 +37,7 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
     if (!ignorePrice) {
         gold -= ghostBuilding.price
     }
-    if (!keys['shift']) {
+    if (!keys['shift'] && ghostBuilding.type !== "road" ) {
         ghostBuilding.enabled = false
     }
     let bGrid = []
@@ -45,6 +50,15 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
     if (ghostBuilding.type === "inn") {
         buildings.push(new Inn({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Inn", 1))
         gridCellAddObj(bGrid,buildings[buildings.length-1])
+    } else if (ghostBuilding.type === "potionShop") {
+        buildings.push(new PotionShop({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Potion Shop", 1))
+        gridCellAddObj(bGrid,buildings[buildings.length-1])
+    } else if (ghostBuilding.type === "recruitmentHall") {
+        buildings.push(new RecruitmentHall({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Recruitment Hall", 1))
+        gridCellAddObj(bGrid,buildings[buildings.length-1])
+    } else if (ghostBuilding.type === "dungeonController") {
+        dungeonControllers.push(new DungeonController((x + w / 2 - 0.5) * buildingCellSize,(y + h / 2 - 0.5) * buildingCellSize))
+        gridCellAddObj(bGrid,dungeonControllers[dungeonControllers.length-1])
     }
     return true
 }
@@ -131,14 +145,14 @@ function drawGhost(gridX, gridY, building) {
 }
 
 
-function buildRoad(x = 2, y = 2, location = false) {
+function buildRoad(x = 2, y = 2, location = false, type = "road") {
     if (location !== false) {
         placeBuilding(location.x, location.y, x, y, true)
     }
     ghostBuilding = {
         enabled: true,
         size: [x, y],
-        type: "road",
+        type: type,
         price: x*y*4,
     }
 }
@@ -147,20 +161,21 @@ let buildingsConfig = {
     "inn": {max: 10, w:12, h:8, price: 500},
     "potionShop": {max: 1, w:4, h:4, price: 200},
     "recruitmentHall": {max: 1, w:8, h:7, price: 500},
+    "dungeonController":{max: 100, w:12, h:12, price: 0},
 }
 
 function buildBuilding(type = "",location = false) {
     if (!countBuildings(type,buildingsConfig[type].max)) {
         return false
     }
-    if (location !== false) {
-        placeBuilding(location.x, location.y, buildingsConfig[type].w, buildingsConfig[type].h, true)
-    }
     ghostBuilding = {
         enabled: true,
         size: [buildingsConfig[type].w, buildingsConfig[type].h],
         type: type,
         price: buildingsConfig[type].price,
+    }
+    if (location !== false) {
+        placeBuilding(location.x/buildingCellSize, location.y/buildingCellSize, buildingsConfig[type].w, buildingsConfig[type].h, true)
     }
 }
 
@@ -172,4 +187,19 @@ function countBuildings(type,max = 1) {
         }
     }
     return a < max
+}
+
+function removeRoadArea(x, y, w = 1, h = 1) {
+    let removed = false
+    for (let dx = 0; dx < w; dx++) {
+        for (let dy = 0; dy < h; dy++) {
+            const key = getCellKey(x + dx, y + dy)
+            const cell = buildingGrid[key]
+            if (cell && cell.type === "road") {
+                delete buildingGrid[key]
+                removed = true
+            }
+        }
+    }
+    return removed
 }

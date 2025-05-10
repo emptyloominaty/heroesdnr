@@ -1,18 +1,18 @@
 let lights = []
 
-let addLight = function(x,y,radius,color = "rgba(255, 160, 80, 0.9)",life = -1) {
+let addLight = function(x,y,radius,color = "rgba(255, 160, 80, 0.9)",life = -1,decTimer = 0.2) {
     for (let i = 0; i < lights.length; i++) {
         if (lights[i] === undefined) {
-            lights[i] = new Light(i,x,y,radius,color,life)
+            lights[i] = new Light(i,x,y,radius,color,life,decTimer)
             return true
         }
     }
-    lights.push(new Light(lights.length,x,y,radius,color,life))
+    lights.push(new Light(lights.length,x,y,radius,color,life,decTimer))
 }
 
 class Light {
     life = -1
-    constructor(id,x,y,radius,color,life, decTimer = 0.2) {
+    constructor(id,x,y,radius,color,life, decTimer) {
         this.x = x
         this.y = y
         this.radius = radius
@@ -36,14 +36,23 @@ class Light {
     }
 }
 
-//add test light
-addLight(50,45,100,'rgba(255, 160, 80, 1)',-1)
+/*let lix = -1000
+let liy = -500
+for (let i = 0; i<300; i++) {
+    addLight(lix,liy,100)
+    lix += 100
+    if (lix>1000) {
+        lix = -1000
+        liy += 100
+    }
+}*/
+
 
 const lightingKeyframes = [
     { angle: 0,   color: [16, 28, 48], alpha: 0.1 }, // Midnight
     { angle: 90,   color: [16, 28, 48], alpha: 0.1 }, // Midnight
-    { angle: 105,  color: [20, 164, 211], alpha: 0.2 }, // Sunrise
-    { angle: 115, color: [250, 107, 40], alpha: 0.6 }, // Noon transition
+    { angle: 105,  color: [20, 40, 100], alpha: 0.2 }, // Sunrise
+    { angle: 115, color: [220, 120, 80], alpha: 0.6 }, // Noon transition
     { angle: 125, color: [255, 255, 255], alpha: 0.5 }, // Midday
     { angle: 285, color: [255, 255, 255], alpha: 0.5 }, // Midday
     { angle: 295, color: [250, 140, 50], alpha: 0.4 }, // Sunset
