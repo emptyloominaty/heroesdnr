@@ -4,10 +4,11 @@ let addLight = function(x,y,radius,color = "rgba(255, 160, 80, 0.9)",life = -1,d
     for (let i = 0; i < lights.length; i++) {
         if (lights[i] === undefined) {
             lights[i] = new Light(i,x,y,radius,color,life,decTimer)
-            return true
+            return lights[i]
         }
     }
     lights.push(new Light(lights.length,x,y,radius,color,life,decTimer))
+    return lights[lights.length-1]
 }
 
 class Light {
@@ -36,6 +37,7 @@ class Light {
     }
 }
 
+let mouseLight = addLight(0,0,0, "rgba(255,255,255,1")
 /*let lix = -1000
 let liy = -500
 for (let i = 0; i<300; i++) {
@@ -49,16 +51,17 @@ for (let i = 0; i<300; i++) {
 
 
 const lightingKeyframes = [
-    { angle: 0,   color: [16, 28, 48], alpha: 0.1 }, // Midnight
-    { angle: 90,   color: [16, 28, 48], alpha: 0.1 }, // Midnight
-    { angle: 105,  color: [20, 40, 100], alpha: 0.2 }, // Sunrise
-    { angle: 115, color: [220, 120, 80], alpha: 0.6 }, // Noon transition
-    { angle: 125, color: [255, 255, 255], alpha: 0.5 }, // Midday
-    { angle: 285, color: [255, 255, 255], alpha: 0.5 }, // Midday
-    { angle: 295, color: [250, 140, 50], alpha: 0.4 }, // Sunset
-    { angle: 305, color: [20, 60, 100], alpha: 0.2 }, // Dusk transition
-    { angle: 320, color: [16, 28, 48], alpha: 0.1 },  // Midnight
-    { angle: 360, color: [16, 28, 48], alpha: 0.1 }  // Midnight
+    { angle: 0,   color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}, // Midnight
+    { angle: 90,   color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}, // Midnight
+    { angle: 105,  color: [20, 40, 100], alpha: 0.4, shadowLen: 1.2}, // Sunrise
+    { angle: 115, color: [220, 120, 80], alpha: 0.5, shadowLen: 1.0}, // Noon transition
+    { angle: 125, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.6 }, // Midday
+    { angle: 205, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.45 }, // Midday
+    { angle: 285, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.6 }, // Midday
+    { angle: 295, color: [250, 140, 50], alpha: 0.5, shadowLen: 1.0 }, // Sunset
+    { angle: 305, color: [20, 60, 100], alpha: 0.4, shadowLen: 1.2}, // Dusk transition
+    { angle: 320, color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5},  // Midnight
+    { angle: 360, color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}  // Midnight
 ]
 
 let R = 255, G = 255, B = 255
@@ -103,7 +106,17 @@ function updateLighting() {
     G = Math.round(color[1])
     B = Math.round(color[2])
     shadowAlpha = lerp(kf1.alpha, kf2.alpha, t)
+    shadowLen = lerp(kf1.shadowLen, kf2.shadowLen, t)
+
+
+
 }
+
+const toRadians = deg => deg * (Math.PI / 180)
+const lengthdir_x = (len, dir) => Math.cos(toRadians(dir)) * len
+const lengthdir_y = (len, dir) => Math.sin(toRadians(dir)) * len
+
+let shadowLen = 30
 
 
 /*function updateLighting() {

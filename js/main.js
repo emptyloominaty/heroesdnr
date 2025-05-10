@@ -62,7 +62,7 @@ function update() {
     }
 
     for (let i = 0; i < characters.length; i++) {
-        characters[i].update()
+        //characters[i].update()
     }
 
     for (let i = 0; i < dungeonControllers.length; i++) {

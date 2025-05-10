@@ -33,7 +33,7 @@ let open_settings = function (btn_el = undefined, reload = false, update = false
         //particleTimer???
         {name:"Terrain",settingKey:"terrain",options:[{name:"Off",val:0},{name:"Very Low",val:1},{name:"Low",val:2},{name:"High",val:3}]},
         {name:"Lights",settingKey:"lights",options:[{name:"Off",val:false},{name:"On",val:true}]},
-
+        {name:"Shadows",settingKey:"shadows",options:[{name:"Off",val:0},{name:"Low",val:1},{name:"High",val:2}]},
     ]
 
 

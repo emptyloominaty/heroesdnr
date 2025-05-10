@@ -17,6 +17,15 @@ function draw() {
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom
         let color = colors[characters[i].characterClass]
+
+
+        if (settings.shadows === 1) {
+            game2d.canvas.fillStyle = 'rgba(0, 0, 0, '+(shadowAlpha-0.1)+')'
+            game2d.canvas.beginPath()
+            game2d.canvas.ellipse(x2d + lengthdir_x(size*shadowLen,sunDir+45), y2d+lengthdir_y(size*shadowLen,sunDir+45), size, size, 0, 0, Math.PI * 2)
+            game2d.canvas.fill()
+        }
+
         game2d.drawCircle(x2d, y2d, size, color)
 
         if (settings.drawHeroNames || characters[i].drawName) {
@@ -35,7 +44,6 @@ function draw() {
             characters[i].uiElements.style.display = "none"
         }
     }
-
     for (let i = 0; i < buildings.length; i++) {
         let sizeX = buildings[i].size[0] * zoom
         let sizeY = buildings[i].size[1] * zoom
@@ -44,8 +52,14 @@ function draw() {
         let x2d = (game2d.canvasW / 2) + (worldX - x) * zoom - (sizeX / 2)
         let y2d = (game2d.canvasH / 2) + (worldY - y) * zoom - (sizeY / 2)
         let color = "#997700"
+        if (settings.shadows === 1) {
+           drawBuildingShadow(x2d,y2d,sizeX,sizeY)
+        }
+
         game2d.drawRectStroke(x2d, y2d, sizeX, sizeY, color,2*zoom)
     }
+
+
 
     drawParticles()
     drawTerrain()
@@ -93,7 +107,6 @@ function drawLights() {
         light.update()
     }
     lights2d.canvas.globalCompositeOperation = 'source-over'
-
 }
 
 

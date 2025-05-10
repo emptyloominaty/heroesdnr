@@ -3,6 +3,7 @@ let settings = {
     particleGlow: false,
     terrain: 3,
     lights: true,
+    shadows: 0,
     particleTimer: 0.025,
     drawHeroNames: false,
     maxLogSize: 50, //hero

@@ -49,6 +49,13 @@ window.addEventListener("keydown", e => {
         closeTopWindow()
     } else if (key === " " || key === "control") {
         e.preventDefault()
+    } else if (key === "l") {
+        if (mouseLight.radius === 0) {
+            mouseLight.radius = 50
+        } else {
+            mouseLight.radius = 0
+        }
+
     }
 
 })
@@ -114,6 +121,9 @@ let onMouseUpdate = function(e) {
 
     mousePosition2d.x = x + (canvasX - game2d.canvasW / 2) / zoom
     mousePosition2d.y = y + (canvasY - game2d.canvasH / 2) / zoom
+
+    mouseLight.x = mousePosition2d.x
+    mouseLight.y = mousePosition2d.y
 
     updateTooltipLocation(mousePosition.x, mousePosition.y)
    
