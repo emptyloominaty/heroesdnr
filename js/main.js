@@ -41,6 +41,7 @@ for (let i = 0; i<5; i++) {
 
 
 let hourTimer = 0
+let hourTimeRng = 30
 
 function update() {
     if (gamePaused) {
@@ -64,8 +65,9 @@ function update() {
 
 
     hourTimer += progress
-    if (hourTimer > 30) {
+    if (hourTimer > hourTimeRng) {
         hourTimer = 0
+        hourTimeRng = 20 + Math.random()*20
         if (heroesMax > heroes.length) {
             if (Math.random() > (heroes.length / heroesMax)) { //TODO renown
                 spawnHeroRandom()

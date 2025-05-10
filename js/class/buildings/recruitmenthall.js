@@ -10,7 +10,7 @@ class RecruitmentHall extends Building {
 
     constructor(location, name, level = 1) {
         super(location, name, level)
-        this.type = "recruitment hall"
+        this.type = "recruitmentHall"
         this.levelUpdate()
     }
 

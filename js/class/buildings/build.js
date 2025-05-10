@@ -23,14 +23,16 @@ function isAreaFree(x, y, w, h) {
     return true
 }
 
-function placeBuilding(x, y, w, h) {
+function placeBuilding(x, y, w, h, ignorePrice = false) {
     if (!isAreaFree(x, y, w, h)) return false
-    if (gold<ghostBuilding.price) {
+    if (gold<ghostBuilding.price && !ignorePrice) {
         //TODO:MESSAGE
         return false
     }
-    gold -= ghostBuilding.price
-    if (!keys['control']) {
+    if (!ignorePrice) {
+        gold -= ghostBuilding.price
+    }
+    if (!keys['shift']) {
         ghostBuilding.enabled = false
     }
     let bGrid = []
@@ -71,10 +73,6 @@ function gridToWorld(gx, gy) {
 }
 
 function screenToWorld(mx, my) {
-    /*return [
-        x + (mx) / zoom,
-        y + (my) / zoom,
-    ]*/
     return [
         x + (mx) ,
         y + (my) ,
@@ -82,8 +80,8 @@ function screenToWorld(mx, my) {
 }
 
 function mouseToGrid(mouse) {
-    const [wx, wy] = screenToWorld(mouse.x, mouse.y)
-    return worldToGrid(wx, wy)
+    //const [wx, wy] = screenToWorld(mouse.x, mouse.y)
+    return worldToGrid(mouse.x, mouse.y)
 }
 
 function drawGrid() {
@@ -113,33 +111,30 @@ function drawGrid() {
 }
 
 function drawGhost(gridX, gridY, building) {
-    if (!ghostBuilding.enabled) {
-        return false
-    }
+    if (!ghostBuilding.enabled) return
+
     const isFree = isAreaFree(gridX, gridY, ...building.size)
     const color = isFree ? "rgba(0,255,0,0.4)" : "rgba(255,0,0,0.4)"
-
     const cellScreenSize = buildingCellSize * zoom
 
     for (let dx = 0; dx < building.size[0]; dx++) {
         for (let dy = 0; dy < building.size[1]; dy++) {
             const [wx, wy] = gridToWorld(gridX + dx, gridY + dy)
-            //TODO: SEND HELP
-            const sx = ((wx-x) * zoom + canvas.width / 2)
-            const sy = ((wy-y) * zoom + canvas.height / 2)
-            if (dx === 0 && dy === 0) {
-                //console.log("World:", screenToWorld(mousePosition2d.x, mousePosition2d.y), "Camera:", x, y)
-               // console.log("CAM: x:", x ," y:", y, "TILE WORLD:", wx, wy, "SCREEN:", sx, sy)
-            }
+
+            const screenX = (canvas.width / 2) + (wx - x) * zoom
+            const screenY = (canvas.height / 2) + (wy - y) * zoom
+
             ctx.fillStyle = color
-            ctx.fillRect(sx, sy, cellScreenSize, cellScreenSize)
+            ctx.fillRect(screenX, screenY, cellScreenSize, cellScreenSize)
         }
     }
-
 }
 
 
-function buildRoad(x = 2, y = 2) {
+function buildRoad(x = 2, y = 2, location = false) {
+    if (location !== false) {
+        placeBuilding(location.x, location.y, x, y, true)
+    }
     ghostBuilding = {
         enabled: true,
         size: [x, y],
@@ -148,15 +143,24 @@ function buildRoad(x = 2, y = 2) {
     }
 }
 
-function buildInn() {
-    if (!countBuildings("inn",10)) {
+let buildingsConfig = {
+    "inn": {max: 10, w:12, h:8, price: 500},
+    "potionShop": {max: 1, w:4, h:4, price: 200},
+    "recruitmentHall": {max: 1, w:8, h:7, price: 500},
+}
+
+function buildBuilding(type = "",location = false) {
+    if (!countBuildings(type,buildingsConfig[type].max)) {
         return false
+    }
+    if (location !== false) {
+        placeBuilding(location.x, location.y, buildingsConfig[type].w, buildingsConfig[type].h, true)
     }
     ghostBuilding = {
         enabled: true,
-        size: [12, 8],
-        type: "inn",
-        price: 500,
+        size: [buildingsConfig[type].w, buildingsConfig[type].h],
+        type: type,
+        price: buildingsConfig[type].price,
     }
 }
 
