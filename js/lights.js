@@ -53,13 +53,13 @@ for (let i = 0; i<300; i++) {
 const lightingKeyframes = [
     { angle: 0,   color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}, // Midnight
     { angle: 90,   color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}, // Midnight
-    { angle: 105,  color: [20, 40, 100], alpha: 0.4, shadowLen: 1.2}, // Sunrise
-    { angle: 115, color: [220, 120, 80], alpha: 0.5, shadowLen: 1.0}, // Noon transition
+    { angle: 105,  color: [20, 40, 100], alpha: 0.2, shadowLen: 1.2}, // Sunrise
+    { angle: 115, color: [220, 120, 80], alpha: 0.4, shadowLen: 1.0}, // Noon transition
     { angle: 125, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.6 }, // Midday
     { angle: 205, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.45 }, // Midday
     { angle: 285, color: [255, 255, 255], alpha: 0.7, shadowLen: 0.6 }, // Midday
-    { angle: 295, color: [250, 140, 50], alpha: 0.5, shadowLen: 1.0 }, // Sunset
-    { angle: 305, color: [20, 60, 100], alpha: 0.4, shadowLen: 1.2}, // Dusk transition
+    { angle: 295, color: [250, 140, 50], alpha: 0.4, shadowLen: 1.0 }, // Sunset
+    { angle: 305, color: [20, 60, 100], alpha: 0.2, shadowLen: 1.2}, // Dusk transition
     { angle: 320, color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5},  // Midnight
     { angle: 360, color: [16, 28, 48], alpha: 0.1, shadowLen: 1.5}  // Midnight
 ]

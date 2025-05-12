@@ -1,4 +1,6 @@
 let realtime = 0
+let textures
+
 let elements = {
     "gold": document.getElementById("gold"),
     "income": document.getElementById("income"),

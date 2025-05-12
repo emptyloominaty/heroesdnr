@@ -1,4 +1,5 @@
 let pauseReset = [true]
+let scrollVal = 0
 
 let updateInput = function () {
     if (keys[" "]) {
@@ -19,6 +20,32 @@ let updateInput = function () {
         pauseReset[0] = true
     }
 
+
+    if (ghostBuilding.enabled && ghostBuilding.type === "road") {
+        if (keys["h"]) {
+            changeRoadSize(1, 0)
+        } else if (keys["u"]) {
+            changeRoadSize(0, 1)
+        } else if (keys["k"]) {
+            changeRoadSize(-1, 0)
+        } else if (keys["j"]) {
+            changeRoadSize(0, -1)
+        }
+        keys["u"] = false
+        keys["h"] = false
+        keys["j"] = false
+        keys["k"] = false
+    }
+
+    if (scrollVal !== 0) {
+        if (scrollVal > 0) {
+           
+        } else {
+      
+        }
+        scrollVal = 0
+    }
+
 }
 
 
@@ -28,6 +55,7 @@ let zoomScroll = function (event) {
     if (el && (el === document.body || el === elements.canvasParticles)) {
         //event.preventDefault()
         let val = event.deltaY * -0.001 * zoom
+        scrollVal = event.deltaY
         zoom += val
         if (zoom < 1.0) {
             zoom = 1.0
@@ -107,17 +135,22 @@ function updateCamera() {
 
 let showNamesMouse = []
 
-let mousePosition = {x:0,y:0}
-let mousePosition2d = {x:0,y:0}
-let onMouseUpdate = function(e) {
-    const rect = game2d.canvasElement.getBoundingClientRect()
-    const dpr = window.devicePixelRatio || 1
+let mousePosition = {x: 0, y: 0}
+let mousePosition2d = {x: 0, y: 0}
 
+let onMouseUpdate = function(e) {
     mousePosition.x = e.clientX
     mousePosition.y = e.clientY
 
-    const canvasX = (e.clientX - rect.left) * dpr
-    const canvasY = (e.clientY - rect.top) * dpr
+    updateTooltipLocation(mousePosition.x, mousePosition.y)
+}
+
+function mouseUpdate() {
+    const rect = game2d.canvasElement.getBoundingClientRect()
+    const dpr = window.devicePixelRatio || 1
+
+    const canvasX = (mousePosition.x - rect.left) * dpr
+    const canvasY = (mousePosition.y - rect.top) * dpr
 
     mousePosition2d.x = x + (canvasX - game2d.canvasW / 2) / zoom
     mousePosition2d.y = y + (canvasY - game2d.canvasH / 2) / zoom
@@ -125,11 +158,6 @@ let onMouseUpdate = function(e) {
     mouseLight.x = mousePosition2d.x
     mouseLight.y = mousePosition2d.y
 
-    updateTooltipLocation(mousePosition.x, mousePosition.y)
-   
-}
-
-function mouseUpdate() {
     const el = document.elementFromPoint(mousePosition.x, mousePosition.y)
     if (el && (el === document.body || el === elements.canvasParticles || el === elements.canvasLights || el === elements.canvasGame || el === elements.canvasTerrain)) {
         let nearbyCells = getNearbyCells(mousePosition2d.x, mousePosition2d.y, 2)

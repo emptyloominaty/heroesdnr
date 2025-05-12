@@ -31,7 +31,7 @@ function draw() {
         if (settings.drawHeroNames || characters[i].drawName) {
             characters[i].uiElements.style.display = "block"
             if (settings.lights) {
-                characters[i].uiElements.style.color = darkenColor(color, shadowAlpha)
+                characters[i].uiElements.style.color = darkenColor(color, shadowAlpha*2.5)
             } else {
                 characters[i].uiElements.style.color = color
             }

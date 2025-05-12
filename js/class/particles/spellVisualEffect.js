@@ -77,9 +77,11 @@ class SpellVisualEffect {
                     addSpellParticle(xx, yy, 0,
                         "rain", {ignoreLifeSize: false, size: 1.5, speed: this.data.speed/3, life: 0.3,maxLife:0.3, color: this.data.color,centre:{x:x ,y:y},timeCreated:tt})
                 }
-                this.duration -= progress
-                if (this.duration<=0) {
-                    spellVisualEffects[this.id] = undefined
+                if (this.duration > -9999) {
+                    this.duration -= progress
+                    if (this.duration <= 0) {
+                        spellVisualEffects[this.id] = undefined
+                    }
                 }
             } else if (this.type==="fire") {
                 let size = this.data.size * zoom
@@ -131,7 +133,7 @@ class SpellVisualEffect {
 
             }
             //-----------------------------------------------------------End
-        } else {
+        } else if (this.duration > -9999) {
             this.end()
             spellVisualEffects[this.id] = undefined
         }

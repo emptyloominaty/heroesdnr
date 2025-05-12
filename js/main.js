@@ -38,7 +38,6 @@ buildBuilding("potionShop",{x: -280, y: -80})
 buildBuilding("recruitmentHall",{x: 0, y: -125})
 
 
-buildBuilding("dungeonController",{x: -530, y: 0}) //+30 +30
 
 //TEST
 for (let i = 0; i<5; i++) {

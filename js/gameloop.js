@@ -55,10 +55,11 @@ function loop(timestamp) {
     window.requestAnimationFrame(loop)
 }
 
-let textures
+
 loadFiles()
     .then(images => {
         textures = images
+        buildBuilding("dungeonController", {x: -530, y: 0}) //+30 +30
         window.requestAnimationFrame(loop)
     })
     .catch(error => {

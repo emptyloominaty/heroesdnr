@@ -78,11 +78,15 @@ class Canvas {
     }
 
     drawImage(x, y, size, color, image, gco = "lighter", alpha = 1.0) {
-        size = size*10
-        let xx = size/2
-        let yy = size / 2
+        size = size * 10
+        let xx = size / 2
+        let yy = xx
+
+        /*if (this.canvas.globalAlpha !== alpha) this.canvas.globalAlpha = alpha
+        if (this.canvas.globalCompositeOperation !== gco) this.canvas.globalCompositeOperation = gco*/
         this.canvas.globalAlpha = alpha
         this.canvas.globalCompositeOperation = gco
+
         this.canvas.drawImage(image, x-xx, y-yy, size, size)
         this.canvas.globalCompositeOperation = "source-over"
         this.canvas.globalAlpha = 1.0

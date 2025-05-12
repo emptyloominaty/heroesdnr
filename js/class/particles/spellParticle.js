@@ -48,7 +48,7 @@ class SpellParticle {
             size += (this.data.size*0.25 * zoom)
             //opacity
             if (this.data.life<0.4 && !this.data.ignoreLifeSize) {
-                color = pSBC( 1-(this.data.life*2.5), color, this.data.color3, true )
+                //color = pSBC( 1-(this.data.life*2.5), color, this.data.color3, true )
                 //color = pSBC( 1-(this.data.life*2.5), "rgba(0,0,0,1)", "rgba(0,0,0,0)", true )
                 size = size * (this.data.life*2.5)
             } else {
@@ -59,8 +59,6 @@ class SpellParticle {
             }
 
             if (!this.wait) {
-                //particles2d.setParticleGlow(2,color)
-                //particles2d.drawCircle(x2d, y2d, size, color)
                 particles2d.drawImage(x2d, y2d, size, color, this.texture,undefined,this.alpha)
                 this.data.speed -= (this.data.speed*6) * progressReal
             }

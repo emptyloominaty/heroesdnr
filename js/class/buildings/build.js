@@ -8,6 +8,17 @@ let ghostBuilding = {
     price: 0,
 }
 
+function changeRoadSize(x, y) {
+    ghostBuilding.size[0] -= x
+    ghostBuilding.size[1] -= y
+    if (ghostBuilding.size[0] < 0) {
+        ghostBuilding.size[0] = 1
+    }
+    if (ghostBuilding.size[1] < 0) {
+        ghostBuilding.size[1] = 1
+    }
+}
+
 function getCellKey(x, y) {
     return `${Math.floor(x)},${Math.floor(y)}`
 }

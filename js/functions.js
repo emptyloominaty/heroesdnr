@@ -32,24 +32,73 @@ let getNumberString2 = function(number) {
     }
 }
 
-function darkenColor(color, val) {
-    const [r, g, b] = [0, 1, 2].map(i => parseInt(color.slice(1 + i * 2, 3 + i * 2), 16))
-    const darken = Math.floor(255 * (0.5-val))
-    return `rgb(${Math.max(0, r - darken)}, ${Math.max(0, g - darken)}, ${Math.max(0, b - darken)})`
+function hexToHSL(hex) {
+    const r = parseInt(hex.slice(1, 3), 16) / 255
+    const g = parseInt(hex.slice(3, 5), 16) / 255
+    const b = parseInt(hex.slice(5, 7), 16) / 255
+
+    const max = Math.max(r, g, b), min = Math.min(r, g, b)
+    let h, s, l = (max + min) / 2
+
+    if (max === min) {
+        h = s = 0
+    } else {
+        const d = max - min
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+        switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)); break
+            case g: h = ((b - r) / d + 2); break
+            case b: h = ((r - g) / d + 4); break
+        }
+        h /= 6
+    }
+
+    return [h, s, l]
+}
+
+function hslToRGB(h, s, l) {
+    function hue2rgb(p, q, t) {
+        if (t < 0) t += 1
+        if (t > 1) t -= 1
+        if (t < 1 / 6) return p + (q - p) * 6 * t
+        if (t < 1 / 2) return q
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+        return p
+    }
+
+    let r, g, b
+
+    if (s === 0) {
+        r = g = b = l
+    } else {
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+        const p = 2 * l - q
+        r = hue2rgb(p, q, h + 1 / 3)
+        g = hue2rgb(p, q, h)
+        b = hue2rgb(p, q, h - 1 / 3)
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
+}
+
+function darkenColor(hex, val) {
+    const [h, s, l] = hexToHSL(hex)
+    val = Math.min(1, val)
+    const newL = Math.max(0, Math.min(1, l * val))
+    const [r, g, b] = hslToRGB(h, s, newL)
+    return `rgb(${r}, ${g}, ${b})`
 }
 
 
 let getTime = function(number) {
-    // Convert the number to a scale where 1 day = 720 units
-    let totalMinutes = (number / 720) * 1440; // 1 day = 1440 minutes
-
-    if (totalMinutes >= 60) { // If more than 1 hour
-        let hours = Math.floor(totalMinutes / 60);
-        return `${hours}h`;
-    } else if (totalMinutes >= 1) { // If more than 1 minute
-        return `${Math.floor(totalMinutes)}m`;
-    } else { // If less than 1 minute
-        return `${(totalMinutes * 60).toFixed(0)}s`;
+    let totalMinutes = (number / 720) * 1440
+    if (totalMinutes >= 60) {
+        let hours = Math.floor(totalMinutes / 60)
+        return `${hours}h`
+    } else if (totalMinutes >= 1) { 
+        return `${Math.floor(totalMinutes)}m`
+    } else {
+        return `${(totalMinutes * 60).toFixed(0)}s`
     }
 }
 
