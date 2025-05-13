@@ -39,6 +39,16 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
         removeRoadArea(x,y,w,h)
         return true
     }
+    if (ghostBuilding.type === "torchSmall" || ghostBuilding.type === "torchMedium" || ghostBuilding.type === "torchLarge") {
+        if (!ignorePrice) {
+            gold -= ghostBuilding.price
+        }
+        buildingGrid[getCellKey(x + dx, y + dy)] = {type: ghostBuilding.type, obj: new Torch(x,y,ghostBuilding.type)}
+        bGrid.push(buildingGrid[getCellKey(x + dx, y + dy)])
+
+        return
+    }
+
 
     if (!isAreaFree(x, y, w, h)) return false
     if (gold<ghostBuilding.price && !ignorePrice) {

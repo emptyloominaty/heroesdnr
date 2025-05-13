@@ -17,6 +17,10 @@ class SpellParticle {
             this.texture = this.data.texture
         }
         this.alpha = 1
+
+        this.angle = Math.random() * (2 * Math.PI); 
+        this.rotationDirection = Math.random() > 0.5 ? 1 : -1
+        this.rotationSpeed = 1+Math.random()*4
     }
 
 
@@ -43,13 +47,12 @@ class SpellParticle {
         let x2d = (game2d.canvasW / 2) + xx
         let y2d = (game2d.canvasH / 2) + yy
 
-        if (this.type!=="rain") {
+        if (this.type !== "rain") {
+            this.rotationSpeed -= this.rotationSpeed * progressReal
+            this.angle += this.rotationDirection * (Math.random() * this.rotationSpeed) * progressReal
 
             size += (this.data.size*0.25 * zoom)
-            //opacity
             if (this.data.life<0.4 && !this.data.ignoreLifeSize) {
-                //color = pSBC( 1-(this.data.life*2.5), color, this.data.color3, true )
-                //color = pSBC( 1-(this.data.life*2.5), "rgba(0,0,0,1)", "rgba(0,0,0,0)", true )
                 size = size * (this.data.life*2.5)
             } else {
                 this.fireSize += 8 * progressReal
@@ -59,7 +62,7 @@ class SpellParticle {
             }
 
             if (!this.wait) {
-                particles2d.drawImage(x2d, y2d, size, color, this.texture,undefined,this.alpha)
+                particles2d.drawImage(x2d, y2d, size, color, this.texture,undefined,this.alpha,this.angle)
                 this.data.speed -= (this.data.speed*6) * progressReal
             }
         } else {

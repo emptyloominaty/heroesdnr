@@ -77,7 +77,7 @@ class Canvas {
         this.canvas.closePath()
     }
 
-    drawImage(x, y, size, color, image, gco = "lighter", alpha = 1.0) {
+    drawImage(x, y, size, color, image, gco = "lighter", alpha = 1.0, angle = 0) {
         size = size * 10
         let xx = size / 2
         let yy = xx
@@ -87,7 +87,12 @@ class Canvas {
         this.canvas.globalAlpha = alpha
         this.canvas.globalCompositeOperation = gco
 
-        this.canvas.drawImage(image, x-xx, y-yy, size, size)
+        this.canvas.save()
+        this.canvas.translate(x, y)
+        this.canvas.rotate(angle)
+        this.canvas.drawImage(image, -xx, -yy, size, size)
+        this.canvas.restore()
+
         this.canvas.globalCompositeOperation = "source-over"
         this.canvas.globalAlpha = 1.0
     }
