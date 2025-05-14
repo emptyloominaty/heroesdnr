@@ -27,6 +27,7 @@
     <script src="js/class/buildings/inn.js" defer></script>
     <script src="js/class/buildings/recruitmenthall.js" defer></script>
     <script src="js/class/buildings/potionshop.js" defer></script>
+    <script src="js/class/buildings/torch.js" defer></script>
     <script src="js/class/buildings/build.js" defer></script>
 
     <script src="js/class/npc/config.js" defer></script>
@@ -131,9 +132,12 @@
                     <button id="menu_btn9" onclick="open_settings(this)">Settings</button>
                 </div>
                 <div>
-                   <button onclick="buildRoad()">Build Road</button>
-                   <button onclick="buildRoad(2,2,false,'removeRoad')">Remove Road</button>
-                   <button onclick="buildBuilding('inn')">Build Inn</button>
+                    <button onclick="buildRoad()">Build Road</button>
+                    <button onclick="buildRoad(2,2,false,'removeRoad')">Remove Road</button>
+                    <button onclick="buildBuilding('inn')">Build Inn</button>
+                    <button onclick="buildTorch(false,'torchSmall')">Build S Torch</button>
+                    <button onclick="buildTorch(false,'torchMedium')">Build M Torch</button>
+                    <button onclick="buildTorch(false,'torchLarge')">Build L Torch</button>
                 </div>
             </div>
             <div id="charactersUi">

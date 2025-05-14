@@ -1,5 +1,5 @@
 let settings = {
-    particleVisuals: 3,   //0/1-2-3-4-5
+    particleVisuals: 2,   //0-1-2-3
     particleGlow: false,
     terrain: 3,
     lights: true,

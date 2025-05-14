@@ -28,3 +28,20 @@ function loadFiles() {
 
     return Promise.all(promises).then(entries => Object.fromEntries(entries))
 }
+
+function loadGame() {
+
+    buildBuilding("inn", {x: 50, y: 45})
+    buildBuilding("inn", {x: -220, y: -105})
+    buildBuilding("inn", {x: -350, y: -150})
+    buildBuilding("potionShop", {x: -280, y: -80})
+    buildBuilding("recruitmentHall", {x: 0, y: -125})
+
+
+
+    //TEST
+    for (let i = 0; i < 5; i++) {
+        spawnHeroRandom(1)
+    }
+
+}

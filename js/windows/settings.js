@@ -28,7 +28,7 @@ let open_settings = function (btn_el = undefined, reload = false, update = false
         {name:"Show Hero Names (DONT)",settingKey:"drawHeroNames",options:[{name:"Off",val:false},{name:"On",val:true}]},
 
         {name:"Graphics",settingKey:"",options:[],category:true},
-        {name:"Particle Visuals",settingKey:"particleVisuals",options:[{name:"Off",val:0},{name:"Low",val:2},{name:"Medium",val:3},{name:"High",val:4}]},
+        {name: "Particle Visuals", settingKey: "particleVisuals", options: [{name: "Off", val: 0}, {name: "Low", val: 1}, {name: "Medium", val: 2}, {name: "High", val: 3}]},
         //particleGlow
         //particleTimer???
         {name:"Terrain",settingKey:"terrain",options:[{name:"Off",val:0},{name:"Very Low",val:1},{name:"Low",val:2},{name:"High",val:3}]},

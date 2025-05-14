@@ -35,6 +35,7 @@ function isAreaFree(x, y, w, h) {
 }
 
 function placeBuilding(x, y, w, h, ignorePrice = false) {
+    let bGrid = []
     if (ghostBuilding.type === "removeRoad") {
         removeRoadArea(x,y,w,h)
         return true
@@ -43,12 +44,10 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
         if (!ignorePrice) {
             gold -= ghostBuilding.price
         }
-        buildingGrid[getCellKey(x + dx, y + dy)] = {type: ghostBuilding.type, obj: new Torch(x,y,ghostBuilding.type)}
-        bGrid.push(buildingGrid[getCellKey(x + dx, y + dy)])
-
-        return
+        buildingGrid[getCellKey(x, y)] = {type: ghostBuilding.type, obj: new Torch((x + w / 2 - 0.5) * buildingCellSize, (y + h / 2 - 0.5) * buildingCellSize,ghostBuilding.type)}
+        bGrid.push(buildingGrid[getCellKey(x, y)])
+        return true
     }
-
 
     if (!isAreaFree(x, y, w, h)) return false
     if (gold<ghostBuilding.price && !ignorePrice) {
@@ -58,10 +57,10 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
     if (!ignorePrice) {
         gold -= ghostBuilding.price
     }
-    if (!keys['shift'] && ghostBuilding.type !== "road" ) {
+    if (!keys['shift'] && ghostBuilding.type !== "road" && ghostBuilding.type !== "torchSmall" && ghostBuilding.type !== "torchMedium" && ghostBuilding.type !== "torchLarge" ) {
         ghostBuilding.enabled = false
     }
-    let bGrid = []
+    
     for (let dx = 0; dx < w; dx++) {
         for (let dy = 0; dy < h; dy++) {
             buildingGrid[getCellKey(x + dx, y + dy)] = {type:ghostBuilding.type, obj:undefined}
@@ -70,16 +69,18 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
     }
     if (ghostBuilding.type === "inn") {
         buildings.push(new Inn({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Inn", 1))
-        gridCellAddObj(bGrid,buildings[buildings.length-1])
+        gridCellAddObj(bGrid, buildings[buildings.length - 1])
     } else if (ghostBuilding.type === "potionShop") {
         buildings.push(new PotionShop({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Potion Shop", 1))
-        gridCellAddObj(bGrid,buildings[buildings.length-1])
+        gridCellAddObj(bGrid, buildings[buildings.length - 1])
     } else if (ghostBuilding.type === "recruitmentHall") {
         buildings.push(new RecruitmentHall({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Recruitment Hall", 1))
-        gridCellAddObj(bGrid,buildings[buildings.length-1])
+        gridCellAddObj(bGrid, buildings[buildings.length - 1])
     } else if (ghostBuilding.type === "dungeonController") {
-        dungeonControllers.push(new DungeonController((x + w / 2 - 0.5) * buildingCellSize,(y + h / 2 - 0.5) * buildingCellSize))
-        gridCellAddObj(bGrid,dungeonControllers[dungeonControllers.length-1])
+        dungeonControllers.push(new DungeonController((x + w / 2 - 0.5) * buildingCellSize, (y + h / 2 - 0.5) * buildingCellSize))
+        gridCellAddObj(bGrid, dungeonControllers[dungeonControllers.length - 1])
+    } else if (ghostBuilding.type === "torchSmall" || ghostBuilding.type === "torchMedium" || ghostBuilding.type === "torchLarge") {
+        gridCellAddObj(bGrid, new Torch(1,1,ghostBuilding.type))
     }
     return true
 }
@@ -165,16 +166,27 @@ function drawGhost(gridX, gridY, building) {
     }
 }
 
+function buildTorch(location = false, type = "torchSmall") {
+    ghostBuilding = {
+        enabled: true,
+        size: [1, 1],
+        type: type,
+        price: torchConfig[type].price,
+    }
+    if (location !== false) {
+        placeBuilding(location.x, location.y, 1, 1, true)
+    }
+}
 
 function buildRoad(x = 2, y = 2, location = false, type = "road") {
-    if (location !== false) {
-        placeBuilding(location.x, location.y, x, y, true)
-    }
     ghostBuilding = {
         enabled: true,
         size: [x, y],
         type: type,
         price: x*y*4,
+    }
+    if (location !== false) {
+        placeBuilding(location.x, location.y, x, y, true)
     }
 }
 

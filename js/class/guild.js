@@ -87,18 +87,15 @@ class Guild {
     }
 
     inviteHero(hero) {
-        if (!hero.inGuild) {
-            hero.inGuild = true
-            hero.guildId = this.id
-            this.heroes.push(charactersMap[hero.id])
-        }
+        hero.inGuild = true
+        hero.guildId = this.id
+        this.heroes.push(hero.id)
     }
 
     kickHero(hero) {
         if (hero.inGuild && hero.guildId === this.id) {
             hero.inGuild = false
             hero.guildId = -1
-
             for (let i = 0; i < this.heroes.length; i++) {
                 if (this.heroes[i] === hero.id) {
                     this.heroes.splice(i, 1)

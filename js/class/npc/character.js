@@ -42,9 +42,10 @@ class Character {
 
     mood = 100
     satisfaction = 100
-    loyalty = 100
     entertainment = 100
 
+
+    loyalty = 0.2 + Math.random() * 0.8
     sociability = 0.1 + Math.random() * 0.9
     competitiveness = 0
     adventurousness = 0.1 + Math.random() * 0.9
@@ -163,14 +164,17 @@ class Character {
                 if (this.talkingTimer <= 0) {
                     this.status = ""
                     this.isTalking = false
-                    if (this.talkingTargetId !== -1 && charactersMap[this.talkingTargetId]!== undefined) {
+                    if (this.talkingTargetId !== -1 && charactersMap[this.talkingTargetId] !== undefined) {
+                        let targetT = charactersMap[this.talkingTargetId]
                         this.updateFriendship(this.talkingTargetId, 0) //add to list
-                        if (this.inGuild && !charactersMap[this.talkingTargetId].inGuild && Math.random() < 0.2) {
-                            guilds[this.guildId].inviteHero(charactersMap[this.talkingTargetId])
-                        }
-                        if (this.inGuild && charactersMap[this.talkingTargetId].inGuild && Math.random() < 0.01) {
-                            guilds[charactersMap[this.talkingTargetId].guildId].kickHero(charactersMap[this.talkingTargetId])
-                            guilds[this.guildId].inviteHero(charactersMap[this.talkingTargetId])
+                        if (this.guildId !== targetT.guildId) {
+                            if (this.inGuild && !targetT.inGuild && Math.random() < 0.05) {
+                                guilds[this.guildId].inviteHero(targetT)
+                            }
+                            if (this.inGuild && targetT.inGuild && Math.random() < Math.min(0.05, 0.0025 * Math.pow(guilds[this.guildId].rankPoints / guilds[targetT.guildId].rankPoints), 2.5) * (1-this.loyalty))  {
+                                guilds[targetT.guildId].kickHero(targetT)
+                                guilds[this.guildId].inviteHero(targetT)
+                            }
                         }
                         if (Math.random() < 0.05) {
                             this.updateFriendship(this.talkingTargetId, Math.random()*10)
@@ -430,18 +434,18 @@ class Character {
                 p++
             }
         } else {
-            if (budget > 0 && this.inventory.potions["Agility"] <= 0 && buildings[buildingId].level > 0) {
+            if (budget > 0 && this.inventory.potions["Agility"] <= 0 && buildings[buildingId].level > 1) {
                 potionsNeeded.push("Agility")
                 budget -= buildings[buildingId].prices["Agility"]
                 p++
             }
-            if (budget > 0 && this.inventory.potions["Strength"] <= 0 && buildings[buildingId].level > 0) {
+            if (budget > 0 && this.inventory.potions["Strength"] <= 0 && buildings[buildingId].level > 1) {
                 potionsNeeded.push("Strength")
                 budget -= buildings[buildingId].prices["Strength"]
                 p++
             }
         }
-        if (budget > 0 && this.inventory.potions["Resurrection"] <= 0 && buildings[buildingId].level > 1 && this.inventory.gold > buildings[buildingId].prices["Resurrection"] *1.2) {
+        if (budget > 0 && this.inventory.potions["Resurrection"] <= 0 && buildings[buildingId].level > 2 && this.inventory.gold > buildings[buildingId].prices["Resurrection"] * 1.2) {
             potionsNeeded.push("Resurrection")
             budget -= buildings[buildingId].prices["Resurrection"]
             p++

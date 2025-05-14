@@ -29,22 +29,6 @@ let logs = {heroes: [], buildings:[], debug:[]}
 let incomeLog = []
 
 
-
-
-buildBuilding("inn",{x: 50, y: 45})
-buildBuilding("inn",{x: -220, y: -105})
-buildBuilding("inn",{x: -350, y: -150})
-buildBuilding("potionShop",{x: -280, y: -80})
-buildBuilding("recruitmentHall",{x: 0, y: -125})
-
-
-
-//TEST
-for (let i = 0; i<5; i++) {
-    spawnHeroRandom(1)
-}
-
-
 let hourTimer = 0
 let hourTimeRng = 30
 
@@ -61,7 +45,7 @@ function update() {
     }
 
     for (let i = 0; i < characters.length; i++) {
-        //characters[i].update()
+        characters[i].update()
     }
 
     for (let i = 0; i < dungeonControllers.length; i++) {
@@ -98,8 +82,12 @@ function update() {
             characters[i].updateDay()
         }
         for (let i = 0; i < heroes.length; i++) {
-            if (heroes[i].rankPoints > 0) {
-                heroes[i].rankPoints -= Math.min(8.5, heroes[i].rankPoints/1000)
+            heroes[i].rankPoints -= Math.min(8.5, heroes[i].rankPoints / 1000)
+            if (heroes[i].rankPoints < 0) {
+                heroes[i].rankPoints = 0
+            }
+            if (heroes[i].inGuild && Math.random() > 0.002 * (1 - heroes[i].loyalty)) {
+                guilds[heroes[i].guildId].kickHero(heroes[i])
             }
         }
         for (let i = 0; i < buildings.length; i++) {
@@ -107,7 +95,10 @@ function update() {
         }
         for (let i = 0; i < guilds.length; i++) {
             guilds[i].updateDay()
-            guilds[i].rankPoints -= Math.min(8.5, guilds[i].rankPoints / 1000)
+            guilds[i].rankPoints -= ((2000+guilds[i].rankPoints) / 800) * (2 + (guilds[i].heroes.length) / 7)
+            if (guilds[i].rankPoints < 0) {
+                guilds[i].rankPoints = 0
+            }
         }
         
     }

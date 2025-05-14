@@ -1,18 +1,18 @@
 class Torch {
-    constructor (x,y,size) {
-        this.x = x
-        this.y = y
+    constructor (x,y,torchSize) {
+        this.x = x + (buildingCellSize/2)
+        this.y = y + (buildingCellSize / 2)
         let radius = 40
 
         let size = 0.07
         let area = 0.007
         let speed = 2
-        if (size === "torchMedium") {
+        if (torchSize === "torchMedium") {
             radius = 100
             size = 0.15
             area = 0.015
             speed = 4
-        } else if (size === "torchLarge") {
+        } else if (torchSize === "torchLarge") {
             radius = 200
             size = 0.5
             area = 1
@@ -23,3 +23,5 @@ class Torch {
             {radius: radius, color: 'rgba(255, 160, 80, 1)', duration: -1, decTimer: 0.2})
     }
 }
+
+let torchConfig = {"torchSmall": {price: 8}, "torchMedium": {price: 15}, "torchLarge": {price: 50}}

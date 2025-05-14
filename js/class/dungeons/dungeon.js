@@ -414,6 +414,16 @@ class DungeonController {
                 if (runheroes[i] !== runheroes[j] && Math.random() < chance) {
                     runheroes[i].updateFriendship(runheroes[j].id, fixVal + Math.random() * val)
                 }
+                let targetT = runheroes[j]
+                if (runheroes[i].guildId !== targetT.guildId) {
+                    if (runheroes[i].inGuild && !targetT.inGuild && Math.random() < 0.01) {
+                        guilds[runheroes[i].guildId].inviteHero(targetT)
+                    }
+                    if (runheroes[i].inGuild && targetT.inGuild && Math.random() < Math.min(0.02, 0.001 * Math.pow(guilds[runheroes[i].guildId].rankPoints / guilds[targetT.guildId].rankPoints), 2.5) * (1 - this.loyalty)) {
+                        guilds[targetT.guildId].kickHero(targetT)
+                        guilds[runheroes[i].guildId].inviteHero(targetT)
+                    }
+                }
             }
         }
     }
