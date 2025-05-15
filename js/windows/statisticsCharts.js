@@ -19,13 +19,22 @@ let open_statisticsCharts = function (btn_el = undefined, reload = false, update
     }
     currentWindow[windowId] = "statisticsCharts"
     let html = ""
-    html += "<div class='statistics' style='display:flex;width:80vw; flex-wrap:wrap;'>"
+    html += "<div class='statistics' style='display:flex; flex-wrap:wrap;'>"
 
-
-
+    html += `<div id="sch_chart"></div>`
 
     html += "</div>"
     elements["windowBody" + windowId].innerHTML = html
 
+    elementsWindow["testchart" + windowId] = document.getElementById("sch_chart")
+
+    let incomeLogX = []
+    let x = realtime
+    for (let i = 0; i < incomeLog.length; i++) {
+        incomeLogX.unshift(x / 720)
+        x -= 720
+    }
+    //TODO TEST
+    let testChart = new Chart(elementsWindow["testchart" + windowId],incomeLogX, incomeLog)
 
 }

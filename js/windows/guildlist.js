@@ -43,7 +43,7 @@ let open_guildList = function (btn_el = undefined, reload = false, update = fals
         if (isMythicPlusNumber(rankC)) {
             rankC = "Mythic I"
         }
-        if (charactersMap[guild.guildmaster] === undefined && guild.dead) {
+        if (charactersMap[guild.guildmaster] === undefined || guild.dead) {
             continue
         }
         html += `<tr class='heroListRow' onclick='open_guildinfo(undefined,false,false,${i})'>

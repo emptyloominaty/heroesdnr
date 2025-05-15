@@ -86,7 +86,7 @@ function update() {
             if (heroes[i].rankPoints < 0) {
                 heroes[i].rankPoints = 0
             }
-            if (heroes[i].inGuild && Math.random() > 0.002 * (1 - heroes[i].loyalty)) {
+            if (heroes[i].inGuild && Math.random() < 0.002 * (1 - heroes[i].loyalty)) {
                 guilds[heroes[i].guildId].kickHero(heroes[i])
             }
         }
@@ -95,9 +95,37 @@ function update() {
         }
         for (let i = 0; i < guilds.length; i++) {
             guilds[i].updateDay()
-            guilds[i].rankPoints -= ((2000+guilds[i].rankPoints) / 800) * (2 + (guilds[i].heroes.length) / 7)
+            guilds[i].rankPoints -= ((guilds[i].rankPoints) / 600) * (2 + (guilds[i].heroes.length) / 7)
             if (guilds[i].rankPoints < 0) {
                 guilds[i].rankPoints = 0
+            }
+            if (guilds[i].heroes.length > 50 && Math.random() < 0.001) {
+                let newGuildHeroes = []
+                let num = 10 + Math.random() * 20
+                for (let a = 0; a < guilds[i].heroes.length; a++) {
+                    guilds[i].kickHero(charactersMap[guilds[i].heroes])
+                    newGuildHeroes.push(charactersMap[guilds[i].heroes])
+                    if (a > num) {
+                        break
+                    }
+                }
+                let gm = newGuildHeroes[Math.floor(Math.random() * newGuildHeroes.length)]
+                let guild = new Guild(newGuildHeroes, gm)
+                guild.rankPoints = guilds[i].rankPoints / 1.5
+            }
+            if (guilds[i].heroes.length > 100 && Math.random() < 0.01) {
+                let newGuildHeroes = []
+                let num = 10 + Math.random() * 60
+                for (let a = 0; a < guilds[i].heroes.length; a++) {
+                    guilds[i].kickHero(charactersMap[guilds[i].heroes[a]])
+                    newGuildHeroes.push(charactersMap[guilds[i].heroes[a]])
+                    if (a > num) {
+                        break
+                    }
+                }
+                let gm = newGuildHeroes[Math.floor(Math.random() * newGuildHeroes.length)]
+                let guild = new Guild(newGuildHeroes, gm)
+                guild.rankPoints = guilds[i].rankPoints / 1.5
             }
         }
         

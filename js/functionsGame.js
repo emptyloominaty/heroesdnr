@@ -107,7 +107,12 @@ function heroLeave(id, banish = false) {
 		let del = Math.ceil(settings.maxSizeInactiveHeroes/100)
 		inactiveHeroes.splice(0, del)
 	}
+}
 
-
-
+function getInviteChance(recruiter, target, base = 0.0001, min = 0.001, max = 0.005) {
+	if ((target.rankPoints > guilds[recruiter.guildId].rankPoints * 1.5 || target.rankPoints < guilds[recruiter.guildId].rankPoints / 1.5)
+		&& (target.rankPoints > guilds[recruiter.guildId].rankPoints + 100|| target.rankPoints < guilds[recruiter.guildId].rankPoints - 100)) {
+		return 0
+	}
+	return Math.max(min, Math.min(max, base * Math.pow((guilds[recruiter.guildId].rankPoints / guilds[target.guildId].rankPoints), 2.5) * (1 - target.loyalty)))
 }

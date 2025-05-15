@@ -14,6 +14,7 @@ class Guild {
     
 
     constructor (heroes, guildmaster) {
+
         this.created = realtime
         let replaced = false
         this.id = guildIdx
@@ -38,14 +39,14 @@ class Guild {
                 heroes[i].guildId = this.id
                 heroes[i].inGuild = true
                 this.heroes.push(heroes[i].id)
+                heroes[i].addLog(messages.heroLog.formGuild(this.name,guildmaster.name))
             }
-            
         } 
     }
 
     updateDay() {
-        if (this.heroes.length === 0) {
-            this.dead = true
+        if (this.dead) {
+            return
         }
         for (let i = 0; i < this.heroes.length; i++) {
             if (charactersMap[this.heroes[i]] === undefined) {
@@ -83,13 +84,17 @@ class Guild {
             }
         }
 
-        this.statistics.push({heroes:this.heroes.length,rankPoints:this.rankPoints,guildmaster: this.guildmaster,time: realtime})
+        this.statistics.push({heroes: this.heroes.length, rankPoints: this.rankPoints, guildmaster: this.guildmaster, time: realtime})
+        if (this.heroes.length === 0) {
+            this.dead = true
+        }
     }
 
     inviteHero(hero) {
         hero.inGuild = true
         hero.guildId = this.id
         this.heroes.push(hero.id)
+        hero.addLog(messages.heroLog.joinGuild(this.name))
     }
 
     kickHero(hero) {
@@ -99,6 +104,7 @@ class Guild {
             for (let i = 0; i < this.heroes.length; i++) {
                 if (this.heroes[i] === hero.id) {
                     this.heroes.splice(i, 1)
+                    hero.addLog(messages.heroLog.leaveGuild(this.name))
                     break
                 }
             }

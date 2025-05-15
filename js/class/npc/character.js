@@ -45,7 +45,7 @@ class Character {
     entertainment = 100
 
 
-    loyalty = 0.2 + Math.random() * 0.8
+    loyalty = 0.2 + Math.random() * 0.79
     sociability = 0.1 + Math.random() * 0.9
     competitiveness = 0
     adventurousness = 0.1 + Math.random() * 0.9
@@ -171,7 +171,7 @@ class Character {
                             if (this.inGuild && !targetT.inGuild && Math.random() < 0.05) {
                                 guilds[this.guildId].inviteHero(targetT)
                             }
-                            if (this.inGuild && targetT.inGuild && Math.random() < Math.min(0.05, 0.0025 * Math.pow(guilds[this.guildId].rankPoints / guilds[targetT.guildId].rankPoints), 2.5) * (1-this.loyalty))  {
+                            if (this.inGuild && targetT.inGuild && Math.random() < getInviteChance(this, targetT, 0.0001, 0.001, 0.005)) {
                                 guilds[targetT.guildId].kickHero(targetT)
                                 guilds[this.guildId].inviteHero(targetT)
                             }
@@ -578,8 +578,8 @@ class Character {
         }
         if (this.friendships[fId] === undefined) {
             this.friendships[fId] = 0
-            this.addLog(messages.heroLog.newFriend(heroes[fId].name))
-            heroes[fId].addLog(messages.heroLog.newFriend(this.name))
+            /*this.addLog(messages.heroLog.newFriend(heroes[fId].name))
+            heroes[fId].addLog(messages.heroLog.newFriend(this.name))*/
         }
         let scaling = 1 - this.friendships[fId] / 100
         this.friendships[fId] += fVal * scaling

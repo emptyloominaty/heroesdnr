@@ -77,7 +77,7 @@ class DungeonController {
         }
 
         //TODO:
-        level = 1
+        //level = 1
 
         dungeonSpeed = c / heroes.length
         let difficulty = 0.75
@@ -128,10 +128,10 @@ class DungeonController {
             heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / heroes.length)
             if (type === "solo") {
                 heroes[i].statistics.dungeonSoloRuns.success++
-                heroes[i].addLog(messages.heroLog.dungeonSuccess("dungeon"))
+                //heroes[i].addLog(messages.heroLog.dungeonSuccess("dungeon"))
             } else if (type === "group") {
                 heroes[i].statistics.dungeonGroupRuns.success++
-                heroes[i].addLog(messages.heroLog.dungeonGroupSuccess("dungeon"))
+                //heroes[i].addLog(messages.heroLog.dungeonGroupSuccess("dungeon"))
             }
         }
     }
@@ -419,7 +419,7 @@ class DungeonController {
                     if (runheroes[i].inGuild && !targetT.inGuild && Math.random() < 0.01) {
                         guilds[runheroes[i].guildId].inviteHero(targetT)
                     }
-                    if (runheroes[i].inGuild && targetT.inGuild && Math.random() < Math.min(0.02, 0.001 * Math.pow(guilds[runheroes[i].guildId].rankPoints / guilds[targetT.guildId].rankPoints), 2.5) * (1 - this.loyalty)) {
+                    if (runheroes[i].inGuild && targetT.inGuild && Math.random() < getInviteChance(runheroes[i], targetT, 0.001, 0.001, 0.005)) {
                         guilds[targetT.guildId].kickHero(targetT)
                         guilds[runheroes[i].guildId].inviteHero(targetT)
                     }
