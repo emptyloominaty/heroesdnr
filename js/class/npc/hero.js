@@ -36,18 +36,22 @@ class Hero extends Character {
 
     updateStats() {
         this.updateEquippedItems()
-        this.stDps = this.getSTDps(this.skill[0])
-        this.aoeDps = this.getAOEDps(this.skill[1])
-        this.stHps = this.getSTHps(this.skill[2])
-        this.aoeHps = this.getAOEHps(this.skill[3])
+
+        let intScaling = heroesConfig[this.characterClass][this.characterSpec].intS
+        let intMultiplier = Math.pow(this.intelligence, intScaling)
+
+        this.stDps = this.getSTDps(this.skill[0]) * intMultiplier
+        this.aoeDps = this.getAOEDps(this.skill[1]) * intMultiplier
+        this.stHps = this.getSTHps(this.skill[2]) * intMultiplier
+        this.aoeHps = this.getAOEHps(this.skill[3]) * intMultiplier
         this.dps = (this.stDps+this.aoeDps)/2
         this.hps = (this.stHps+this.aoeHps)/2
-        this.dtpsP = this.getDtpsP(this.skill[4])
-        this.dtpsM = this.getDtpsM(this.skill[5])
+        this.dtpsP = this.getDtpsP(this.skill[4]) * intMultiplier
+        this.dtpsM = this.getDtpsM(this.skill[5]) * intMultiplier
         this.dtps = (this.dtpsP + this.dtpsM)/2
         this.speed = (4 + this.skill[8]) / 4.65 * heroesConfig[this.characterClass][this.characterSpec].speed
-        this.critFailD = heroesConfig[this.characterClass][this.characterSpec].critFailD
-        this.escapeChance = heroesConfig[this.characterClass][this.characterSpec].escape
+        this.critFailD = heroesConfig[this.characterClass][this.characterSpec].critFailD * intMultiplier
+        this.escapeChance = heroesConfig[this.characterClass][this.characterSpec].escape * intMultiplier
     }
 
 
@@ -68,16 +72,46 @@ class Hero extends Character {
         if (this.xp >= this.xpNeed) {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
-            let skillText = "" //TODO?
-            for (let i = 0; i<this.skill.length; i++) {
-                if (Math.random()<0.04*(0.65/this.skill[i])) {
-                    this.skill[i] += Math.random()*0.05
-                } else if (Math.random()<0.03*(this.skill[i]/0.65)) {
-                    this.skill[i] -= Math.random()*0.05
+            let skillText = "<span style='font-size:8px;' >(" 
+            let ignoreSkillText = true
+            for (let i = 0; i < this.skill.length; i++) {
+                let val = Math.random() * 0.05
+                if (Math.random() < 0.04 * (0.65 / this.skill[i])) { //TODO?
+                    this.skill[i] += val
+                    skillText += i + ": <span style='color:"+colors.log.success+"'>+" + Math.round(val * 100) + "</span>, "
+                    ignoreSkillText = false
+                } else if (Math.random() < 0.03 * (this.skill[i] / 0.65)) { //TODO?
+                    this.skill[i] -= val
+                    skillText += i + ": <span style='color:" + colors.log.failure + "'>-" + Math.round(val * 100) + "</span>, "
+                    ignoreSkillText = false
                 }
                 this.skill[i] = Math.max(0.1, Math.min(1, this.skill[i]))
             }
-            this.addLog(messages.heroLog.levelUp(this.level))
+            if (Math.random() < 0.01) { //TODO:
+                this.loyalty += 0.1 - (Math.random() * 0.2)
+            }
+            if (Math.random() < 0.01) {
+                this.intelligence += 0.05 - (Math.random() * 0.1)
+            }
+            if (Math.random() < 0.01) {
+                this.sociability += 0.1 - (Math.random() * 0.2)
+            }
+            if (Math.random() < 0.01) {
+                this.competitiveness += 0.01 - (Math.random() * 0.02)
+            }
+            if (Math.random() < 0.01) {
+                this.adventurousness += 0.1 - (Math.random() * 0.2)
+            }
+            this.loyalty = Math.max(0.1, Math.min(0.99, this.loyalty))
+            this.sociability = Math.max(0.1, Math.min(1, this.sociability))
+            this.intelligence = Math.max(0.45, this.intelligence)
+            this.competitiveness = Math.max(0, Math.min(0.9, this.competitiveness))
+            this.adventurousness = Math.max(0.1, Math.min(1, this.adventurousness))
+            skillText += ")</span>"
+            if (ignoreSkillText) {
+                skillText = ""
+            }
+            this.addLog(messages.heroLog.levelUp(this.level,skillText))
             this.updateStats()
         } 
     }

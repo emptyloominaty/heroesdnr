@@ -87,6 +87,18 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     <tr>
       <td id="hi_speed">${Math.round(hero.speed*100)/100}</td>
     </tr>`
+
+    html += "</table></div>"
+    html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Int</th><th>Soc</th><th>Loy</th><th>Comp</th><th>Adv</th></tr>"
+    html += `  
+    <tr>
+      <td>${Math.round(hero.intelligence * 100) / 100}</td>
+      <td>${Math.round(hero.sociability * 100) / 100}</td>
+      <td>${Math.round(hero.loyalty * 100) / 100}</td>
+      <td>${Math.round(hero.competitiveness * 100) / 100}</td>
+      <td>${Math.round(hero.adventurousness * 100) / 100}</td>
+    </tr>`
+
     html += "</table></div>"
     html += "<div><table class='heroinfoTable'> <tr class='heroListFirstRow'><th>Friends/Knowns/Enemies</th></tr>"
     let friends = 0

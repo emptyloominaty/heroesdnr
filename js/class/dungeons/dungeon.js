@@ -26,7 +26,7 @@ class DungeonController {
             {radius: 200, color: 'rgba(255, 160, 80, 1)', duration: -1, decTimer: 0.2})
 
 
-
+        //TEST
         addSpellVisualEffects(this.location.x + 40, this.location.y + 50, 90, "fire", {
             size: 0, speed: 0, target: {x: this.location.x + 40, y: this.location.y + 50}, color: "#ffd876", onEnd: {name: "explode", size: 1},
             onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}
@@ -162,7 +162,14 @@ class DungeonController {
         let rngDps = 1
         let rngDtps = 1
 
-        if (Math.random() > (1.2 - (Math.pow(stage.chances.death / 100, 0.4)))) {
+        let maxInt = 0
+        for (let i = 0; i < run.heroes.length; i++) {
+            if (run.heroes[i].intelligence > maxInt) {
+                maxInt = run.heroes[i].intelligence
+            }
+        }
+
+        if (Math.random() > (1.2 - (Math.pow((stage.chances.death / 100)*(maxInt), 0.4)))) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
@@ -268,7 +275,7 @@ class DungeonController {
                 stageResult = "Critical failure"
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.criticalFailure++
-                    this.reduceSkills(run.heroes[i], 0.02, 0.05)
+                    this.reduceSkills(run.heroes[i], 0.02, 0.01)
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / run.heroes.length)
                     if (Math.random() > 1 - 0.25 / Math.pow(Math.max(0.2, run.heroes[i].critFailD), 0.75)) {
                         if (run.heroes.length === 1) {
@@ -286,7 +293,7 @@ class DungeonController {
                 this.runCount.failure++
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.failure++
-                    this.reduceSkills(run.heroes[i], 0.01, 0.01)
+                    this.reduceSkills(run.heroes[i], 0.01, 0.001)
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / 2 / run.heroes.length)
                     if (Math.random() > 0.995) {
                         if (run.heroes.length===1) {
@@ -432,9 +439,9 @@ class DungeonController {
     reduceSkills(hero, val, chance) {
         for (let i = 0; i < hero.skill.length; i++) {
             if (Math.random() > chance) {
-                hero.skill[i] -= val
-                if (hero.skill[i] < 0.05) {
-                    hero.skill[i] = 0.05
+                hero.skill[i] -= val * Math.random()
+                if (hero.skill[i] < 0.4) {
+                    hero.skill[i] = 0.4
                 }
             }
         }

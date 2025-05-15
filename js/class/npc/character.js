@@ -44,7 +44,7 @@ class Character {
     satisfaction = 100
     entertainment = 100
 
-
+    intelligence = 1
     loyalty = 0.2 + Math.random() * 0.79
     sociability = 0.1 + Math.random() * 0.9
     competitiveness = 0
@@ -99,6 +99,13 @@ class Character {
         this.hungerRate = 0.95 + (Math.random() * 0.1)
         this.destination = {x: location.x, y: location.y}
 
+        this.idleTimer = 2 + Math.random() * 15
+
+        this.loyalty = 0.2 + Math.random() * 0.79
+        this.sociability = 0.1 + Math.random() * 0.9
+        this.adventurousness = 0.1 + Math.random() * 0.9
+
+
         if (Math.random() > 0.99) {
             this.competitiveness = Math.random() * 0.9
         } else if (Math.random() > 0.97) {
@@ -113,6 +120,7 @@ class Character {
         let ma = raceMaxAge[this.race]
         this.maxAge = ma-(ma/5)+(Math.random()*ma/2.5)
         if (!ignore) {
+            this.intelligence = getSkillRandom(0.9, 1, 0.15, 0.5, 1.5)
             this.id = globalCharId
             charactersMap[this.id] = this
             globalCharId++

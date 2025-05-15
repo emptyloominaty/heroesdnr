@@ -27,6 +27,7 @@ let heroesMax = 0
 
 let logs = {heroes: [], buildings:[], debug:[]}
 let incomeLog = []
+let statistics = {} //todo:
 
 
 let hourTimer = 0
