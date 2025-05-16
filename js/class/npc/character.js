@@ -158,7 +158,8 @@ class Character {
 
                         addSpellVisualEffects(xxg, yyg, 90, "fire", {duration: 0.1, size: 0, speed: 0, target: {x: xxg, y: yyg}, color: "#84e7ff", onEnd: {name: "explode", size: 1}, onRun: {dirToCentre: true,ignoreLifeSize: true, name: "fire", size: 0.2, life: 0.2, speed: 8, area: 2, texture: textures.particle_fire4, color1: "#84e7ff", color2: "#84e7ff", color3: "rgba(118, 139, 255, 0.1)"}})
                         addLight(xxg, yyg, 20, "rgba(118, 139, 255, 1)", 0.3)
-                        this.dungeonGroup[i].location = {x:xxg, y:yyg}
+                        this.dungeonGroup[i].location = {x: xxg, y: yyg}
+                        updateGridPosition(this.dungeonGroup[i])
                     }
                         
                 }

@@ -6,11 +6,13 @@ class Chart {
     parent
     canvas 
     ctx
+    chartConfig
 
-    constructor (parentEl, xData, yData) {
+    constructor (parentEl, xData, yData, chartConfig) {
         this.xData = xData
         this.yData = yData
         this.parent = parentEl
+        this.chartConfig = chartConfig
 
         if (!parentEl.style.width) parentEl.style.width = "900px"
         if (!parentEl.style.height) parentEl.style.height = "500px"
@@ -40,10 +42,11 @@ class Chart {
     drawChart() {
         const ctx = this.ctx
         const {xData, yData, cssHeight, cssWidth} = this
+        const cc = this.chartConfig
 
         ctx.clearRect(0, 0, cssWidth, cssHeight)
 
-        const padding = 40
+        const padding = 60
         const chartWidth = cssWidth - padding * 2
         const chartHeight = cssHeight - padding * 2
 
@@ -68,7 +71,7 @@ class Chart {
         ctx.lineWidth = 1
         ctx.stroke()
 
-        const numXTicks = 5
+        const numXTicks = cc.xTicks
         for (let i = 0; i <= numXTicks; i++) {
             const xVal = minX + (i / numXTicks) * (maxX - minX)
             const xPx = xToPx(xVal)
@@ -78,7 +81,7 @@ class Chart {
             ctx.lineTo(xPx, cssHeight - padding + 5)
             ctx.stroke()
 
-            ctx.fillText(xVal.toFixed(0), xPx, cssHeight - padding + 7)
+            ctx.fillText(xVal.toFixed(cc.xRounding), xPx, cssHeight - padding + 7)
 
             ctx.beginPath()
             ctx.moveTo(xPx, padding)
@@ -90,7 +93,7 @@ class Chart {
         ctx.textAlign = 'right'
         ctx.textBaseline = 'middle'
 
-        const numYTicks = 10
+        const numYTicks = cc.yTicks
         for (let i = 0; i <= numYTicks; i++) {
             const yVal = minY + (i / numYTicks) * (maxY - minY)
             const yPx = yToPx(yVal)
@@ -100,7 +103,7 @@ class Chart {
             ctx.lineTo(padding, yPx)
             ctx.stroke()
 
-            ctx.fillText(yVal.toFixed(0), padding - 7, yPx)
+            ctx.fillText(yVal.toFixed(cc.yRounding), padding - 7, yPx)
 
             ctx.beginPath()
             ctx.moveTo(padding, yPx)
@@ -108,30 +111,33 @@ class Chart {
             ctx.stroke()
         }
 
+        if (cc.color2 !== false) {
+            for (let i = 1; i < xData.length; i++) {
+                const x1 = xToPx(xData[i - 1])
+                const y1 = yToPx(yData[i - 1])
+                const x2 = xToPx(xData[i])
+                const y2 = yToPx(yData[i])
 
-        for (let i = 1; i < xData.length; i++) {
-            const x1 = xToPx(xData[i - 1])
-            const y1 = yToPx(yData[i - 1])
-            const x2 = xToPx(xData[i])
-            const y2 = yToPx(yData[i])
-
+                ctx.beginPath()
+                ctx.moveTo(x1, y1)
+                ctx.lineTo(x2, y2)
+                ctx.strokeStyle = yData[i] >= cc.colorVal ? cc.color1 : cc.color2
+                ctx.lineWidth = cc.lineWidth
+                ctx.stroke()
+            }
+        } else {
             ctx.beginPath()
-            ctx.moveTo(x1, y1)
-            ctx.lineTo(x2, y2)
-            ctx.strokeStyle = yData[i] >= 0 ? '#99DD99' : '#DD9999' 
-            ctx.lineWidth = 2
+            ctx.moveTo(xToPx(xData[0]), yToPx(yData[0]))
+            for (let i = 1; i < xData.length; i++) {
+                ctx.lineTo(xToPx(xData[i]), yToPx(yData[i]))
+            }
+            ctx.strokeStyle = cc.color1
+            ctx.lineWidth = cc.lineWidth
             ctx.stroke()
         }
+       
 
-        /*
-        ctx.beginPath()
-        ctx.moveTo(xToPx(xData[0]), yToPx(yData[0]))
-        for (let i = 1; i < xData.length; i++) {
-            ctx.lineTo(xToPx(xData[i]), yToPx(yData[i]))
-        }
-        ctx.strokeStyle = '#CCBB77'
-        ctx.lineWidth = 2
-        ctx.stroke()*/
+       
     }
     
 
