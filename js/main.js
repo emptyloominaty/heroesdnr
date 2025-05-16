@@ -208,7 +208,16 @@ function updateStatistics() {
     statistics.sociability.push(soc / heroes.length)
     statistics.adventurousness.push(adv / heroes.length)
     statistics.level.push(level / heroes.length)
-    statistics.guilds.push(guilds.length)
+    let gg = 0
+
+    for (let i = 0; i < guilds.length; i++) {
+        if (!guilds[i].dead) {
+            gg++
+        }
+    }   
+    statistics.guilds.push(gg)
+
+
     statistics.tanks.push(tanks)
     statistics.damagedealers.push(damagedealers)
     statistics.healers.push(healers)

@@ -130,6 +130,13 @@ class Character {
             addToGrid(this)
         }
 
+        this.startLoyalty = this.loyalty
+        this.startSociability = this.sociability
+        this.startIntelligence = this.intelligence
+        this.startAdventurousness = this.adventurousness
+        this.startCompetitiveness = this.competitiveness
+
+
     }
 
 

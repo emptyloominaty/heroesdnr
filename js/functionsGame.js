@@ -119,3 +119,18 @@ function getInviteChance(recruiter, target, base = 0.0001, min = 0.001, max = 0.
 	}
 	return Math.max(min, Math.min(max, base * Math.pow((guilds[recruiter.guildId].rankPoints / guilds[target.guildId].rankPoints), 2.5) * (1 - target.loyalty)))
 }
+
+function updateSkill(s, val, low = 0.4, mid = 0.7, high = 1.0) {                       
+	if (val > 0) {     
+		if (s <= mid) return Math.min(s + val, high)
+		const scale = (high - s) / (high - mid)
+		return Math.min(s + val * scale, high)
+
+	} else if (val < 0) { 
+		if (s >= mid) return Math.max(s + val, low)
+		const scale = (s - low) / (mid - low)
+		return Math.max(s + val * scale, low)
+
+	}     
+	return s
+}

@@ -1,5 +1,6 @@
 class Hero extends Character {
-    skill = [1,1,1,1,1,1,1,1,1]
+    skill = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    startSkill = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 
     dps = 1
@@ -24,6 +25,9 @@ class Hero extends Character {
             for (let i = 0; i<this.skill.length; i++) {
                 this.skill[i] = 0.65
             }
+        }
+        for (let i = 0; i < this.startSkill.length; i++) {
+            this.startSkill[i] = this.skill[i]
         }
 
         this.fatigueRate = this.fatigueRate * heroesConfig[this.characterClass][this.characterSpec].fMul
@@ -79,31 +83,34 @@ class Hero extends Character {
             let ignoreSkillText = true
             for (let i = 0; i < this.skill.length; i++) {
                 let val = Math.random() * 0.05
-                if (Math.random() < 0.04 * (0.65 / this.skill[i])) { //TODO?
-                    this.skill[i] += val
+                if (Math.random() < 0.04) {
+                    this.skill[i] = updateSkill(this.skill[i], val, 0.4, (this.startSkill[i] + 0.7) / 2,1.0)
                     skillText += i + ": <span style='color:"+colors.log.success+"'>+" + Math.round(val * 100) + "</span>, "
                     ignoreSkillText = false
-                } else if (Math.random() < 0.03 * (this.skill[i] / 0.65)) { //TODO?
-                    this.skill[i] -= val
+                } else if (Math.random() < 0.03) {
+                    this.skill[i] = updateSkill(this.skill[i], -val, 0.4, (this.startSkill[i] + 0.7) / 2, 1.0)
                     skillText += i + ": <span style='color:" + colors.log.failure + "'>-" + Math.round(val * 100) + "</span>, "
                     ignoreSkillText = false
                 }
-                this.skill[i] = Math.max(0.1, Math.min(1, this.skill[i]))
+                this.skill[i] = Math.max(0.35, Math.min(1, this.skill[i]))
             }
-            if (Math.random() < 0.01) { //TODO:
-                this.loyalty += 0.1 - (Math.random() * 0.2)
+
+
+            if (Math.random() < 0.03) {
+                this.loyalty = updateSkill(this.loyalty, 0.1 - (Math.random() * 0.2), 0.15, this.startLoyalty, 0.99) 
             }
-            if (Math.random() < 0.01) {
-                this.intelligence += 0.05 - (Math.random() * 0.1)
+            let dInt = this.startIntelligence - 1
+            if (Math.random() < 0.03) {
+                this.intelligence = updateSkill(this.intelligence, 0.035 - (Math.random() * 0.7), 0.5 + dInt, this.startIntelligence, 1.5 + dInt) 
             }
-            if (Math.random() < 0.01) {
-                this.sociability += 0.1 - (Math.random() * 0.2)
+            if (Math.random() < 0.03) {
+                this.sociability = updateSkill(this.sociability, 0.05 - (Math.random() * 0.1), 0.1, this.startSociability, 1.0) 
             }
-            if (Math.random() < 0.01) {
-                this.competitiveness += 0.01 - (Math.random() * 0.02)
+            if (Math.random() < 0.03) {
+                this.competitiveness = updateSkill(this.competitiveness, 0.005 - (Math.random() * 0.01), 0, 0.2, 1.0) 
             }
-            if (Math.random() < 0.01) {
-                this.adventurousness += 0.1 - (Math.random() * 0.2)
+            if (Math.random() < 0.03) {
+                this.adventurousness = updateSkill(this.adventurousness, 0.05 - (Math.random() * 0.1), 0.1, this.startAdventurousness, 1.0) 
             }
             this.loyalty = Math.max(0.1, Math.min(0.99, this.loyalty))
             this.sociability = Math.max(0.1, Math.min(1, this.sociability))

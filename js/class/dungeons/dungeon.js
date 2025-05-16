@@ -439,14 +439,14 @@ class DungeonController {
 
     reduceSkills(hero, val, chance) {
         for (let i = 0; i < hero.skill.length; i++) {
-            if (Math.random() > chance) {
-                hero.skill[i] -= val * Math.random()
-                if (hero.skill[i] < 0.4) {
-                    hero.skill[i] = 0.4
-                }
-                if (hero.skill[i] > 1) {
-                    hero.skill[i] = 1
-                }
+            let chanceMul = 1
+            if (val > 0) {
+                chanceMul = (0.7 / hero.skill[i])
+            } else {
+                chanceMul = (hero.skill[i] / 0.7)
+            }
+            if (Math.random() < chance * chanceMul) {
+                hero.skill[i] = updateSkill(hero.skill[i], val * Math.random(), 0.4, (hero.startSkill[i]+0.7)/2, 1.0)
             }
         }
     }
