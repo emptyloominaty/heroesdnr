@@ -105,7 +105,7 @@ class Character {
         this.sociability = 0.1 + Math.random() * 0.9
         this.adventurousness = 0.1 + Math.random() * 0.9
 
-
+        this.competitiveness = 0
         if (Math.random() > 0.99) {
             this.competitiveness = Math.random() * 0.9
         } else if (Math.random() > 0.97) {

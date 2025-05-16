@@ -21,7 +21,16 @@ class Guild {
         guildIdx++
         guilds.push(this)
 
-        this.name = "Guild "+this.id
+        this.name = "Guild " + this.id
+        if (guildmaster === undefined || guildmaster.id === undefined) {
+            for (let i = 0; i < heroes.length; i++) {
+                if (heroes[i] !== undefined) {
+                    guildmaster = heroes[i]
+                    break
+                } 
+            }
+        }
+
         this.guildmaster = guildmaster.id
         const top5 = Object.entries(guildmaster.friendships)
             .filter(([id, _]) => id in charactersMap)
@@ -50,6 +59,8 @@ class Guild {
         }
         for (let i = 0; i < this.heroes.length; i++) {
             if (charactersMap[this.heroes[i]] === undefined) {
+                this.heroes.splice(i, 1)
+            } else if (charactersMap[this.heroes[i]].guildId !== this.id) {
                 this.heroes.splice(i, 1)
             }
         }
@@ -98,6 +109,9 @@ class Guild {
     }
 
     kickHero(hero) {
+        if (hero === undefined) {
+            return
+        }
         if (hero.inGuild && hero.guildId === this.id) {
             hero.inGuild = false
             hero.guildId = -1

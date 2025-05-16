@@ -1,7 +1,7 @@
 let getRank = function(points) {
 	const tiers = ["Bronze", "Silver", "Gold", "Diamond", "Legendary", "Mythic"]
 	const divisions = ["V", "IV", "III", "II", "I"]
-	const curve = 1.6
+	const curve = 2.3
 	let pointsPerDivision = 15
 
 	let totalDivisions = tiers.length * divisions.length
@@ -14,16 +14,16 @@ let getRank = function(points) {
 	let mythicPlus = Math.pow(pointsPerDivision * (totalDivisions - 1), curve)*1.1
 	if (points>mythicPlus) {
 		tier = "Mythic"
-		division = "+"+Math.ceil((points-mythicPlus)/1000)
+		division = "+"+Math.ceil((points-mythicPlus)/50000)
 	}
 
 	return `${tier} ${division}`
 }
 
-function generateRankRanges() {
+function generateRankRanges(consoleLog = false) {
 	const tiers = ["Bronze", "Silver", "Gold", "Diamond", "Legendary", "Mythic"]
 	const divisions = ["V", "IV", "III", "II", "I"]
-	const curve = 1.6
+	const curve = 2.3
 	const pointsPerDivision = 15
 
 	let totalDivisions = tiers.length * divisions.length
@@ -44,8 +44,11 @@ function generateRankRanges() {
 			division,
 			min: Math.round(minPoints),
 			max: Math.round(maxPoints - 1),
+			color: colors.ranks[tier+" "+division]
 		})
-		console.log(tier + " " + division + " " + ranges[i].min + "-" + ranges[i].max)
+		if (consoleLog) {
+			console.log(tier + " " + division + " " + ranges[i].min + "-" + ranges[i].max+" | "+ranges[i].color)
+		}
 	}
 	return ranges
 }

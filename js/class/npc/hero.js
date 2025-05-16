@@ -69,6 +69,9 @@ class Hero extends Character {
 
     gainXp(val) {
         this.xp += val
+        if (this.level === 100) {
+            return
+        }
         if (this.xp >= this.xpNeed) {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))

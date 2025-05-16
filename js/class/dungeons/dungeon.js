@@ -245,7 +245,9 @@ class DungeonController {
                 run.heroes[i].gainXp(stage.reward.xp / run.heroes.length)
                 run.heroes[i].gainRankPoints(stage.reward.rankPoints / run.heroes.length)
                 this.updateFriends(run.heroes, i, 0.1, 1)
+                this.reduceSkills(run.heroes[i], -0.01, 0.001)
             }
+    
             stageResult = "Success"
         } else {
             let dpsDeficit = Math.max(0, _dpsNeeded - _dps)
@@ -275,7 +277,7 @@ class DungeonController {
                 stageResult = "Critical failure"
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.criticalFailure++
-                    this.reduceSkills(run.heroes[i], 0.02, 0.01)
+                    this.reduceSkills(run.heroes[i], 0.01, 0.001)
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / run.heroes.length)
                     if (Math.random() > 1 - 0.25 / Math.pow(Math.max(0.2, run.heroes[i].critFailD), 0.75)) {
                         if (run.heroes.length === 1) {
@@ -293,7 +295,6 @@ class DungeonController {
                 this.runCount.failure++
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.failure++
-                    this.reduceSkills(run.heroes[i], 0.01, 0.001)
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / 2 / run.heroes.length)
                     if (Math.random() > 0.995) {
                         if (run.heroes.length===1) {
@@ -442,6 +443,9 @@ class DungeonController {
                 hero.skill[i] -= val * Math.random()
                 if (hero.skill[i] < 0.4) {
                     hero.skill[i] = 0.4
+                }
+                if (hero.skill[i] > 1) {
+                    hero.skill[i] = 1
                 }
             }
         }
