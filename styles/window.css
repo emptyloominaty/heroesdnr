@@ -251,3 +251,8 @@ tr:nth-child(odd) {
 .btn_recruit:hover {
     background-color: var(--color4);
 }
+
+#sch_chart {
+    display: flex;
+    flex-direction: column;
+}

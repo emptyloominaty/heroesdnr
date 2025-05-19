@@ -195,6 +195,7 @@ class Hero extends Character {
 
 
     leaveTown() {
+        removeFromGrid(this)
         if (this.role === "dps") {
             damagedealers--
         } else if (this.role === "healer") {

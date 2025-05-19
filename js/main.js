@@ -149,7 +149,7 @@ function updateStatistics() {
     let adv = 0
     let level = 0
     let rank = 0
-    for (let i = 1; i < 101; i++) {
+    for (let i = 0; i <= 10; i++) {
         if (statistics.levels[i] === undefined) {
             statistics.levels[i] = []
         }
@@ -183,7 +183,9 @@ function updateStatistics() {
             statistics.ranks[heroRank][statistics.ranks[heroRank].length - 1]++
         }
 
-        statistics.levels[heroes[i].level][statistics.levels[heroes[i].level].length - 1]++
+        let lvlR = Math.floor(heroes[i].level/10)
+        statistics.levels[lvlR][statistics.levels[lvlR].length - 1]++
+
         statistics.classes[heroes[i].characterClass][statistics.classes[heroes[i].characterClass].length - 1]++
 
         comp += heroes[i].competitiveness
@@ -224,9 +226,9 @@ function updateStatistics() {
     statistics.gold.push(gold)
     statistics.heroes.push(heroes.length)
     statistics.income.push(income)
-    if (statistics.income.length > 365) {
+    if (statistics.income.length > 365) { //TODO:1825
 
-        for (let i = 1; i < 101; i++) {
+        for (let i = 0; i <= 10; i++) {
             statistics.levels[i].shift()
         }
 

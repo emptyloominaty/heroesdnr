@@ -631,6 +631,7 @@ class Character {
         if (this instanceof Hero) {
             this.leaveTown()
         }
+        removeFromGrid(this)
         this.destroyUI()
         characters = characters.filter(c => c !== this)
         delete charactersMap[this.id]

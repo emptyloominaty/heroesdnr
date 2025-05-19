@@ -16,6 +16,15 @@ function addToGrid(obj) {
     obj._gridKey = key
 }
 
+function removeFromGrid(obj) {
+    const oldList = grid[obj._gridKey]
+    if (oldList) {
+        const index = oldList.indexOf(obj)
+        if (index !== -1) oldList.splice(index, 1)
+    }
+}
+
+
 function updateGridPosition(obj) {
     const newCell = getCellCoords(obj.location.x, obj.location.y)
     const newKey = `${newCell.x},${newCell.y}`
@@ -27,6 +36,7 @@ function updateGridPosition(obj) {
             const index = oldList.indexOf(obj)
             if (index !== -1) oldList.splice(index, 1)
         }
+
 
         // Add to new cell
         if (!grid[newKey]) grid[newKey] = []

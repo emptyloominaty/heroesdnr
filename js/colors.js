@@ -111,6 +111,20 @@ ranks: {
     '#9b8ec8','#d2cc8b','#FF69B4','#cd3d26',
     '#6a451f', '#c8a985','#c8807d','#b4afac',
     '#006400','#75539e','#98b86e','#98c96e',
-    '#ADFF2F']
+    '#ADFF2F'],
+    levelStatistics: [
+        "#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#bcf60c", "#fabebe",
+        "#008080", "#e6beff", "#9a6324", "#fffac8", "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000075", "#808080",
+        "#ffffff", "#000000", "#ff4500", "#2e8b57", "#1e90ff", "#daa520", "#8a2be2", "#ff1493", "#00ced1", "#7cfc00",
+        "#ffb6c1", "#6a5acd", "#f0e68c", "#ff6347", "#4682b4", "#d2691e", "#5f9ea0", "#ff69b4", "#cd5c5c", "#9acd32",
+        "#20b2aa", "#dda0dd", "#7b68ee", "#deb887", "#b0c4de", "#32cd32", "#ff7f50", "#ba55d3", "#3cb371", "#40e0d0",
+        "#ee82ee", "#b22222", "#87ceeb", "#ff8c00", "#6b8e23", "#48d1cc", "#c71585", "#66cdaa", "#a0522d", "#f4a460",
+        "#778899", "#00fa9a", "#db7093", "#f5deb3", "#191970", "#ffe4b5", "#708090", "#00bfff", "#ffdead", "#9932cc",
+        "#8fbc8f", "#ffdab9", "#b0e0e6", "#7fffd4", "#dc143c", "#6495ed", "#ffefd5", "#6a5acd", "#f0fff0", "#fa8072",
+        "#2f4f4f", "#ff00ff", "#e9967a", "#00ffff", "#ffebcd", "#add8e6", "#e0ffff", "#faebd7", "#d8bfd8", "#ffe4e1",
+        "#f5f5dc", "#fdf5e6", "#f0f8ff", "#f8f8ff", "#fff5ee", "#f5fffa", "#fff0f5", "#fafad2", "#dcdcdc", "#fffff0"
+    ]
+
+
 }
 

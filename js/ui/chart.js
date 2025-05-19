@@ -7,12 +7,13 @@ class Chart {
     canvas 
     ctx
     chartConfig
+    legendEl
 
-    constructor (parentEl, xData, yData, chartConfig) {
-        this.xData = xData
-        this.yData = yData
+    constructor (parentEl, datasets, chartConfig) {
+        this.datasets = datasets
+
         this.parent = parentEl
-        this.chartConfig = chartConfig
+        this.chartConfig = chartConfig //{xData:[],yData:[],color1:""},color2:false
 
         if (!parentEl.style.width) parentEl.style.width = "900px"
         if (!parentEl.style.height) parentEl.style.height = "500px"
@@ -25,15 +26,24 @@ class Chart {
         this.canvas = document.createElement('canvas')
         this.canvas.width = this.cssWidth * dpr
         this.canvas.height = this.cssHeight * dpr
-        this.canvas.style.width = `${this.cssWidth}px`;
-        this.canvas.style.height = `${this.cssHeight}px`;
+        this.canvas.style.width = `${this.cssWidth}px`
+        this.canvas.style.height = `${this.cssHeight}px`
         this.canvas.className = 'chart-canvas'
 
+        this.legendEl = document.createElement("div")
+        this.legendEl.className = "chart-legend"
+        this.legendEl.style.display = "flex"
+        this.legendEl.style.flexWrap = "wrap"
+        this.legendEl.style.gap = "10px"
+        this.legendEl.style.font = "12px Consolas"
+        this.legendEl.style.alignItems = "center"
+        this.legendEl.style.justifyContent = "center"
 
         this.ctx = this.canvas.getContext('2d')
         this.ctx.scale(dpr, dpr)
 
         this.parent.appendChild(this.canvas)
+        this.parent.appendChild(this.legendEl)
 
         this.drawChart()
     }
@@ -41,7 +51,7 @@ class Chart {
 
     drawChart() {
         const ctx = this.ctx
-        const {xData, yData, cssHeight, cssWidth} = this
+        const {datasets, cssHeight, cssWidth} = this
         const cc = this.chartConfig
 
         ctx.clearRect(0, 0, cssWidth, cssHeight)
@@ -50,10 +60,12 @@ class Chart {
         const chartWidth = cssWidth - padding * 2
         const chartHeight = cssHeight - padding * 2
 
-        const minX = Math.min(...xData)
-        const maxX = Math.max(...xData)
-        const minY = Math.min(...yData)
-        const maxY = Math.max(...yData)
+        const allX = this.datasets.flatMap(ds => ds.xData)
+        const allY = this.datasets.flatMap(ds => ds.yData)
+        const minX = Math.min(...allX)
+        const maxX = Math.max(...allX)
+        const minY = Math.min(...allY)
+        const maxY = Math.max(...allY)
 
         const xToPx = x => padding + ((x - minX) / (maxX - minX)) * chartWidth
         const yToPx = y => cssHeight - padding - ((y - minY) / (maxY - minY)) * chartHeight
@@ -111,31 +123,62 @@ class Chart {
             ctx.stroke()
         }
 
-        if (cc.color2 !== false) {
-            for (let i = 1; i < xData.length; i++) {
-                const x1 = xToPx(xData[i - 1])
-                const y1 = yToPx(yData[i - 1])
-                const x2 = xToPx(xData[i])
-                const y2 = yToPx(yData[i])
+        for (const dataset of this.datasets) {
+            const {xData, yData, color1, color2, colorVal, lineWidth} = dataset
 
+            if (cc.color2 !== false) {
+                for (let i = 1; i < xData.length; i++) {
+                    const x1 = xToPx(xData[i - 1])
+                    const y1 = yToPx(yData[i - 1])
+                    const x2 = xToPx(xData[i])
+                    const y2 = yToPx(yData[i])
+
+                    ctx.beginPath()
+                    ctx.moveTo(x1, y1)
+                    ctx.lineTo(x2, y2)
+                    ctx.strokeStyle = yData[i] >= colorVal ? (color1) : color2
+                    ctx.lineWidth = lineWidth || cc.lineWidth
+                    ctx.stroke()
+                }
+            } else {
                 ctx.beginPath()
-                ctx.moveTo(x1, y1)
-                ctx.lineTo(x2, y2)
-                ctx.strokeStyle = yData[i] >= cc.colorVal ? cc.color1 : cc.color2
-                ctx.lineWidth = cc.lineWidth
+                ctx.moveTo(xToPx(xData[0]), yToPx(yData[0]))
+                for (let i = 1; i < xData.length; i++) {
+                    ctx.lineTo(xToPx(xData[i]), yToPx(yData[i]))
+                }
+                ctx.strokeStyle = color1
+                ctx.lineWidth = lineWidth || cc.lineWidth
                 ctx.stroke()
             }
-        } else {
-            ctx.beginPath()
-            ctx.moveTo(xToPx(xData[0]), yToPx(yData[0]))
-            for (let i = 1; i < xData.length; i++) {
-                ctx.lineTo(xToPx(xData[i]), yToPx(yData[i]))
-            }
-            ctx.strokeStyle = cc.color1
-            ctx.lineWidth = cc.lineWidth
-            ctx.stroke()
         }
-       
+
+
+
+        this.legendEl.innerHTML = ''
+
+        for (const dataset of this.datasets) {
+            const color = dataset.color1 || this.chartConfig.color1
+            const label = dataset.label || 'Unnamed'
+
+            const item = document.createElement('div')
+            item.style.display = 'flex'
+            item.style.alignItems = 'center'
+            item.style.gap = '5px'
+
+            const colorBox = document.createElement('div')
+            colorBox.style.width = '12px'
+            colorBox.style.height = '12px'
+            colorBox.style.backgroundColor = color
+            colorBox.style.borderRadius = '2px'
+
+            const text = document.createElement('span')
+            text.textContent = label
+            text.style.color = color
+
+            item.appendChild(colorBox)
+            item.appendChild(text)
+            this.legendEl.appendChild(item)
+        }      
 
        
     }

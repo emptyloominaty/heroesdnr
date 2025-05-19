@@ -30,6 +30,9 @@ let open_statisticsCharts = function (btn_el = undefined, reload = false) {
     html += `<button class="button_activated" id="sch_btn_healers" onclick="statsChartsMode = 'healers'; open_statisticsCharts(undefined,true)">Healers</button>`
     html += `<button class="button_activated" id="sch_btn_gold" onclick="statsChartsMode = 'gold'; open_statisticsCharts(undefined,true)">Gold</button>`
     html += `<button class="button_activated" id="sch_btn_heroes" onclick="statsChartsMode = 'heroes'; open_statisticsCharts(undefined,true)">Heroes</button>`
+    html += `<button class="button_activated" id="sch_btn_levels" onclick="statsChartsMode = 'levels'; open_statisticsCharts(undefined,true)">Levels (ML)</button>`
+    html += `<button class="button_activated" id="sch_btn_classes" onclick="statsChartsMode = 'classes'; open_statisticsCharts(undefined,true)">Classes (ML)</button>`
+    html += `<button class="button_activated" id="sch_btn_ranks" onclick="statsChartsMode = 'ranks'; open_statisticsCharts(undefined,true)">Ranks (ML)</button>`
 
 
     html += "<span style='width:100%;'></span>" //next row
@@ -55,24 +58,9 @@ let open_statisticsCharts = function (btn_el = undefined, reload = false) {
     elementsWindow["sch_btn_healers"] = document.getElementById("sch_btn_healers")
     elementsWindow["sch_btn_gold"] = document.getElementById("sch_btn_gold")
     elementsWindow["sch_btn_heroes"] = document.getElementById("sch_btn_heroes")
-
-    /*
-     statistics.age.shift()
-        statistics.rank.shift()
-        statistics.guilds.shift()
-        statistics.level.shift()
-        statistics.adventurousness.shift()
-        statistics.competitiveness.shift()
-        statistics.intelligence.shift()
-        statistics.sociability.shift()
-        statistics.tanks.shift()
-        statistics.damagedealers.shift()
-        statistics.healers.shift()
-        statistics.gold.shift()
-        statistics.heroes.shift()
-        statistics.income.shift()
-    */
-
+    elementsWindow["sch_btn_levels"] = document.getElementById("sch_btn_levels")
+    elementsWindow["sch_btn_classes"] = document.getElementById("sch_btn_classes")
+    elementsWindow["sch_btn_ranks"] = document.getElementById("sch_btn_ranks")
 
     let logX = []
     let x = realtime
@@ -82,69 +70,113 @@ let open_statisticsCharts = function (btn_el = undefined, reload = false) {
     }
 
     if (statsChartsMode === "income") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 10, color1: '#99DD99', color2: '#DD9999', colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.income, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.income, color1: '#99DD99', color2: '#DD9999', colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 10, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_income"].classList.add('button_activated')
     } else if (statsChartsMode === "age") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.age, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.age, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_age"].classList.add('button_activated')
     } else if (statsChartsMode === "rank") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.rank, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.rank, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_rank"].classList.add('button_activated')
     } else if (statsChartsMode === "guilds") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.guilds, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.guilds, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_guilds"].classList.add('button_activated')
     } else if (statsChartsMode === "level") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.level, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.level, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_level"].classList.add('button_activated')
     } else if (statsChartsMode === "adventurousness") {
-        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.adventurousness, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.adventurousness, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_adventurousness"].classList.add('button_activated')
     } else if (statsChartsMode === "competitiveness") {
-        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.competitiveness, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.competitiveness, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_competitiveness"].classList.add('button_activated')
     } else if (statsChartsMode === "intelligence") {
-        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.intelligence, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.intelligence, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_intelligence"].classList.add('button_activated')
     } else if (statsChartsMode === "sociability") {
-        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.sociability, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.sociability, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 2, xTicks: 10, yTicks: 10, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_sociability"].classList.add('button_activated')
     } else if (statsChartsMode === "heroes") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.heroes, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.heroes, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_heroes"].classList.add('button_activated')
     } else if (statsChartsMode === "tanks") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#9999DD', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.tanks, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.tanks, color1: '#9999DD', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_tanks"].classList.add('button_activated')
     } else if (statsChartsMode === "damagedealers") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DD9999', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.damagedealers, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.damagedealers, color1: '#DD9999', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_damagedealers"].classList.add('button_activated')
     } else if (statsChartsMode === "healers") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#99DD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.healers, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.healers, color1: '#99DD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_healers"].classList.add('button_activated')
     } else if (statsChartsMode === "gold") {
-        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, color1: '#DDDD99', color2: false, colorVal: 0, lineWidth: 2}
-        let chart = new Chart(elementsWindow["chart" + windowId], logX, statistics.gold, chartConfig)
+        let datasets = [{xData: logX, yData: statistics.gold, color1: '#DDDD99', color2: false, colorVal: 0}]
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 2}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
         elementsWindow["sch_btn_gold"].classList.add('button_activated')
+    } else if (statsChartsMode === "levels") {
+        let datasets = []
+        const keys = Object.keys(statistics.levels)
+            .map(k => parseInt(k)) 
+            .sort((a, b) => a - b)
+        for (let i = 0; i < keys.length; i++) {
+            const level = statistics.levels[keys[i]]
+            let label = Math.floor(keys[i] * 10) + "-" + (Math.floor(keys[i] * 10)+9)
+            datasets.push({xData: logX, yData: level, color1: colors.levelStatistics[i], color2: false, colorVal: 0, label: label})
+        }
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 1.5}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
+        elementsWindow["sch_btn_levels"].classList.add('button_activated')
+    } else if (statsChartsMode === "classes") {
+        let datasets = []
+        Object.keys(statistics.classes).forEach(key => {
+            datasets.push({xData: logX, yData: statistics.classes[key], color1: colors[key], color2: false, colorVal: 0, label: key})
+        })
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 1.5}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
+        elementsWindow["sch_btn_classes"].classList.add('button_activated')
+    } else if (statsChartsMode === "ranks") {
+        let datasets = []
+        Object.keys(statistics.ranks).forEach(key => {
+            datasets.push({xData: logX, yData: statistics.ranks[key], color1: colors.ranks[key], color2: false, colorVal: 0, label: key})
+        })
+        let chartConfig = {xRounding: 0, yRounding: 0, xTicks: 10, yTicks: 20, lineWidth: 1.5}
+        let chart = new Chart(elementsWindow["chart" + windowId], datasets, chartConfig)
+        elementsWindow["sch_btn_ranks"].classList.add('button_activated')
     }
 
 
 
     const buttons = [
-        elementsWindow.sch_btn_income, elementsWindow.sch_btn_age, elementsWindow.sch_btn_rank, elementsWindow.sch_btn_guilds, elementsWindow.sch_btn_level, elementsWindow.sch_btn_adventurousness
-        , elementsWindow.sch_btn_competitiveness, elementsWindow.sch_btn_intelligence, elementsWindow.sch_btn_heroes
-        , elementsWindow.sch_btn_sociability, elementsWindow.sch_btn_tanks, elementsWindow.sch_btn_damagedealers, elementsWindow.sch_btn_healers, elementsWindow.sch_btn_gold
+        elementsWindow.sch_btn_income, elementsWindow.sch_btn_age, elementsWindow.sch_btn_rank, elementsWindow.sch_btn_guilds, elementsWindow.sch_btn_level, elementsWindow.sch_btn_adventurousness,
+        elementsWindow.sch_btn_competitiveness, elementsWindow.sch_btn_intelligence, elementsWindow.sch_btn_heroes,
+        elementsWindow.sch_btn_sociability, elementsWindow.sch_btn_tanks, elementsWindow.sch_btn_damagedealers, elementsWindow.sch_btn_healers, elementsWindow.sch_btn_gold, elementsWindow.sch_btn_levels,
+        elementsWindow.sch_btn_classes, elementsWindow.sch_btn_ranks
     ]
     buttons.forEach(button => button.classList.remove('button_activated'))
 
