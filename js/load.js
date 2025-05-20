@@ -36,7 +36,11 @@ function loadGame() {
     buildBuilding("inn", {x: -350, y: -150})
     buildBuilding("potionShop", {x: -280, y: -80})
     buildBuilding("recruitmentHall", {x: 0, y: -125})
+    buildBuilding("blacksmith", {x: -150, y: 75})
 
+    buildBuilding("dungeonController", {x: -530, y: 0}, {minlvl: 1, maxlvl: 25})
+    buildBuilding("dungeonController", {x: 50, y: 350}, {minlvl: 20, maxlvl: 50})
+    buildBuilding("dungeonController", {x: 450, y: 70}, {minlvl: 40, maxlvl: 100})
 
 
     //TEST

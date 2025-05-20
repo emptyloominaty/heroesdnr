@@ -38,7 +38,7 @@ class Building {
     }
 
     upgrade() {
-        if (this.level<this.upgradeCost.length && gold>this.upgradeCost[this.level-1]) {
+        if (this.level<this.upgradeCost.length && gold>this.upgradeCost[this.level]) {
             this.level++
             gold -= this.upgradeCost[this.level - 1]
             this.levelUpdate()

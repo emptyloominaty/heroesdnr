@@ -21,10 +21,9 @@ class Character {
             "Health": 0, "Mana": 0, "Agility": 0, "Strength": 0, "Resurrection":0}
     }
 
-    slots = {hand: new Item("hand",1,1) , head: new Item("head",1,1), chest: new Item("chest",1,1),legs: new Item("legs",1,1)
-        ,feet: new Item("feet",1,1),weapon: new Item("weapon",1,1)  }
+    slots 
     ilvl = 1
-    itemsBonus = {dps: {base:1,mul:1}, dtps: {base:1,mul:1}}
+    itemsBonus 
 
 
     rankPoints = 0
@@ -136,10 +135,16 @@ class Character {
         this.startAdventurousness = this.adventurousness
         this.startCompetitiveness = this.competitiveness
 
+        this.slots = {
+            hand: new Item("hand", 1, 1), head: new Item("head", 1, 1), chest: new Item("chest", 1, 1), legs: new Item("legs", 1, 1)
+            , feet: new Item("feet", 1, 1), weapon: new Item("weapon", 1, 1)
+        }
+        this.ilvl = 1
+        this.itemsBonus = {dps: {base: 1, mul: 1}, dtps: {base: 1, mul: 1}}
 
     }
 
-
+   
 
     update() {
         this.canTalk = !this.goingToDungeon && !this.isInDungeon && !this.goingToInn && !this.goingToPotionShop && this.status !== "Eating" && this.status !== "Sleeping" && this.status !== "Buying" 
@@ -550,8 +555,8 @@ class Character {
         let rng2 = Math.random()
         let dcId = Math.floor(Math.random() * dungeonControllers.length)
 
-        let soloChance = 0.1 * this.adventurousness
-        let groupChance = 0.1 * this.adventurousness
+        let soloChance = 0.035 * this.adventurousness
+        let groupChance = 0.07 * this.adventurousness
 
         if (rng < soloChance) { // SOLO DUNGEON
             this.goingToDungeon = true
@@ -659,6 +664,10 @@ class Character {
         for (let i = 0; i < heroes.length; i++) {
             let hero = heroes[i]
             if (hero !== this && hero.inTown && hero.canTalk && (loop === 4 || (hero.level >= minLevel && hero.level <= maxLevel))) {
+                if (group.includes(hero)) {
+                    continue
+                }
+
                 let guildGroup = false
                 if (this.inGuild && this.guildId === hero.guildId) {
                     guildGroup = true

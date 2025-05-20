@@ -6,6 +6,7 @@ let ghostBuilding = {
     size: [2, 2],
     type: "road",
     price: 0,
+    data: {}
 }
 
 function changeRoadSize(x, y) {
@@ -73,11 +74,14 @@ function placeBuilding(x, y, w, h, ignorePrice = false) {
     } else if (ghostBuilding.type === "potionShop") {
         buildings.push(new PotionShop({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Potion Shop", 1))
         gridCellAddObj(bGrid, buildings[buildings.length - 1])
+    } else if (ghostBuilding.type === "blacksmith") {
+        buildings.push(new Blacksmith({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Blacksmith", 1))
+        gridCellAddObj(bGrid, buildings[buildings.length - 1])
     } else if (ghostBuilding.type === "recruitmentHall") {
         buildings.push(new RecruitmentHall({x: (x + w / 2 - 0.5) * buildingCellSize, y: (y + h / 2 - 0.5) * buildingCellSize}, "Recruitment Hall", 1))
         gridCellAddObj(bGrid, buildings[buildings.length - 1])
     } else if (ghostBuilding.type === "dungeonController") {
-        dungeonControllers.push(new DungeonController((x + w / 2 - 0.5) * buildingCellSize, (y + h / 2 - 0.5) * buildingCellSize))
+        dungeonControllers.push(new DungeonController((x + w / 2 - 0.5) * buildingCellSize, (y + h / 2 - 0.5) * buildingCellSize, ghostBuilding.data))
         gridCellAddObj(bGrid, dungeonControllers[dungeonControllers.length - 1])
     } else if (ghostBuilding.type === "torchSmall" || ghostBuilding.type === "torchMedium" || ghostBuilding.type === "torchLarge") {
         gridCellAddObj(bGrid, new Torch(1,1,ghostBuilding.type))
@@ -191,13 +195,14 @@ function buildRoad(x = 2, y = 2, location = false, type = "road") {
 }
 
 let buildingsConfig = {
-    "inn": {max: 10, w:12, h:8, price: 500},
+    "inn": {max: 10, w: 12, h: 8, price: 1000},
+    "blacksmith": {max: 1, w: 6, h: 6, price: 750},
     "potionShop": {max: 1, w:4, h:4, price: 200},
-    "recruitmentHall": {max: 1, w:8, h:7, price: 500},
+    "recruitmentHall": {max: 1, w:8, h:7, price: 600},
     "dungeonController":{max: 100, w:12, h:12, price: 0},
 }
 
-function buildBuilding(type = "",location = false) {
+function buildBuilding(type = "", location = false, data = {}) {
     if (!countBuildings(type,buildingsConfig[type].max)) {
         return false
     }
@@ -206,6 +211,7 @@ function buildBuilding(type = "",location = false) {
         size: [buildingsConfig[type].w, buildingsConfig[type].h],
         type: type,
         price: buildingsConfig[type].price,
+        data: data
     }
     if (location !== false) {
         placeBuilding(location.x/buildingCellSize, location.y/buildingCellSize, buildingsConfig[type].w, buildingsConfig[type].h, true)

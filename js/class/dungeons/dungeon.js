@@ -9,9 +9,16 @@ class DungeonController {
     minlvl = 1
     maxlvl = 25
 
-    constructor (x,y) {
+    constructor (x,y,data) {
         this.location.x = x
         this.location.y = y
+        console.log(data)
+
+        if (Object.keys(data).length > 0) {
+            this.minlvl = data.minlvl
+            this.maxlvl = data.maxlvl
+
+        }
 
         addSpellVisualEffects(this.location.x - 25, this.location.y - 25, 90, "fire", {size: 0, speed: 0, target: {x: this.location.x - 25, y: this.location.y - 25}, color: "#ffd876", onEnd: {name: "explode", size: 1}, onRun: {ignoreLifeSize: false, name: "fire", size: 0.4, life: 1, speed: 10, area: 1.5, color1: "#ffe784", color2: "#ffce5a", color3: "rgba(255, 139, 118, 0.1)"}},
             {radius:200,color:'rgba(255, 160, 80, 1)',duration:-1,decTimer:0.2})
@@ -75,9 +82,10 @@ class DungeonController {
         } else {
             level = maxHeroLvl
         }
-
         //TODO:
-        //level = 1
+        /*if (level > this.maxlvl) {
+            level = this.maxlvl
+        }*/
 
         dungeonSpeed = c / heroes.length
         let difficulty = 0.75
@@ -90,7 +98,7 @@ class DungeonController {
         }
 
         //TODO:dungeontype rng
-        //TODO:normal,heroic,mythic   maxlevel*2 maxlevel*3
+        //TODO:normal,heroic,mythic   maxlevel*1.1 maxlevel*1.25
 
         this.currentRuns.push({type: type, heroes: heroes, level: level, stage: 0, timeStarted: realtime, timeFinished: 0, dungeon: this.generateDungeon(difficulty, level), log: [], dungeonSpeed: dungeonSpeed})
         let run = this.currentRuns[this.currentRuns.length - 1]
@@ -598,9 +606,9 @@ class DungeonController {
             let dpsRng = 0.75 + (Math.random()/2)
             let dtpsRng = 0.75 + (Math.random() / 2)
             stages.push({
-                dpsReq: 12 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)),
+                dpsReq: 4 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.9), //2.0-2.1?
                 enemies: enemies,
-                dtpsReq: 4 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * (0.5 + (level * 0.5)), //TODO LEVEL ????
+                dtpsReq: 1 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.9),  //2.0-2.1?
                 damageType: pickRandom(["physical", "magic"]),
                 aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,

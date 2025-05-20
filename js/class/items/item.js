@@ -11,15 +11,25 @@ class Item {
 
 
     getBase() {
+        if (this.slot === "weapon") {
+            return this.level * (3 + (this.quality * 0.06))
+        }
         return this.level * (1+(this.quality*0.02))
     }
 
     getMul() {
-        return ((this.level*0.05))+((this.quality*0.025)-0.025)
+        if (this.slot === "weapon") {
+            return ((this.level * 0.30)) * (this.quality * 0.06)
+        } else {
+            return ((this.level * 0.10)) * (this.quality * 0.02)
+        }
+       
     }
 
-    getPrice() {
-        return 5 + ((4*this.level) * this.quality)
+    getilvl() {
+        if (this.slot === "weapon") {
+            return this.level*3
+        }
+        return this.level
     }
-
 }
