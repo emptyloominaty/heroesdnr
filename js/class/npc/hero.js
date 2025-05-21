@@ -58,7 +58,6 @@ class Hero extends Character {
     }
 
     updateStats() {
-        this.updateEquippedItems()
 
         let intScaling = heroesConfig[this.characterClass][this.characterSpec].intS
         let intMultiplier = Math.pow(this.intelligence, intScaling)
@@ -188,30 +187,6 @@ class Hero extends Character {
         let specMultiplier = heroesConfig[this.characterClass][this.characterSpec].dtpsM
         return Math.round((base * armorBonus) * roleMultiplier * specMultiplier * skill)+1
     }
-
-    updateEquippedItems() {
-        let il = 0
-        let base = 0
-        let mul = 0
-        let ia = 0
-        let iw = 0
-        Object.entries(this.slots).forEach(([key, value]) => {
-            il += value.level
-            if (key==="weapon") {
-                iw++
-                this.itemsBonus.dps.base = value.getBase()
-                this.itemsBonus.dps.mul = 1 + value.getMul()
-            } else {
-                ia++
-                base += value.getBase()
-                mul += value.getMul()
-            }
-        })
-        this.ilvl = il / (ia+iw)
-        this.itemsBonus.dtps.base = base / ia
-        this.itemsBonus.dtps.mul = 1 + (mul / ia)
-    }
-
 
     leaveTown() {
         removeFromGrid(this)

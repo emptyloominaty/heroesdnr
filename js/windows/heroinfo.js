@@ -35,8 +35,9 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
         elementsWindow.sk8.textContent = Math.round(hero.skill[8]*100)/100
 
         elementsWindow.gold.textContent = getNumberString(hero.inventory.gold)
-        elementsWindow.weapon.textContent = hero.inventory.weaponLevel
-        elementsWindow.armor.textContent = hero.inventory.armorLevel
+        elementsWindow.ilvl.textContent = getNumberString(hero.ilvl)
+        elementsWindow.weapon.textContent = Math.round(hero.itemsBonus.dps.base) + "/" + Math.round((1+hero.itemsBonus.dps.mul) * 100) / 100
+        elementsWindow.armor.textContent = Math.round(hero.itemsBonus.dtps.base) + "/" + Math.round((1 + hero.itemsBonus.dtps.mul) * 100) / 100
 
         elementsWindow.xp.textContent = getNumberString2(hero.xp)
         elementsWindow.xpNeed.textContent = getNumberString2(hero.xpNeed)
@@ -217,6 +218,29 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
       <td id="hi_gold" class="heroinfoInv2">${getNumberString(hero.inventory.gold)}</td>
     </tr>
     <tr>
+      <td class="heroinfoInv1"><strong>Potions</strong></td>
+      <td id="hi_potion1" class="heroinfoInv2"><span class="txtG">Health:</span> ${getNumberString(hero.inventory.potions["Health"])}</td>
+      <td id="hi_potion1" class="heroinfoInv2"><span class="txtG">Mana:</span> ${getNumberString(hero.inventory.potions["Mana"])}</td>
+      <td id="hi_potion1" class="heroinfoInv2"><span class="txtG">Agility:</span> ${getNumberString(hero.inventory.potions["Agility"])}</td>
+      <td id="hi_potion1" class="heroinfoInv2"><span class="txtG">Strength:</span> ${getNumberString(hero.inventory.potions["Strength"])}</td>
+      <td id="hi_potion1" class="heroinfoInv2"><span class="txtG">Resurrection:</span> ${getNumberString(hero.inventory.potions["Resurrection"])}</td>
+    </tr>
+
+    <tr>
+      <td class="heroinfoInv1"><strong>Items</strong></td> 
+       <td id="hi_item1" class="heroinfoInv2"><span class="txtG">Head:</span> ${hero.slots.head.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.head.quality)}"> ${getItemQuality(hero.slots.head.quality)}</span></td>
+       <td id="hi_item2" class="heroinfoInv2"><span class="txtG">Chest:</span> ${hero.slots.chest.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.chest.quality)}"> ${getItemQuality(hero.slots.chest.quality)}</span></td>
+       <td id="hi_item3" class="heroinfoInv2"><span class="txtG">Hands:</span> ${hero.slots.hands.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.hands.quality)}"> ${getItemQuality(hero.slots.hands.quality)}</span></td>
+       <td id="hi_item4" class="heroinfoInv2"><span class="txtG">Legs:</span> ${hero.slots.legs.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.legs.quality)}"> ${getItemQuality(hero.slots.legs.quality)}</span></td>
+       <td id="hi_item5" class="heroinfoInv2"><span class="txtG">Feet:</span> ${hero.slots.feet.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.feet.quality)}"> ${getItemQuality(hero.slots.feet.quality)}</span></td>
+       <td id="hi_item6" class="heroinfoInv2"><span class="txtG">Weapon:</span> ${hero.slots.weapon.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.weapon.quality)}"> ${getItemQuality(hero.slots.weapon.quality)}</span></td>
+    </tr>
+
+    <tr>
+      <td class="heroinfoInv1"><strong>ilvl</strong></td>
+      <td id="hi_ilvl" class="ilvl">${getNumberString(hero.ilvl)}</td>
+    </tr>
+    <tr>
       <td class="heroinfoInv1"><strong>Weapon base/mul</strong></td>
       <td id="hi_weapon" class="heroinfoInv2">${getNumberString(hero.itemsBonus.dps.base)}/${getNumberString(hero.itemsBonus.dps.mul)}</td>
     </tr>
@@ -237,25 +261,14 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     }
     html += `<div class="hi_log" id="hi_log">${logText}</div> `
 
-    logText = ""
-
-
-    Object.entries(hero.friendships).forEach(([key, value]) => {
-        if (charactersMap[key]) {
-            let color
-            if (value > 10) {
-                color = colors.log.success
-            } else if (value >= 0) {
-                color = colors.log.levelUp
-            } else {
-                color = colors.log.failure
-            }
-            logText += "<span style='color:" + color + "'>" + charactersMap[key].name + ": " + Math.round(value*10)/10 + "</span><br>"
-        }
-    })
-
    
-    html += `<div class="hi_log" id="hi_log2">${logText}</div> `
+    logText = ""
+    for (let i = hero.itemlog.length - 1; i >= 0; i--) {
+        logText += "<span style='color:" + colors.logTime + "'>" + getTime2(hero.itemlog[i].time) + "</span>: " + hero.itemlog[i].message + "<br>"
+    }
+    html += `<div class="hi_log" id="hi_itemlog">${logText}</div> `
+
+    
 
     let groupHtml = ""
     for (let i = 0; i < hero.dungeonGroup.length; i++) {
@@ -268,6 +281,28 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     }
 
     //TODO:  statistics,
+
+    html += "<span style='width:100%;'></span>" //next row
+    html += "<div class='heroinfoText'></div>"
+
+    logText = ""
+    Object.entries(hero.friendships).forEach(([key, value]) => {
+        if (charactersMap[key]) {
+            let color
+            if (value > 10) {
+                color = colors.log.success
+            } else if (value >= 0) {
+                color = colors.log.levelUp
+            } else {
+                color = colors.log.failure
+            }
+            logText += "<span style='color:" + color + "'>" + charactersMap[key].name + ": " + Math.round(value * 10) / 10 + "</span><br>"
+        }
+    })
+
+
+    html += `<div class="hi_log" id="hi_log2">${logText}</div> `
+
 
     html += "<span style='width:100%;'></span>" //next row
     html += "<div class='heroinfoText'></div>"
@@ -306,6 +341,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     elementsWindow.gold = document.getElementById("hi_gold")
     elementsWindow.weapon = document.getElementById("hi_weapon")
     elementsWindow.armor = document.getElementById("hi_armor")
+    elementsWindow.ilvl = document.getElementById("hi_ilvl")
 
     elementsWindow.xp = document.getElementById("hi_xp")
     elementsWindow.xpNeed = document.getElementById("hi_xpNeed")
@@ -323,6 +359,7 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     elementsWindow.log = document.getElementById("hi_log")
     elementsWindow.friends = document.getElementById("hi_friends")
     elementsWindow.group = document.getElementById("hi_group")
+    elementsWindow.itemlog = document.getElementById("hi_itemlog")
 }
 
 

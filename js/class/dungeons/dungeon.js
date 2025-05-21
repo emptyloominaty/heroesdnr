@@ -134,6 +134,9 @@ class DungeonController {
             heroes[i].gainGold(run.dungeon.rewards.gold / heroes.length)
             heroes[i].gainXp(run.dungeon.rewards.xp / heroes.length)
             heroes[i].gainRankPoints(run.dungeon.rewards.rankPoints / heroes.length)
+            if (Math.random() < 0.45) {
+                this.dropItem(heroes[i], run.level)
+            }
             if (type === "solo") {
                 heroes[i].statistics.dungeonSoloRuns.success++
                 //heroes[i].addLog(messages.heroLog.dungeonSuccess("dungeon"))
@@ -254,6 +257,9 @@ class DungeonController {
                 run.heroes[i].gainRankPoints(stage.reward.rankPoints / run.heroes.length)
                 this.updateFriends(run.heroes, i, 0.1, 1)
                 this.reduceSkills(run.heroes[i], -0.01, 0.001)
+                if (Math.random() < 0.05) {
+                    this.dropItem(run.heroes[i],run.level)
+                }
             }
     
             stageResult = "Success"
@@ -320,6 +326,21 @@ class DungeonController {
 
         return {
             rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
+        }
+    }
+
+    dropItem(hero, level) {
+        let quality = getRandomQuality("dungeon",hero.luck)
+        let slot = getRandomSlot()
+        hero.itemlog.push({time: realtime, message: "New item (dungeon): " + slot + " " + level + " lvl <span style='color: " + getQualityColor(quality) + "'>" + getItemQuality(quality) + "</span>"})
+        if (hero.itemlog.length > 100) {
+            hero.itemlog.shift()
+        }
+
+        if (shouldReplace(hero.slots[slot].level, hero.slots[slot].quality, level, quality)) {
+            hero.slots[slot] = new Item(slot, level, quality)
+        } else {
+            hero.inventory.gold += Math.pow(10 * level * quality, 1.4) / 5
         }
     }
 
@@ -606,9 +627,9 @@ class DungeonController {
             let dpsRng = 0.75 + (Math.random()/2)
             let dtpsRng = 0.75 + (Math.random() / 2)
             stages.push({
-                dpsReq: 4 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.9), //2.0-2.1?
+                dpsReq: 4 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
                 enemies: enemies,
-                dtpsReq: 1 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.9),  //2.0-2.1?
+                dtpsReq: 1 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
                 damageType: pickRandom(["physical", "magic"]),
                 aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,

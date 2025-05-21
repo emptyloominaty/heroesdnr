@@ -1,7 +1,7 @@
 class Blacksmith extends Building {
     upgradeCost = [0, 1000, 1000, 2000, 2000]
     dailyCost = [10, 30, 50, 100, 200]
-    prices = {hand:10,head:10,chest:10,legs:10,feet:10,weapon:30,finger:10,trinket:10}
+    prices = {hands:10,head:10,chest:10,legs:10,feet:10,weapon:30,finger:10,trinket:10}
 
     constructor(location, name, level = 1) {
         super(location, name, level)
@@ -54,8 +54,8 @@ class Blacksmith extends Building {
     buyItem(slot, hero, level) {
         this.buy(this.getPrice(slot,level), hero)
         let sellItem = hero.slots[slot] 
-        hero.inventory.gold += (this.getPrice(slot, sellItem.level, sellItem.quality))/3
-
+        hero.inventory.gold += (this.getPrice(slot, sellItem.level, sellItem.quality)) / 5
+        hero.itemlog.push({time: realtime, message: "New item (blacksmith): " + slot + " " + level + " lvl " + " lvl <span style='color: " + getQualityColor(1) + "'>" + getItemQuality(1)+"</span>"})
         hero.slots[slot] = new Item(slot, level, 1)
         hero.updateItems()
    

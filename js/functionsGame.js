@@ -134,3 +134,20 @@ function updateSkill(s, val, low = 0.4, mid = 0.7, high = 1.0) {
 	}     
 	return s
 }
+
+function getItemQuality(quality) {
+	if (quality === 1) {
+		return "Normal"
+	} else if (quality === 2) {
+		return "Uncommon"
+	} else if (quality === 3) {
+		return "Rare"
+	} else if (quality === 4) {
+		return "Epic"
+	} else if (quality === 5) {
+		return "Legendary"
+	} else if (quality === 6) {
+		return "Mythic"
+	}
+	return ""
+}

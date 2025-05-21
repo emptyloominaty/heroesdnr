@@ -1,3 +1,68 @@
+const effectiveLevelMultiplier = {
+    1: 1.00,
+    2: 0.84,
+    3: 0.73,
+    4: 0.66,
+    5: 0.60,
+    6: 0.54
+}
+
+function shouldReplace(oldLevel, oldQuality, newLevel, newQuality = 1) {
+    let effectiveOld = oldLevel / effectiveLevelMultiplier[oldQuality]
+    let effectiveNew = newLevel / effectiveLevelMultiplier[newQuality]
+    return effectiveNew > effectiveOld
+}
+
+let iqc = {
+    "dungeon": [0.95, 0.16, 0.03, 0.001, 0.00001],
+    "quest": [0.25, 0.08, 0.01, 0.001, 0.00001],
+    "raid": [0.95, 0.21, 0.07, 0.001, 0.00001],
+}
+
+function getRandomQuality(drop = "dungeon", luck = 1) {
+    let rng = Math.random()
+    if (rng < iqc[drop][4] * luck) return 6
+    if (rng < iqc[drop][3] * luck) return 5
+    if (rng < iqc[drop][2] * luck) return 4
+    if (rng < iqc[drop][1] * luck) return 3
+    if (rng < iqc[drop][0] * luck) return 2
+    return 1
+}
+
+
+
+function getRandomSlot() {
+    let rng = Math.random()
+    if (rng < 0.16) {
+        return "hands"
+    } else if (rng < 0.32) {
+        return "head"
+    } else if (rng < 0.48) {
+        return "chest"
+    } else if (rng < 0.64) {
+        return "legs"
+    } else if (rng < 0.80) {
+        return "feet"
+    } else {
+        return "weapon"
+    }
+}
+
+function getQualityColor(quality) {
+    if (quality === 6) {
+        return "#EE0303"
+    } else if (quality === 5) {
+        return "#FF8000"
+    } else if (quality === 4) {
+        return "#A335EE"
+    } else if (quality === 3) {
+        return "#0070DD"
+    } else if (quality === 2) {
+        return "#1EFF00"
+    }
+    return "#FFFFFF"
+}
+
 class Item {
     slot = "head" //head, chest, legs, feet, hands, weapon
     level = 1
@@ -28,8 +93,8 @@ class Item {
 
     getilvl() {
         if (this.slot === "weapon") {
-            return this.level*3
+            return this.level * 3 / effectiveLevelMultiplier[this.quality]
         }
-        return this.level
+        return this.level / effectiveLevelMultiplier[this.quality]
     }
 }

@@ -256,3 +256,7 @@ tr:nth-child(odd) {
     display: flex;
     flex-direction: column;
 }
+
+.txtG {
+    color: #888888;
+}

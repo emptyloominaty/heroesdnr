@@ -15,8 +15,8 @@ class Character {
 
     sleepBuildingId = -1
 
-    inventory = { //TODO:REMOVE wep,armor
-        weaponLevel: 1, weaponQuality: 1, armorLevel: 1, armorQuality: 1, items: [], gold: 100,
+    inventory = { 
+        items: [], gold: 100,
         potions: {
             "Health": 0, "Mana": 0, "Agility": 0, "Strength": 0, "Resurrection":0}
     }
@@ -29,6 +29,7 @@ class Character {
     rankPoints = 0
 
     log = []
+    itemlog = []
 
     fatigue = 100 
     fatigueRate = 1.0
@@ -48,6 +49,7 @@ class Character {
     sociability = 0.1 + Math.random() * 0.9
     competitiveness = 0
     adventurousness = 0.1 + Math.random() * 0.9
+    luck = 1
 
     speed = 4
     role = "dps"
@@ -59,6 +61,7 @@ class Character {
     wandering = false
     goingToInn = false
     goingToPotionShop = false
+    goingToBlacksmith = false
     potionsNeeded = []
     potionsCount = []
     buildingId = 0
@@ -98,8 +101,11 @@ class Character {
         this.hungerRate = 0.95 + (Math.random() * 0.1)
         this.destination = {x: location.x, y: location.y}
 
+        this.inventory.gold = 500 + (Math.random()*500)
+
         this.idleTimer = 2 + Math.random() * 15
 
+        this.luck = 0.85 + (Math.random()*0.3)
         this.loyalty = 0.2 + Math.random() * 0.79
         this.sociability = 0.1 + Math.random() * 0.9
         this.adventurousness = 0.1 + Math.random() * 0.9
@@ -136,7 +142,7 @@ class Character {
         this.startCompetitiveness = this.competitiveness
 
         this.slots = {
-            hand: new Item("hand", 1, 1), head: new Item("head", 1, 1), chest: new Item("chest", 1, 1), legs: new Item("legs", 1, 1)
+            hands: new Item("hand", 1, 1), head: new Item("head", 1, 1), chest: new Item("chest", 1, 1), legs: new Item("legs", 1, 1)
             , feet: new Item("feet", 1, 1), weapon: new Item("weapon", 1, 1)
         }
         this.ilvl = 1
@@ -212,13 +218,20 @@ class Character {
             if (this.goingToPotionShop) {
                 this.goingToPotionShop = false
                 this.status = "Buying"
-                this.buyingTimer += 1 + (Math.random()*2)
+                this.buyingTimer += 1 + (Math.random()*5)
                 for (let i = 0; i < this.potionsNeeded.length; i++) {
                     buildings[this.buildingId].buyPotion(this.potionsNeeded[i], this, this.potionsCount[i])
                     this.buyingTimer += 1 + (Math.random() * 1)
                 }
             }
 
+            if (this.goingToBlacksmith) {
+                this.goingToBlacksmith = false
+                this.status = "Buying"
+                this.buyingTimer += 5 + (Math.random() * 10)
+                this.checkBlacksmith(true)
+            }
+            
 
             if (this.wandering) {
                 this.status = "Waiting"
@@ -244,9 +257,13 @@ class Character {
                         if (!this.inGuild && this.formGuild()) {
                             return
                         }
-                        if (gold>100 && Math.random() > 0.6 && this.checkPotions()) {
+                        if (this.inventory.gold > 100 + Math.pow(10 * this.level, 1.4) && Math.random() < 0.95 && this.checkBlacksmith(false)) {
                             return
                         }
+                        if (this.inventory.gold > 100 && Math.random() < 0.6 && this.checkPotions()) {
+                            return
+                        }
+        
                         let rng = Math.random()
                         this.wandering = true
                         this.idleTimer = 5 + Math.random() * 5
@@ -429,8 +446,69 @@ class Character {
         }
     }
 
+    checkBlacksmith(buy = false) {
+        let itemsUpgrade = []
+        Object.keys(this.slots).forEach(key => {
+            if (shouldReplace(this.slots[key].level, this.slots[key].quality,this.level,1)) {
+                itemsUpgrade.push(key)
+            }
+        })
+        if (itemsUpgrade.length === 0) {
+            return false
+        }
+        let budget = this.inventory.gold - 100
+        let buildingId = -1
+        for (let i = 0; i < buildings.length; i++) {
+            if (buildings[i].type === "blacksmith") {
+                buildingId = i
+                break
+            }
+        }
+        if (buildingId === -1) {
+            return false
+        }
+
+        return this.buyBlacksmith(itemsUpgrade, buy, buildingId, budget)
+    }
+
+    buyBlacksmith(itemsUpgrade, buy, buildingId, budget) {
+        let building = buildings[buildingId]
+        let cost = []
+        for (let i = 0; i < itemsUpgrade.length; i++) {
+            cost.push(buildings[buildingId].getPrice(itemsUpgrade[i], this.level))
+        }
+        let a = 0
+        for (let i = 0; i < cost.length; i++) {
+            if (cost[i] <= budget) {
+                a++
+            }
+        }
+
+        if (a > 0 && !buy) {
+            this.goingToBlacksmith = true
+            let bsize = [building.size[0] - 1, building.size[1] - 1]
+            let xx = building.location.x - (bsize[0] / 2) + (Math.random() * bsize[0])
+            let yy = building.location.y - (bsize[1] / 2) + (Math.random() * bsize[1]) - 1
+            this.destination = {x: xx, y: yy}
+            this.buildingId = buildingId
+            return true
+        }
+        if (a > 0 && buy) {
+            for (let i = 0; i < itemsUpgrade.length; i++) {
+                if (cost[i] <= budget) {
+                    buildings[buildingId].buyItem(itemsUpgrade[i], this, this.level)
+                    budget -= cost[i]
+                } else {
+                    break
+                }
+            }
+            return true
+        }
+        return false
+    }
+
     checkPotions() {
-        let budget = this.inventory.gold / 2
+        let budget = this.inventory.gold - 100
         let buildingId = -1
         for (let i = 0; i < buildings.length; i++) {
             if (buildings[i].type === "potionShop") {

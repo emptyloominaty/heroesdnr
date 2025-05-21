@@ -73,11 +73,11 @@ let open_heroeslist = function (btn_el = undefined, reload = false, update = fal
                     elementsWindow.hl_location[i].textContent = getNumberString(hero.rankPoints)
                     elementsWindow.hl_destination[i].textContent = Math.round(hero.speed*100)/100
                 } else if (heroesListTableMode==="inventory") {
-                    elementsWindow.hl_dps[i].textContent = getNumberString(hero.ilvl)
+                    elementsWindow.hl_dps[i].textContent = Math.round(hero.ilvl*10)/10
                     elementsWindow.hl_hps[i].textContent = "+"+getNumberString(hero.itemsBonus.dps.base)
-                    elementsWindow.hl_dtps[i].textContent = getNumberString(hero.itemsBonus.dps.mul)+"x"
+                    elementsWindow.hl_dtps[i].textContent = (Math.round(hero.itemsBonus.dps.mul * 100) / 100) + "x"
                     elementsWindow.hl_gold[i].textContent = "+"+getNumberString(hero.itemsBonus.dtps.base)
-                    elementsWindow.hl_fatigue[i].textContent = getNumberString(hero.itemsBonus.dtps.mul)+"x"
+                    elementsWindow.hl_fatigue[i].textContent = (Math.round(hero.itemsBonus.dtps.mul*100)/100)+"x"
                     elementsWindow.hl_hunger[i].textContent = hero.inventory.potions["Health"] + "/" + hero.inventory.potions["Mana"] + "/" + hero.inventory.potions["Strength"] + "/" + hero.inventory.potions["Agility"] + "/" + hero.inventory.potions["Resurrection"]
                     elementsWindow.hl_location[i].textContent = ""
                     elementsWindow.hl_destination[i].textContent = getNumberString(hero.inventory.gold)
