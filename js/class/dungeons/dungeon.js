@@ -106,6 +106,7 @@ class DungeonController {
         for (let i = 0; i<run.dungeon.stages.length; i++) {
             run.dungeon.stages[i].chances = this.getChances(run,i)
         }
+        return run.dungeon.stages
     }
 
     updateStagesSpeed(run) {
@@ -180,7 +181,7 @@ class DungeonController {
             }
         }
 
-        if (Math.random() > (1.2 - (Math.pow((stage.chances.death / 100)*(maxInt), 0.4)))) {
+        if (Math.random() > (1.17 - (Math.pow((stage.chances.death / 100)*(maxInt), 0.4)))) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
@@ -293,7 +294,7 @@ class DungeonController {
                     run.heroes[i].statistics.dungeonSoloRuns.criticalFailure++
                     this.reduceSkills(run.heroes[i], 0.01, 0.001)
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / run.heroes.length)
-                    if (Math.random() > 1 - 0.25 / Math.pow(Math.max(0.2, run.heroes[i].critFailD), 0.75)) {
+                    if (Math.random() > 1 - 0.08 / Math.pow(Math.max(0.2, run.heroes[i].critFailD), 0.75)) {
                         if (run.heroes.length === 1) {
                             stageResult = "Death"
                         }
@@ -310,7 +311,7 @@ class DungeonController {
                 for (let i = 0; i < run.heroes.length; i++) {
                     run.heroes[i].statistics.dungeonSoloRuns.failure++
                     run.heroes[i].gainRankPoints(-stage.reward.rankPoints / 2 / run.heroes.length)
-                    if (Math.random() > 0.995) {
+                    if (Math.random() > 0.9995) {
                         if (run.heroes.length===1) {
                             stageResult = "Death"
                         }
@@ -432,7 +433,7 @@ class DungeonController {
         let deathChance = 0
 
         if (criticalFailureChance>0) {
-            deathChance = (0.25 / Math.pow(Math.max(0.2, heroesCritFailD), 0.75))*criticalFailureChance
+            deathChance = (0.08 / Math.pow(Math.max(0.2, heroesCritFailD), 0.75))*criticalFailureChance
         }
 
         return {
@@ -624,12 +625,12 @@ class DungeonController {
 
             let dpsMultiplier = enemies === "aoe" ? 2 : 1
             let timer = 30 + Math.random() * (isBoss ? 40 : 20)
-            let dpsRng = 0.75 + (Math.random()/2)
-            let dtpsRng = 0.75 + (Math.random() / 2)
+            let dpsRng = 0.9 + (Math.random()/5)
+            let dtpsRng = 0.9 + (Math.random() / 5)
             stages.push({
-                dpsReq: 4 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
+                dpsReq: 3 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
                 enemies: enemies,
-                dtpsReq: 1 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
+                dtpsReq: 0.75 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
                 damageType: pickRandom(["physical", "magic"]),
                 aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,
@@ -651,3 +652,47 @@ class DungeonController {
 }
 
 let dungeonControllers = []
+
+
+
+let testDungeon = function () {
+    for (let i = 1; i < 100; i++) {
+        let dCh = 0
+        let cfCh = 0
+        let dCh2 = 0
+        let cfCh2 = 0
+        let sCh = 0
+        let sCh2 = 0
+        let j = 0
+        for (j = 0; j <= 50; j++) {
+            let hero = new Hero("", 20, i, 100, "Warrior", "dps", {x: 0, y: 0}, false, true)
+
+            Object.keys(hero.slots).forEach(key => {
+                hero.slots[key] = new Item(key,i,1)
+            })
+            hero.updateItems()
+
+
+            let c = dungeonControllers[0].startDungeon([hero], hero)
+
+            let dCh3 = 0
+            let cfCh3 = 0
+            let sCh3 = 0
+
+            for (let a = 0; a < c.length; a++) {
+                sCh3 += c[a].chances.success
+                dCh3 += c[a].chances.death
+                cfCh3 += c[a].chances.criticalFailure
+            }
+            sCh2 += sCh3 / c.length
+            dCh2 += dCh3 / c.length
+            cfCh2 += cfCh3 / c.length
+        }
+        sCh = sCh2 / j
+        dCh = dCh2 / j
+        cfCh = cfCh2 / j
+      
+        let text = i + ": " + Math.round(sCh) + " / " + Math.round(cfCh) + " / " + Math.round(dCh)
+        console.log(text)
+    }
+}

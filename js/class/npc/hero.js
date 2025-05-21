@@ -23,7 +23,7 @@ class Hero extends Character {
             }
         } else {
             for (let i = 0; i<this.skill.length; i++) {
-                this.skill[i] = 0.65
+                this.skill[i] = 0.7
             }
         }
         for (let i = 0; i < this.startSkill.length; i++) {
