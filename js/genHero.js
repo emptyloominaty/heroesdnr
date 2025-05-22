@@ -12,6 +12,11 @@ let recruitHero = function (buildingId, heroId, price = 0) {
     let location = {x: buildingsMap[buildingId].location.x - 15 + Math.random() * 30, y: buildingsMap[buildingId].location.y - 15 + Math.random() * 30}
 
     let hero = new Hero(name, h.age, h.level, 100, h.characterClass, h.role, location)
+
+    Object.keys(hero.slots).forEach(key => {
+        hero.slots[key] = new Item(key,h.level,1)
+    })
+
     hero.sex = h.sex
     for (let i = 0; i < hero.skill.length; i++) {
         hero.skill[i] = h.skill[i]

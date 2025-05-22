@@ -181,7 +181,7 @@ class DungeonController {
             }
         }
 
-        if (Math.random() > (1 - ((stage.chances.death / 100)*(maxInt)))) {
+        if (Math.random() > Math.max((1 - ((stage.chances.death / 15)*(maxInt))),0.05)) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult

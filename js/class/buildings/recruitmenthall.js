@@ -205,9 +205,9 @@ class RecruitmentHall extends Building {
         const A = 100
         const B = 2
         const C = 1
-
+        
         return A * Math.pow(x - 0.65, B) + C
     }
-
+    
 
 }
