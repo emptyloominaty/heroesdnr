@@ -88,11 +88,11 @@ class DungeonController {
         }*/
 
         dungeonSpeed = c / heroes.length
-        let difficulty = 0.75
+        let difficulty = 0.5
         let type
         if (heroes.length>1) {
             type = "group"
-            difficulty = 5
+            difficulty = 4
         } else {
             type = "solo"
         }
@@ -181,7 +181,7 @@ class DungeonController {
             }
         }
 
-        if (Math.random() > (1.17 - (Math.pow((stage.chances.death / 100)*(maxInt), 0.4)))) {
+        if (Math.random() > (1 - ((stage.chances.death / 100)*(maxInt)))) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
@@ -591,6 +591,18 @@ class DungeonController {
             stageRewards :{goldBase:10, goldRng: 50 },aoeChance:1,aoeDmgBase: 2, aoeDmgRng: 5, dpsMul:1, dtpsMul:1, speedMul:1.2, bossMul: 1.3, timerBase: 30, timerRng: 20 },
     }
 
+    getDungVal(level,valL,valH) {
+        const low = valL * Math.pow(level, 1.72)
+        const high = valH * Math.pow(level, 1.87)
+
+        if (level <= 10) return low
+        if (level >= 95) return high
+
+        
+        const t = (level - 10) / (95 - 10)
+        return low * (1 - t) + high * t
+    }
+
     generateDungeon(difficulty, level, dungeonType = "Default") {
         const pickRandom = (arr, weights = null) => {
             if (!weights) return arr[Math.floor(Math.random() * arr.length)]
@@ -628,9 +640,9 @@ class DungeonController {
             let dpsRng = 0.9 + (Math.random()/5)
             let dtpsRng = 0.9 + (Math.random() / 5)
             stages.push({
-                dpsReq: 3 * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
+                dpsReq: this.getDungVal(level, 3, 3) * dpsRng * difficulty * stageMultiplier * dpsMultiplier * (isBoss ? 1.3 : 1), 
                 enemies: enemies,
-                dtpsReq: 0.75 * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1) * Math.pow(level, 1.8), 
+                dtpsReq: this.getDungVal(level, 0.75, 0.75) * dtpsRng * difficulty * stageMultiplier * (isBoss ? 1.3 : 1), 
                 damageType: pickRandom(["physical", "magic"]),
                 aoeDtpsReq: Math.floor(Math.random()*5), 
                 stageSpeed: 1,
@@ -653,46 +665,3 @@ class DungeonController {
 
 let dungeonControllers = []
 
-
-
-let testDungeon = function () {
-    for (let i = 1; i < 100; i++) {
-        let dCh = 0
-        let cfCh = 0
-        let dCh2 = 0
-        let cfCh2 = 0
-        let sCh = 0
-        let sCh2 = 0
-        let j = 0
-        for (j = 0; j <= 50; j++) {
-            let hero = new Hero("", 20, i, 100, "Warrior", "dps", {x: 0, y: 0}, false, true)
-
-            Object.keys(hero.slots).forEach(key => {
-                hero.slots[key] = new Item(key,i,1)
-            })
-            hero.updateItems()
-
-
-            let c = dungeonControllers[0].startDungeon([hero], hero)
-
-            let dCh3 = 0
-            let cfCh3 = 0
-            let sCh3 = 0
-
-            for (let a = 0; a < c.length; a++) {
-                sCh3 += c[a].chances.success
-                dCh3 += c[a].chances.death
-                cfCh3 += c[a].chances.criticalFailure
-            }
-            sCh2 += sCh3 / c.length
-            dCh2 += dCh3 / c.length
-            cfCh2 += cfCh3 / c.length
-        }
-        sCh = sCh2 / j
-        dCh = dCh2 / j
-        cfCh = cfCh2 / j
-      
-        let text = i + ": " + Math.round(sCh) + " / " + Math.round(cfCh) + " / " + Math.round(dCh)
-        console.log(text)
-    }
-}
