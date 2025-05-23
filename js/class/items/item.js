@@ -4,7 +4,8 @@ const effectiveLevelMultiplier = {
     3: 0.73,
     4: 0.66,
     5: 0.60,
-    6: 0.54
+    6: 0.54,
+    7: 0.50
 }
 
 function shouldReplace(oldLevel, oldQuality, newLevel, newQuality = 1) {
@@ -33,16 +34,20 @@ function getRandomQuality(drop = "dungeon", luck = 1) {
 
 function getRandomSlot() {
     let rng = Math.random()
-    if (rng < 0.16) {
+    if (rng < 0.11) {
         return "hands"
-    } else if (rng < 0.32) {
+    } else if (rng < 0.22) {
         return "head"
-    } else if (rng < 0.48) {
+    } else if (rng < 0.33) {
         return "chest"
-    } else if (rng < 0.64) {
+    } else if (rng < 0.44) {
         return "legs"
-    } else if (rng < 0.80) {
+    } else if (rng < 0.55) {
         return "feet"
+    } else if (rng < 0.66) {
+        return "finger"
+    } else if (rng < 0.77) {
+        return "trinket"
     } else {
         return "weapon"
     }

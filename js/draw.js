@@ -90,12 +90,11 @@ function drawParticles() {
 
 function drawLights() {
     lights2d.reset()
-    if (!settings.lights) {
-        return
+    if (settings.lights) {
+        updateLighting()
+        lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1})`
+        lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
     }
-    updateLighting()
-    lights2d.canvas.fillStyle = `rgb(${R}, ${G}, ${B}, ${1})`
-    lights2d.canvas.fillRect(0, 0, lights2d.canvasElement.width, lights2d.canvasElement.height)
 
     lights2d.canvas.globalCompositeOperation = "screen"
     for (let i = 0; i < lights.length; i++) {
@@ -103,7 +102,9 @@ function drawLights() {
         if (light === undefined) {
             continue
         }
-        drawLightSource(light.x, light.y, light.radius, light.color)
+        if (settings.lights) {
+            drawLightSource(light.x, light.y, light.radius, light.color)
+        }
         light.update()
     }
     lights2d.canvas.globalCompositeOperation = 'source-over'

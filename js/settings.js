@@ -8,8 +8,8 @@ let settings = {
     drawHeroNames: false,
     maxLogSize: 150, //hero
     maxLogSizeDungeons: 100,
-    maxLogSizeDeadCharacters: 1000,
-    maxSizeInactiveHeroes: 1000,
+    maxLogSizeDeadCharacters: 50,
+    maxSizeInactiveHeroes: 50,
     debugSpeeds: true,     //elements.btn_speed50 btn_speed100
     skipMenu: true,
     gameSpeedMode: "Precise",  //["Performance","Precise"]

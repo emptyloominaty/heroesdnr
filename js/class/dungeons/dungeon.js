@@ -181,7 +181,7 @@ class DungeonController {
             }
         }
 
-        if (Math.random() > Math.max((1 - ((stage.chances.death / 15)*(maxInt))),0.05)) {
+        if (Math.random() > Math.max((1 - ((stage.chances.death / 5)*(maxInt))),0.03)) {
             stageResult = "Leave"
             return {
                 rngDps,rngDtps,aoeHpsSum, aoeDtpsSum, aoeDamageTaken, escapeChance, criticalFailureChance, dpsSuccess, dtpsSuccess, dpsSt, dpsAoe, dtpsM, dtpsP, escapeSuccess, criticalFailure, _dps, _dtps, _dpsNeeded, _dtpsNeeded, stageResult
@@ -340,6 +340,7 @@ class DungeonController {
 
         if (shouldReplace(hero.slots[slot].level, hero.slots[slot].quality, level, quality)) {
             hero.slots[slot] = new Item(slot, level, quality)
+            hero.updateItems() 
         } else {
             hero.inventory.gold += Math.pow(10 * level * quality, 1.4) / 5
         }

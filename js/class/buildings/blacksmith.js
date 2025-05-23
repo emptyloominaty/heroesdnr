@@ -1,7 +1,8 @@
 class Blacksmith extends Building {
     upgradeCost = [0, 1000, 1000, 2000, 2000]
     dailyCost = [10, 30, 50, 100, 200]
-    prices = {hands:10,head:10,chest:10,legs:10,feet:10,weapon:30,finger:10,trinket:10}
+    prices = {hands: 10, head: 10, chest: 10, legs: 10, feet: 10, weapon: 30, finger: 15, trinket: 15}
+    maxLvl = [12,30,50,70,95]
 
     constructor(location, name, level = 1) {
         super(location, name, level)
@@ -21,6 +22,10 @@ class Blacksmith extends Building {
         } else if (this.level === 5) {
             this.size = [30,30]
         }
+    }
+
+    getMaxIlvl() {
+        return this.maxLvl[this.level-1]
     }
 
     getVal(i) {

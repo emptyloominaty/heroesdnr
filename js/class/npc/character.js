@@ -143,7 +143,7 @@ class Character {
 
         this.slots = {
             hands: new Item("hand", 1, 1), head: new Item("head", 1, 1), chest: new Item("chest", 1, 1), legs: new Item("legs", 1, 1)
-            , feet: new Item("feet", 1, 1), weapon: new Item("weapon", 1, 1)
+            , feet: new Item("feet", 1, 1), weapon: new Item("weapon", 1, 1), finger: new Item("finger", 1, 1), trinket: new Item("trinket", 1, 1)
         }
         this.ilvl = 1
         this.itemsBonus = {dps: {base: 1, mul: 1}, dtps: {base: 1, mul: 1}}
@@ -447,16 +447,6 @@ class Character {
     }
 
     checkBlacksmith(buy = false) {
-        let itemsUpgrade = []
-        Object.keys(this.slots).forEach(key => {
-            if (shouldReplace(this.slots[key].level, this.slots[key].quality,this.level,1)) {
-                itemsUpgrade.push(key)
-            }
-        })
-        if (itemsUpgrade.length === 0) {
-            return false
-        }
-        let budget = this.inventory.gold - 100
         let buildingId = -1
         for (let i = 0; i < buildings.length; i++) {
             if (buildings[i].type === "blacksmith") {
@@ -467,7 +457,16 @@ class Character {
         if (buildingId === -1) {
             return false
         }
-
+        let itemsUpgrade = []
+        Object.keys(this.slots).forEach(key => {
+            if (shouldReplace(this.slots[key].level, this.slots[key].quality, Math.min(this.level, buildings[buildingId].getMaxIlvl()),1)) {
+                itemsUpgrade.push(key)
+            }
+        })
+        if (itemsUpgrade.length === 0) {
+            return false
+        }
+        let budget = this.inventory.gold - 100
         return this.buyBlacksmith(itemsUpgrade, buy, buildingId, budget)
     }
 

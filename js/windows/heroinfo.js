@@ -230,15 +230,20 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
       <td class="heroinfoInv1"><strong>Items</strong></td> 
        <td id="hi_item1" class="heroinfoInv2"><span class="txtG">Head:</span> ${hero.slots.head.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.head.quality)}"> ${getItemQuality(hero.slots.head.quality)}</span></td>
        <td id="hi_item2" class="heroinfoInv2"><span class="txtG">Chest:</span> ${hero.slots.chest.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.chest.quality)}"> ${getItemQuality(hero.slots.chest.quality)}</span></td>
-       <td id="hi_item3" class="heroinfoInv2"><span class="txtG">Hands:</span> ${hero.slots.hands.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.hands.quality)}"> ${getItemQuality(hero.slots.hands.quality)}</span></td>
-       <td id="hi_item4" class="heroinfoInv2"><span class="txtG">Legs:</span> ${hero.slots.legs.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.legs.quality)}"> ${getItemQuality(hero.slots.legs.quality)}</span></td>
-       <td id="hi_item5" class="heroinfoInv2"><span class="txtG">Feet:</span> ${hero.slots.feet.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.feet.quality)}"> ${getItemQuality(hero.slots.feet.quality)}</span></td>
+       <td id="hi_item3" class="heroinfoInv2"><span class="txtG">Legs:</span> ${hero.slots.legs.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.legs.quality)}"> ${getItemQuality(hero.slots.legs.quality)}</span></td>
+       <td id="hi_item4" class="heroinfoInv2"><span class="txtG">Feet:</span> ${hero.slots.feet.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.feet.quality)}"> ${getItemQuality(hero.slots.feet.quality)}</span></td>
+    </tr>
+    <tr>
+      <td class="heroinfoInv1"><strong>Items</strong></td>
+       <td id="hi_item5" class="heroinfoInv2"><span class="txtG">Hands:</span> ${hero.slots.hands.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.hands.quality)}"> ${getItemQuality(hero.slots.hands.quality)}</span></td>
        <td id="hi_item6" class="heroinfoInv2"><span class="txtG">Weapon:</span> ${hero.slots.weapon.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.weapon.quality)}"> ${getItemQuality(hero.slots.weapon.quality)}</span></td>
+       <td id="hi_item7" class="heroinfoInv2"><span class="txtG">Ring:</span> ${hero.slots.finger.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.finger.quality)}"> ${getItemQuality(hero.slots.finger.quality)}</span></td>
+       <td id="hi_item8" class="heroinfoInv2"><span class="txtG">Trinket:</span> ${hero.slots.trinket.level} <span class="txtG">lvl</span> <span style="color: ${getQualityColor(hero.slots.trinket.quality)}"> ${getItemQuality(hero.slots.trinket.quality)}</span></td>
     </tr>
 
     <tr>
       <td class="heroinfoInv1"><strong>ilvl</strong></td>
-      <td id="hi_ilvl" class="ilvl">${getNumberString(hero.ilvl)}</td>
+      <td id="hi_ilvl" class="heroinfoInv2">${getNumberString(hero.ilvl)}</td>
     </tr>
     <tr>
       <td class="heroinfoInv1"><strong>Weapon base/mul</strong></td>

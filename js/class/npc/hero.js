@@ -43,15 +43,22 @@ class Hero extends Character {
 
         Object.keys(this.slots).forEach(key => {
             this.ilvl += this.slots[key].getilvl()
-            if (key === "weapon" || key === "finger" || key === "trinket") {
+            if (key === "weapon") {
                 this.itemsBonus.dps.base += this.slots[key].getBase()
                 this.itemsBonus.dps.mul += this.slots[key].getMul()
+            } else if (key === "finger" || key === "trinket") {
+                let base = this.slots[key].getBase()
+                let mul = this.slots[key].getMul()
+                this.itemsBonus.dps.base += base / 2
+                this.itemsBonus.dps.mul += mul / 2
+                this.itemsBonus.dtps.base += base / 2
+                this.itemsBonus.dtps.mul += mul / 2
             } else {
                 this.itemsBonus.dtps.base += this.slots[key].getBase()
                 this.itemsBonus.dtps.mul += this.slots[key].getMul()
             }
         })
-        this.ilvl = this.ilvl / 8   //10? + ring+trinket?
+        this.ilvl = this.ilvl / 10
 
 
         this.updateStats()
