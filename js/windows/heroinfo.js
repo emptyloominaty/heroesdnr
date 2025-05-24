@@ -262,7 +262,8 @@ let open_heroinfo = function (btn_el = undefined, reload = false, update = false
     let logText = ""
 
     for (let i = hero.log.length - 1; i >= 0; i--) {
-        logText += "<span style='color:"+colors.logTime+"'>"+getTime2(hero.log[i].time)+"</span>: "+hero.log[i].message+"<br>"
+        let l = hero.log[i].message
+        logText += "<span style='color:"+colors.logTime+"'>"+getTime2(hero.log[i].time)+"</span>: "+messages.heroLog[l.type](l.text,l.text2)+"<br>"
     }
     html += `<div class="hi_log" id="hi_log">${logText}</div> `
 

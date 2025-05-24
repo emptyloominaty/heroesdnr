@@ -129,7 +129,7 @@ class Character {
             this.id = globalCharId
             charactersMap[this.id] = this
             globalCharId++
-            this.addLog(messages.heroLog.joinTown())
+            this.addLog({type:"joinTown",text:"",text2:""})
             this.createUI()
             logs.heroes.push({time: realtime, message: "<span style='color:" + colors[this.characterClass] + "'>" + this.characterClass + "</span> <span style='color:" + colors.log.success + "'>" + this.name +" joined the town</span>"})
             addToGrid(this)

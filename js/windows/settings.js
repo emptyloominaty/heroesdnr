@@ -18,7 +18,7 @@ let open_settings = function (btn_el = undefined, reload = false, update = false
     let settingsList = [
         {name:"Gameplay",settingKey:"",options:[],category:true},
         {name:"Speed Mode",settingKey:"gameSpeedMode",options:[{name:"Performance",val:"Performance"},{name:"Precise",val:"Precise"}]},
-        {name:"Max Hero Log Size",settingKey:"maxLogSize",options:[],rangeMin:20,rangeMax:200,rangeStep:10,range:true,digits:0},
+        {name:"Max Hero Log Size",settingKey:"maxLogSize",options:[],rangeMin:150,rangeMax:1000,rangeStep:50,range:true,digits:0},
         {name:"Max Dungeon Log Size",settingKey:"maxLogSizeDungeons",options:[],rangeMin:50,rangeMax:1000,rangeStep:50,range:true,digits:0},
         {name:"Max Dead Heroes Size",settingKey:"maxLogSizeDeadCharacters",options:[],rangeMin:50,rangeMax:100,rangeStep:10,range:true,digits:0},
         {name:"Max Inactive Heroes Size",settingKey:"maxSizeInactiveHeroes",options:[],rangeMin:50,rangeMax:100,rangeStep:10,range:true,digits:0},

@@ -49,3 +49,8 @@ function loadGame() {
     }
 
 }
+
+
+function reset() {
+
+}

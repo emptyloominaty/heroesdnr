@@ -3,6 +3,7 @@ class Blacksmith extends Building {
     dailyCost = [10, 30, 50, 100, 200]
     prices = {hands: 10, head: 10, chest: 10, legs: 10, feet: 10, weapon: 30, finger: 15, trinket: 15}
     maxLvl = [12,30,50,70,95]
+    tax = 0.07
 
     constructor(location, name, level = 1) {
         super(location, name, level)

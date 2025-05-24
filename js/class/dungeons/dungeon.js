@@ -12,7 +12,6 @@ class DungeonController {
     constructor (x,y,data) {
         this.location.x = x
         this.location.y = y
-        console.log(data)
 
         if (Object.keys(data).length > 0) {
             this.minlvl = data.minlvl

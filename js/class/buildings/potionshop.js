@@ -3,6 +3,7 @@ class PotionShop extends Building {
     dailyCost = [10, 30, 50]
     prices = {
         "Health": 20, "Mana": 20, "Agility": 40, "Strength": 40, "Resurrection":500 }
+    tax = 0.15
 
     constructor(location, name, level = 1) {
         super(location, name, level)

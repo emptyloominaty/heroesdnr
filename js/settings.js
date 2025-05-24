@@ -6,7 +6,7 @@ let settings = {
     shadows: 0,
     particleTimer: 0.025,
     drawHeroNames: false,
-    maxLogSize: 150, //hero
+    maxLogSize: 200, //hero
     maxLogSizeDungeons: 100,
     maxLogSizeDeadCharacters: 50,
     maxSizeInactiveHeroes: 50,

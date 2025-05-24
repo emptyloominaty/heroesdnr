@@ -48,7 +48,7 @@ class Guild {
                 heroes[i].guildId = this.id
                 heroes[i].inGuild = true
                 this.heroes.push(heroes[i].id)
-                heroes[i].addLog(messages.heroLog.formGuild(this.name,guildmaster.name))
+                heroes[i].addLog({type:"formGuild",text:this.name,text2:guildmaster.name})
             }
         } 
     }
@@ -105,7 +105,7 @@ class Guild {
         hero.inGuild = true
         hero.guildId = this.id
         this.heroes.push(hero.id)
-        hero.addLog(messages.heroLog.joinGuild(this.name))
+        hero.addLog({type:"joinGuild",text:this.name,text2:""})
     }
 
     kickHero(hero) {
@@ -118,7 +118,7 @@ class Guild {
             for (let i = 0; i < this.heroes.length; i++) {
                 if (this.heroes[i] === hero.id) {
                     this.heroes.splice(i, 1)
-                    hero.addLog(messages.heroLog.leaveGuild(this.name))
+                    hero.addLog({type:"leaveGuild",text:this.name,text2:""})
                     break
                 }
             }

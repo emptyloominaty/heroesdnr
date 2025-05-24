@@ -131,11 +131,19 @@ function update() {
                     }
                 }
                 let gm = newGuildHeroes[Math.floor(Math.random() * newGuildHeroes.length)]
-                console.log(gm)
                 let guild = new Guild(newGuildHeroes, gm)
                 guild.rankPoints = guilds[i].rankPoints / 1.3
                 guilds[i].rankPoints = guilds[i].rankPoints / 1.3
             }
+        }
+        if (logs.heroes.length>100) {
+            logs.heroes.splice(0,logs.heroes.length-100)
+        }
+        if (logs.buildings.length>100) {
+            logs.buildings.splice(0,logs.buildings.length-100)
+        }
+        if (logs.debug.length>100) {
+            logs.debug.splice(0,logs.debug.length-100)
         }
         updateStatistics()
     }

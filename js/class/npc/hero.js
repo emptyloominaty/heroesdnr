@@ -104,18 +104,12 @@ class Hero extends Character {
         if (this.xp >= this.xpNeed) {
             this.level++
             this.xpNeed = Math.floor(100 * this.level * Math.pow(this.level, 1.2))
-            let skillText = "<span style='font-size:8px;' >(" 
-            let ignoreSkillText = true
             for (let i = 0; i < this.skill.length; i++) {
                 let val = Math.random() * 0.05
                 if (Math.random() < 0.04) {
                     this.skill[i] = updateSkill(this.skill[i], val, 0.4, (this.startSkill[i] + 0.7) / 2,1.0)
-                    skillText += i + ": <span style='color:"+colors.log.success+"'>+" + Math.round(val * 100) + "</span>, "
-                    ignoreSkillText = false
                 } else if (Math.random() < 0.03) {
                     this.skill[i] = updateSkill(this.skill[i], -val, 0.4, (this.startSkill[i] + 0.7) / 2, 1.0)
-                    skillText += i + ": <span style='color:" + colors.log.failure + "'>-" + Math.round(val * 100) + "</span>, "
-                    ignoreSkillText = false
                 }
                 this.skill[i] = Math.max(0.35, Math.min(1, this.skill[i]))
             }
@@ -142,11 +136,7 @@ class Hero extends Character {
             this.intelligence = Math.max(0.45, this.intelligence)
             this.competitiveness = Math.max(0, Math.min(0.9, this.competitiveness))
             this.adventurousness = Math.max(0.1, Math.min(1, this.adventurousness))
-            skillText += ")</span>"
-            if (ignoreSkillText) {
-                skillText = ""
-            }
-            this.addLog(messages.heroLog.levelUp(this.level,skillText))
+            this.addLog({type:"levelUp",text:this.level,text2:""})
             this.updateStats()
         } 
     }

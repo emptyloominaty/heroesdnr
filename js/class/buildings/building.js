@@ -10,6 +10,7 @@ class Building {
     name = ""
     id = 0
     profit = 0
+    tax = 0.2
     
     constructor(location, name, level = 1) {
         this.location = location
@@ -49,8 +50,8 @@ class Building {
 
     buy(val, hero) {
         hero.inventory.gold -= val
-        gold += val * 0.2
-        this.profit += val * 0.2
+        gold += val * this.tax
+        this.profit += val * this.tax
     }
 
 }
